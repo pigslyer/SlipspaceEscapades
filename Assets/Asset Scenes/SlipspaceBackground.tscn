@@ -1,0 +1,94 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Asset Scenes/SineStreamShader.gd" type="Script" id=1]
+[ext_resource path="res://Assets/pixel.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Asset Scenes/SineStreamShader.tres" type="Material" id=3]
+[ext_resource path="res://Assets/Asset Scenes/SlipspaceBackground.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Asset Scenes/RainbowStreamShader.gd" type="Script" id=5]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D streamData;
+uniform sampler2D streamColors;
+uniform int streamCount;
+uniform int streamLength;
+
+// for starting and stopping the effect
+uniform float heightMult;
+
+// time since effect started
+uniform float t0;
+
+float Time()
+{
+	return TIME - t0;
+}
+
+float GetDistance(vec2 uv, float height, float delay)
+{
+	return abs(uv.y - (height)) * heightMult;
+}
+
+vec4 GetColorAt(vec2 uv, int index)
+{
+	vec4 data = texelFetch(streamData, ivec2(index, 0), 0);
+	
+	float height = data.x, delay = data.z, size = max(0.01, data.y + sin((Time() + uv.x) * data.a * height) * 0.05);
+	vec3 color = texelFetch(streamColors, ivec2( int((Time() + uv.x * delay) * float(streamLength)) % streamLength + index * streamLength, 0), 0).rgb;
+	
+	float dist = GetDistance(uv, height, delay);
+	return vec4(color, max(0.0, ((size - dist) / dist) * 0.01));
+}
+
+void fragment()
+{
+	vec4 color = vec4(0.0);
+	vec4 temp;
+	
+	for (int i = 0; i < streamCount; i++)
+	{
+		temp = GetColorAt(UV, i);
+		color = mix(color, temp, temp.a);
+	}
+	
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/streamCount = null
+shader_param/streamLength = null
+shader_param/heightMult = null
+shader_param/t0 = null
+
+[node name="SlipspaceBackground" type="Node2D"]
+scale = Vector2( 1024, 600 )
+script = ExtResource( 4 )
+__meta__ = {
+"_editor_description_": "you can set this to whatever size, it'll scale"
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 0, 0.0627451, 0.0862745, 1 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="SineStreamShader" type="Sprite" parent="."]
+visible = false
+material = ExtResource( 3 )
+texture = ExtResource( 2 )
+centered = false
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "streamColors - sampler2d
+streamData - sampler2d
+streamCount - int"
+}
+
+[node name="RainbowStreamShader" type="Sprite" parent="."]
+visible = false
+material = SubResource( 2 )
+texture = ExtResource( 2 )
+centered = false
+script = ExtResource( 5 )
