@@ -2,7 +2,7 @@ class_name Player
 extends KinematicBody2D
 
 #CONSTANTS FOR MOVEMENT
-const ACCELERATION := 2000;
+const ACCELERATION := 2500;
 const FRICTION := 0.2;
 
 #CONSTANT FOR USE

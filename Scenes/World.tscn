@@ -1,8 +1,19 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Asset Scenes/SlipspaceBackground.tscn" type="PackedScene" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 509.5, 55 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 53, 401 )
 
 [node name="World" type="Node2D"]
+
+[node name="SlipspaceBackground" parent="." instance=ExtResource( 2 )]
+_acceptsInput = false
+_autoStart = true
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 50, 300 )
@@ -11,5 +22,18 @@ position = Vector2( 50, 300 )
 collision_layer = 16
 collision_mask = 0
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerLimits"]
-polygon = PoolVector2Array( 0, 0, 192, 0, 192, 600, 0, 600, 0, 664, 256, 664, 256, -64, -64, -64, -64, 664, 0, 664 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerLimits"]
+position = Vector2( 510.5, -56 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerLimits"]
+position = Vector2( 510.5, 655 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlayerLimits"]
+position = Vector2( -51, 309 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="PlayerLimits"]
+position = Vector2( 406, 309 )
+shape = SubResource( 2 )

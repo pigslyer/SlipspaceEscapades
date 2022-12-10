@@ -1,16 +1,22 @@
 extends Node2D
 
+export var _acceptsInput: bool = true;
+export var _autoStart: bool = false;
+
 var _isSlipspace: bool = false;
 
 func _ready():
 	StartShaders();
+	
+	if (_autoStart):
+		SetSlipspace(true);
 
 func StartShaders() -> void:
 	$StarryNight.GenerateStars();
 	$RainbowStreamShader.StartStreams();
 
 func _input(event):
-	if event.is_action_pressed("ui_accept"):
+	if _acceptsInput && event.is_action_pressed("ui_accept"):
 		SetSlipspace(!_isSlipspace);
 
 
