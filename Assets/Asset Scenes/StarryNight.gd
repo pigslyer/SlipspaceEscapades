@@ -12,7 +12,7 @@ func GenerateStars() -> void:
 	var data = [];
 	
 	for i in StarCount:
-		AddStar(data, Vector2(_random.randfn(0.6, 0.2),_random.randfn(0.6, 0.2)),_random.randf_range(0.04, 0.1));
+		AddStar(data, Vector2(_random.randfn(0.6, 0.2),_random.randfn(0.6, 0.2)),_random.randf_range(0.005, 0.01));
 	
 	_m.set_shader_param("starData", ArrayToTexture(data));
 	_m.set_shader_param("starCount", data.size());
@@ -22,7 +22,7 @@ func RemoveStars():
 	_m.set_shader_param("starCount", 0);
 
 func AddStar(array: Array, pos: Vector2, size: float) -> void:
-	array.append(Color(pos.x,pos.y,size, _random.randf_range(0, PI/2)));
+	array.append(Color(pos.x,pos.y,size, log(_random.randfn(4.5,4.5))/log(10)));
 
 func ArrayToTexture(array: Array) -> Texture:
 	var image := Image.new();

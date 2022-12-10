@@ -21,6 +21,7 @@ material = ExtResource( 7 )
 texture = ExtResource( 2 )
 centered = false
 script = ExtResource( 8 )
+StarCount = 1800
 
 [node name="SineStreamShader" type="Sprite" parent="."]
 visible = false

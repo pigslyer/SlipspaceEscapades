@@ -6,7 +6,6 @@ func _ready():
 	StartShaders();
 
 func StartShaders() -> void:
-#	$StreamShader.StartStreams();
 	$StarryNight.GenerateStars();
 	$RainbowStreamShader.StartStreams();
 
@@ -15,7 +14,7 @@ func _input(event):
 		SetSlipspace(!_isSlipspace);
 
 
-func SetSlipspace(state: bool):
+func SetSlipspace(state: bool) -> void:
 	
 	if state != _isSlipspace:
 		_isSlipspace = state;
@@ -25,5 +24,6 @@ func SetSlipspace(state: bool):
 		if state:
 			$StarryNight.RemoveStars();
 		else:
+			# result of eyeballing, starts them just as the "exiting" effect is strongest
 			yield(get_tree().create_timer(2.0), "timeout");
 			$StarryNight.GenerateStars();

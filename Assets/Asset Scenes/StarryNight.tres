@@ -11,11 +11,12 @@ vec4 GetColorAt(vec2 uv, int index)
 	vec4 data = texelFetch(starData, ivec2(index, 0), 0);
 	
 	vec2 pos = data.xy;
-	float size = max(0.01,data.z + sin(TIME + data.a) * 0.005);
+	float size = data.z;
+	float starCloseness = data.a;
 	
 	float dist = distance(uv, pos);
 	
-	return vec4(vec3(1.0), max(0.0, (size - dist) / dist));
+	return vec4(vec3(1.0), max(0.0, ((size * starCloseness - dist) / dist) * starCloseness));
 }
 
 void fragment()
