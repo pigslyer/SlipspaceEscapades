@@ -1,0 +1,62 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D streamData;
+uniform sampler2D streamColors;
+uniform int streamCount;
+uniform int streamLength;
+
+// for starting and stopping the effect
+uniform float heightMult;
+
+// time since effect started
+uniform float t0;
+
+float Time()
+{
+	return TIME - t0;
+}
+
+float GetDistance(vec2 uv, float height, float delay)
+{
+	return abs(uv.y - (height)) * heightMult;
+}
+
+vec4 GetColorAt(vec2 uv, int index)
+{
+	vec4 data = texelFetch(streamData, ivec2(index, 0), 0);
+	
+	float height = data.x, delay = data.z, size = max(0.01, data.y + sin((Time() + uv.x) * data.a * height) * 0.05);
+	vec3 color = texelFetch(streamColors, ivec2( int((Time() + uv.x * delay) * float(streamLength)) % streamLength + index * streamLength, 0), 0).rgb;
+	
+	float dist = GetDistance(uv, height, delay);
+	return vec4(color, max(0.0, ((size - dist) / dist) * 0.01));
+}
+
+void fragment()
+{
+	if (heightMult == 0.0)
+	{
+		discard;
+	}
+	
+	vec4 color = vec4(0.0);
+	vec4 temp;
+	
+	for (int i = 0; i < streamCount; i++)
+	{
+		temp = GetColorAt(UV, i);
+		color = mix(color, temp, temp.a);
+	}
+	
+	COLOR = color;
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/streamCount = null
+shader_param/streamLength = null
+shader_param/heightMult = null
+shader_param/t0 = null

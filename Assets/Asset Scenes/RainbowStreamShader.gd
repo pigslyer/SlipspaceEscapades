@@ -10,8 +10,6 @@ const COLORS = [
 
 var _random := RandomNumberGenerator.new();
 
-var _isOn := false;
-
 export var StreamCount: int = 100;
 export var StreamLength: int = 5;
 export var BaseHeight: float = 0.06;
@@ -33,14 +31,11 @@ func StartStreams() -> void:
 	_m.set_shader_param("streamLength", StreamLength);
 	_m.set_shader_param("t0", Time.get_ticks_msec());
 	
-	_isOn = false;
-	
 	show();
 
-func ToggleOn():
+func SetOn(state: bool):
 	var tween := create_tween();
-	tween.tween_method(self,"HiIHaveNoPurposeBeingHere",1.0 if _isOn else 0.0, 0.0 if _isOn else 1.0, 2).set_trans(Tween.TRANS_SINE);
-	_isOn = !_isOn;
+	tween.tween_method(self,"HiIHaveNoPurposeBeingHere",1.0 if state else 0.0, 0.0 if state else 1.0, 2).set_trans(Tween.TRANS_SINE);
 
 func HiIHaveNoPurposeBeingHere(value: float):
 	_m.set_shader_param("heightMult",value);

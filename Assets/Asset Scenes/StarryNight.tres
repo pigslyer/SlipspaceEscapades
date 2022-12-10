@@ -1,0 +1,36 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform sampler2D starData;
+uniform int starCount;
+
+vec4 GetColorAt(vec2 uv, int index)
+{
+	vec4 data = texelFetch(starData, ivec2(index, 0), 0);
+	
+	vec2 pos = data.xy;
+	float size = max(0.01,data.z + sin(TIME + data.a) * 0.005);
+	
+	float dist = distance(uv, pos);
+	
+	return vec4(vec3(1.0), max(0.0, (size - dist) / dist));
+}
+
+void fragment()
+{
+	vec4 color = vec2(0.0,1.0).xxxy, temp;
+	
+	for (int i = 0; i < starCount; i++)
+	{
+		temp = GetColorAt(UV, i);
+		color = mix(color, temp, temp.a);
+	}
+	
+	COLOR = color;
+}"
+
+[resource]
+shader = SubResource( 3 )
+shader_param/starCount = null
