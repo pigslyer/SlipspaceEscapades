@@ -1,0 +1,20 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+
+uniform float flashAmount;
+
+void fragment()
+{
+	COLOR = texture(TEXTURE, UV);
+	
+	if (COLOR.a > 0.0)
+	{
+		COLOR.a = max(1, distance(UV, vec2(0.5)) / flashAmount);
+	}
+}"
+
+[resource]
+shader = SubResource( 13 )
+shader_param/flashAmount = 1.0

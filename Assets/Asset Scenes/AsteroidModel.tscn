@@ -1,0 +1,109 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Assets/Sprites/SmallAsteroid.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Asset Scenes/AsteroidModel.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Asset Scenes/ModelExplosionEffect.tres" type="Material" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 4
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id=9]
+interpolation_mode = 2
+offsets = PoolRealArray( 0.0258065, 0.767742, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
+
+[sub_resource type="Curve" id=11]
+min_value = 1.0
+max_value = 2.0
+_data = [ Vector2( 0, 2 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=12]
+curve = SubResource( 11 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 120.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = -100.0
+radial_accel = 1.0
+scale_curve = SubResource( 12 )
+color_ramp = SubResource( 10 )
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[sub_resource type="Gradient" id=3]
+interpolation_mode = 2
+offsets = PoolRealArray( 0, 0.670968, 1 )
+colors = PoolColorArray( 1, 1, 1, 0.372549, 1, 1, 1, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="CurveTexture" id=5]
+
+[sub_resource type="Curve" id=6]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.213483, 1 ), 0.788451, 0.788451, 0, 0, Vector2( 0.814607, 1 ), 0.0, -4.97013, 1, 0, Vector2( 1, 0.507955 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+curve = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=2]
+flag_align_y = true
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 150.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.0
+orbit_velocity_curve = SubResource( 5 )
+radial_accel = -20.0
+scale = 2.0
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 4 )
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[node name="AsteroidModel" type="Node2D"]
+script = ExtResource( 2 )
+iframeFlashLength = 0.033
+iframeLength = 0.2
+fadeOutLength = 0.7
+fadeOutTime = 0.6
+
+[node name="OnHit" type="Sprite" parent="."]
+material = ExtResource( 3 )
+texture = ExtResource( 1 )
+
+[node name="OnHitPair" type="Sprite" parent="."]
+visible = false
+material = ExtResource( 3 )
+texture = ExtResource( 1 )
+
+[node name="Explosion" type="Particles2D" parent="."]
+material = SubResource( 1 )
+emitting = false
+amount = 16
+one_shot = true
+explosiveness = 1.0
+visibility_rect = Rect2( -69.3636, -64.8201, 139.435, 133.905 )
+process_material = SubResource( 8 )
+texture = ExtResource( 1 )
+
+[node name="ExplosionImplosion" type="Particles2D" parent="."]
+material = SubResource( 1 )
+emitting = false
+amount = 16
+one_shot = true
+explosiveness = 1.0
+visibility_rect = Rect2( -26.4209, -26.4648, 52.8723, 52.1408 )
+process_material = SubResource( 2 )
+texture = ExtResource( 1 )
