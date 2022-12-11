@@ -1,9 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/Asset Scenes/BigBoyModel.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/BigBoyMoving.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Sprites/BigBoyLight.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Asset Scenes/Flicker.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -50,78 +48,3 @@ position = Vector2( 5.6, -23 )
 
 [node name="Position2D10" type="Position2D" parent="Sprite/MissileArray"]
 position = Vector2( 5.6, -28 )
-
-[node name="Lights" type="Node2D" parent="Sprite"]
-scale = Vector2( 0.1, 0.1 )
-
-[node name="Flicker" parent="Sprite/Lights" instance=ExtResource( 4 )]
-position = Vector2( 40, -106 )
-texture = ExtResource( 3 )
-texture_scale = 1.6
-color = Color( 1, 0, 0, 1 )
-flickerAmount = 10
-minValue = 1.0
-maxValue = 2.5
-
-[node name="Flicker2" parent="Sprite/Lights" instance=ExtResource( 4 )]
-position = Vector2( 40, -156 )
-texture = ExtResource( 3 )
-texture_scale = 1.6
-color = Color( 1, 0, 0, 1 )
-flickerAmount = 10
-minValue = 1.0
-maxValue = 2.5
-
-[node name="Flicker3" parent="Sprite/Lights" instance=ExtResource( 4 )]
-position = Vector2( 40, -206 )
-texture = ExtResource( 3 )
-texture_scale = 1.6
-color = Color( 1, 0, 0, 1 )
-flickerAmount = 10
-minValue = 1.0
-maxValue = 2.5
-
-[node name="Flicker4" parent="Sprite/Lights" instance=ExtResource( 4 )]
-position = Vector2( 40, -256 )
-texture = ExtResource( 3 )
-texture_scale = 1.6
-color = Color( 1, 0, 0, 1 )
-flickerAmount = 10
-minValue = 1.0
-maxValue = 2.5
-
-[node name="Flicker5" parent="Sprite/Lights" instance=ExtResource( 4 )]
-position = Vector2( 40, 254 )
-texture = ExtResource( 3 )
-texture_scale = 1.6
-color = Color( 1, 0, 0, 1 )
-flickerAmount = 10
-minValue = 1.0
-maxValue = 2.5
-
-[node name="Flicker6" parent="Sprite/Lights" instance=ExtResource( 4 )]
-position = Vector2( 40, 204 )
-texture = ExtResource( 3 )
-texture_scale = 1.6
-color = Color( 1, 0, 0, 1 )
-flickerAmount = 10
-minValue = 1.0
-maxValue = 2.5
-
-[node name="Flicker7" parent="Sprite/Lights" instance=ExtResource( 4 )]
-position = Vector2( 40, 154 )
-texture = ExtResource( 3 )
-texture_scale = 1.6
-color = Color( 1, 0, 0, 1 )
-flickerAmount = 10
-minValue = 1.0
-maxValue = 2.5
-
-[node name="Flicker8" parent="Sprite/Lights" instance=ExtResource( 4 )]
-position = Vector2( 40, 104 )
-texture = ExtResource( 3 )
-texture_scale = 1.6
-color = Color( 1, 0, 0, 1 )
-flickerAmount = 10
-minValue = 1.0
-maxValue = 2.5

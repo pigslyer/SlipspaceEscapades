@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Asset Scenes/TronTrail.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Sprites/PlasmaSiegeShip.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Asset Scenes/PlasmaSiegeShipModel.gd" type="Script" id=3]
+
+[node name="PlasmaSiegeShip" type="Sprite"]
+texture = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="LeftSide" type="Node2D" parent="."]
+
+[node name="Position2D" type="Position2D" parent="LeftSide"]
+position = Vector2( -5.5, -20 )
+
+[node name="Position2D2" type="Position2D" parent="LeftSide"]
+position = Vector2( 0.5, -19 )
+
+[node name="Position2D3" type="Position2D" parent="LeftSide"]
+position = Vector2( 6.5, -18 )
+
+[node name="RightSide" type="Node2D" parent="."]
+scale = Vector2( 1, -1 )
+
+[node name="Position2D" type="Position2D" parent="RightSide"]
+position = Vector2( -5.5, -20 )
+
+[node name="Position2D2" type="Position2D" parent="RightSide"]
+position = Vector2( 0.5, -19 )
+
+[node name="Position2D3" type="Position2D" parent="RightSide"]
+position = Vector2( 6.5, -18 )
+
+[node name="Trails" type="Node2D" parent="."]
+
+[node name="TronTrail" parent="Trails" instance=ExtResource( 1 )]
+show_behind_parent = true
+position = Vector2( -11, -14 )
+trailColor = Color( 1, 0.631373, 0, 0 )
+
+[node name="TronTrail2" parent="Trails" instance=ExtResource( 1 )]
+show_behind_parent = true
+position = Vector2( -11, -11 )
+trailColor = Color( 1, 0.631373, 0, 0 )
+
+[node name="TronTrail3" parent="Trails" instance=ExtResource( 1 )]
+show_behind_parent = true
+position = Vector2( -11, -2 )
+trailColor = Color( 1, 0.631373, 0, 0 )
+
+[node name="TronTrail4" parent="Trails" instance=ExtResource( 1 )]
+show_behind_parent = true
+position = Vector2( -11, 2 )
+trailColor = Color( 1, 0.631373, 0, 0 )
+
+[node name="TronTrail5" parent="Trails" instance=ExtResource( 1 )]
+show_behind_parent = true
+position = Vector2( -11, 11 )
+trailColor = Color( 1, 0.631373, 0, 0 )
+
+[node name="TronTrail6" parent="Trails" instance=ExtResource( 1 )]
+show_behind_parent = true
+position = Vector2( -11, 14 )
+trailColor = Color( 1, 0.631373, 0, 0 )
