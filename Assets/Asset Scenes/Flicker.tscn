@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Asset Scenes/Flicker.gd" type="Script" id=1]
+
+[node name="Flicker" type="Light2D"]
+script = ExtResource( 1 )
