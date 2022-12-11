@@ -32,6 +32,7 @@ position = Vector2( 0.5, -19 )
 position = Vector2( 6.5, -18 )
 
 [node name="Trails" type="Node2D" parent="."]
+show_behind_parent = true
 
 [node name="TronTrail" parent="Trails" instance=ExtResource( 1 )]
 show_behind_parent = true
