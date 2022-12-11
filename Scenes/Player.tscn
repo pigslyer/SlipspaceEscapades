@@ -24,3 +24,9 @@ shape = SubResource( 1 )
 position = Vector2( 17, 0 )
 
 [node name="ShootingTimer" type="Timer" parent="."]
+
+[node name="ShieldPooperTimer" type="Timer" parent="."]
+
+[node name="BFLTimer" type="Timer" parent="."]
+
+[node name="BFLS" type="Node2D" parent="."]

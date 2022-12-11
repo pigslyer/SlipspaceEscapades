@@ -18,7 +18,7 @@ func StartStreams() -> void:
 #	AddPoint(data, colors, Color.darkblue, 0.9, 0.4);
 #	AddPoint(data, colors, Color.purple, 1.0, 0.4);
 	
-	for i in range(10):
+	for _i in range(10):
 		AddPoint(data, colors, colorOptions[random.randi() % colorOptions.size()], random.randf(), random.randf() * 0.5);
 	
 	_m.set_shader_param("streamData", ArrayToTexture(data));

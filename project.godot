@@ -9,19 +9,43 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Area2D",
+"class": "BFL",
+"language": "GDScript",
+"path": "res://Scripts/Powerups/BFL.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Bullet",
 "language": "GDScript",
 "path": "res://Scripts/Bullet.gd"
 }, {
+"base": "Area2D",
+"class": "ExplosiveMissile",
+"language": "GDScript",
+"path": "res://Scripts/Powerups/ExplosiveMissile.gd"
+}, {
+"base": "Area2D",
+"class": "FractalMissile",
+"language": "GDScript",
+"path": "res://Scripts/Powerups/FractalMissile.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Scripts/Player.gd"
+}, {
+"base": "Area2D",
+"class": "Shield",
+"language": "GDScript",
+"path": "res://Scripts/Powerups/Shield.gd"
 } ]
 _global_script_class_icons={
+"BFL": "",
 "Bullet": "",
-"Player": ""
+"ExplosiveMissile": "",
+"FractalMissile": "",
+"Player": "",
+"Shield": ""
 }
 
 [application]
@@ -29,6 +53,10 @@ _global_script_class_icons={
 config/name="SlipspaceEscapades"
 run/main_scene="res://Scenes/World.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+MissilePowerupVariables="*res://Scripts/Powerups/MissilePowerupVariables.gd"
 
 [display]
 
@@ -90,6 +118,11 @@ shoot={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":32,"unicode":0,"echo":false,"script":null)
  ]
 }
+test_powerup={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":81,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -99,7 +132,8 @@ shoot={
 2d_physics/layer_4="Asteroid"
 2d_physics/layer_5="PlayerLimit"
 2d_physics/layer_6="PowerUp"
-2d_physics/layer_7="Bullet"
+2d_physics/layer_7="FriendlyBullet"
+2d_physics/layer_8="EnemyBullet"
 
 [physics]
 
