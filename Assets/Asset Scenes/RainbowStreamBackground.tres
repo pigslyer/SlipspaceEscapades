@@ -32,7 +32,7 @@ vec4 GetColorAt(vec2 uv, int index)
 	vec3 color = texelFetch(streamColors, ivec2( int((Time() + uv.x * delay) * float(streamLength)) % streamLength + index * streamLength, 0), 0).rgb;
 	
 	float dist = GetDistance(uv, height, delay);
-	return vec4(color, max(0.0, ((size - dist) / dist) * 0.01));
+	return vec4(color, max(0.0, ((size - dist) / dist) * 0.002));
 }
 
 void fragment()
