@@ -35,6 +35,9 @@ func _physics_process(delta):
 	
 	velocity += input * ACCELERATION * delta;
 	velocity *= 1 - FRICTION;
+	
+	$BasicShip.SetMovingDirection(input);
+	
 	velocity = move_and_slide(velocity, Vector2.UP);
 	
 	if(can_shoot && shoot):
