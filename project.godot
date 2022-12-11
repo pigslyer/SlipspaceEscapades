@@ -14,10 +14,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Powerups/BFL.gd"
 }, {
+"base": "Area2D",
+"class": "BasicShip",
+"language": "GDScript",
+"path": "res://Scripts/Enemies/BasicShip.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Bullet",
 "language": "GDScript",
 "path": "res://Scripts/Bullet.gd"
+}, {
+"base": "Node2D",
+"class": "Enemies",
+"language": "GDScript",
+"path": "res://Scripts/Enemies/Enemies.gd"
 }, {
 "base": "Area2D",
 "class": "ExplosiveMissile",
@@ -41,7 +51,9 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "BFL": "",
+"BasicShip": "",
 "Bullet": "",
+"Enemies": "",
 "ExplosiveMissile": "",
 "FractalMissile": "",
 "Player": "",
@@ -53,6 +65,10 @@ _global_script_class_icons={
 config/name="SlipspaceEscapades"
 run/main_scene="res://Scenes/World.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+MissilePowerupVariables="*res://Scripts/Powerups/MissilePowerupVariables.gd"
 
 [display]
 
@@ -128,7 +144,8 @@ test_powerup={
 2d_physics/layer_4="Asteroid"
 2d_physics/layer_5="PlayerLimit"
 2d_physics/layer_6="PowerUp"
-2d_physics/layer_7="Bullet"
+2d_physics/layer_7="FriendlyBullet"
+2d_physics/layer_8="EnemyBullet"
 
 [physics]
 

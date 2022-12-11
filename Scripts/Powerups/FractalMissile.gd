@@ -20,7 +20,7 @@ func _physics_process(delta):
 	if(!visibility_notifier.is_on_screen()):
 		queue_free();
 
-func explode() -> void:
+func explode(entity = null) -> void:
 	queue_free();
 
 func multiply() -> void:

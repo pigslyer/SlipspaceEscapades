@@ -47,7 +47,7 @@ var test_powerup := false;
 var hps := 3;
 var armor := 0;
 var powerups := {
-	"barrage": 0,
+	"barrage": 2,
 	"fire_rate": 0,
 	"explosive_rounds": 0
 };
@@ -77,26 +77,30 @@ func _physics_process(delta):
 	
 	if(test_powerup && can_shoot):
 		fire_bullet(BULLET_TYPES.FRACTAL);
+	
+	look_at(get_global_mouse_position());
 
 func fire_bullet(bullet_type) -> void:
 	var bullet_type_scene = BULLET_TYPES_SCENES[bullet_type];
+	var parent = get_parent();
 	
 	var new_bullet = bullet_type_scene.instance();
 	new_bullet.global_position = firing_position.global_position;
-	get_parent().add_child(new_bullet);
+	new_bullet.rotation = rotation;
+	parent.add_child(new_bullet);
 	
 	for i in powerups["barrage"]:
 		var angle = (i + 1) * BULLET_SPACING;
 		
 		var new_bullet1 = bullet_type_scene.instance();
-		new_bullet1.rotation = angle;
+		new_bullet1.rotation = rotation + angle;
 		new_bullet1.global_position = firing_position.global_position;
-		get_parent().add_child(new_bullet1);
+		parent.add_child(new_bullet1);
 		
 		var new_bullet2 = bullet_type_scene.instance();
-		new_bullet2.rotation = -angle;
+		new_bullet2.rotation = rotation - angle;
 		new_bullet2.global_position = firing_position.global_position;
-		get_parent().add_child(new_bullet2);
+		parent.add_child(new_bullet2);
 
 func check_input() -> void:
 	input = Input.get_vector(

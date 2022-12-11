@@ -1,7 +1,9 @@
 class_name Bullet
 extends KinematicBody2D
 
-const SPEED := 350;
+const SPEED := 400;
+
+onready var visibility_notifier := $VisibilityNotifier2D;
 
 var velocity : Vector2;
 
@@ -9,7 +11,7 @@ func _init(vel = Vector2.RIGHT):
 	velocity = vel;
 
 func _physics_process(delta):
-	move_and_collide(velocity * SPEED * delta);
+	move_and_collide(velocity.rotated(rotation) * SPEED * delta);
 	
-	if(global_position.x > get_viewport_rect().size.x):
+	if(!visibility_notifier.is_on_screen()):
 		queue_free();
