@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Enemies/BasicShip.gd" type="Script" id=1]
 [ext_resource path="res://Assets/pixel.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Asset Scenes/Explosion.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
@@ -27,6 +28,8 @@ position = Vector2( -14, 0 )
 
 [node name="IdleTimer" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="Explosion" parent="." instance=ExtResource( 3 )]
 
 [connection signal="area_entered" from="." to="." method="on_body_entered"]
 [connection signal="body_entered" from="." to="." method="on_body_entered"]

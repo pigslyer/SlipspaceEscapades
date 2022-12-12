@@ -23,7 +23,9 @@ var player;
 
 func _ready():
 	player = get_node(player_path);
-	
+	spawn_ships();
+
+func spawn_ships():
 	for i in range(5):
 		spawn_simple_ship();
 

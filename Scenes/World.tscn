@@ -44,3 +44,11 @@ player_path = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 166, 308 )
+
+[node name="Button" type="Button" parent="."]
+margin_right = 12.0
+margin_bottom = 20.0
+focus_mode = 0
+text = "Respawn ships"
+
+[connection signal="pressed" from="Button" to="Enemies" method="spawn_ships"]

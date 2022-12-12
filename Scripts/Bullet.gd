@@ -15,3 +15,10 @@ func _physics_process(delta):
 	
 	if(!visibility_notifier.is_on_screen()):
 		queue_free();
+
+func OnCollision(entity):
+	set_physics_process(false);
+	$Plasma.Explode(entity);
+	
+	yield($Plasma,"OnExplosionFinished");
+	queue_free();
