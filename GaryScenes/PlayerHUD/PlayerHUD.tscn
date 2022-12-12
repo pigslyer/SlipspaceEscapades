@@ -1,0 +1,264 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://GaryScenes/PlayerHUD/PlayerHUD.gd" type="Script" id=1]
+[ext_resource path="res://Assets/UI/DefaultUITheme.tres" type="Theme" id=2]
+[ext_resource path="res://Assets/Sprites/HealthArmor.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/HealthHeart.png" type="Texture" id=4]
+[ext_resource path="res://Assets/UI/BIGFont.tres" type="DynamicFont" id=5]
+[ext_resource path="res://GaryScenes/PlayerHUD/HealthDisplay.gd" type="Script" id=6]
+[ext_resource path="res://GaryScenes/PlayerHUD/Timer.gd" type="Script" id=7]
+[ext_resource path="res://GaryScenes/PlayerHUD/Score.gd" type="Script" id=8]
+[ext_resource path="res://Assets/Sprites/Icons/TutorialGylphS.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Sprites/Icons/TutorialGylphD.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Sprites/PowerupIconBackground.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Sprites/Icons/TutorialGylphW.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Sprites/Icons/TutorialGylphA.png" type="Texture" id=13]
+[ext_resource path="res://GaryScenes/PlayerHUD/Tutorial.gd" type="Script" id=14]
+[ext_resource path="res://Assets/Sprites/Icons/TutorialGylphSpace.png" type="Texture" id=15]
+
+[sub_resource type="Animation" id=1]
+resource_name = "FadeIn"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Movement:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shooting:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Movement:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shooting:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="Root" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Root"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="HealthDisplay" type="HBoxContainer" parent="Root/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 286.0
+margin_bottom = 64.0
+script = ExtResource( 6 )
+
+[node name="Heart1" type="TextureRect" parent="Root/VBoxContainer/HealthDisplay"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Heart2" type="TextureRect" parent="Root/VBoxContainer/HealthDisplay"]
+margin_left = 68.0
+margin_right = 132.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Heart3" type="TextureRect" parent="Root/VBoxContainer/HealthDisplay"]
+margin_left = 136.0
+margin_right = 200.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Armor" type="TextureRect" parent="Root/VBoxContainer/HealthDisplay"]
+visible = false
+margin_left = 204.0
+margin_right = 268.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="ArmorCount" type="Label" parent="Root/VBoxContainer/HealthDisplay"]
+visible = false
+margin_left = 204.0
+margin_top = 13.0
+margin_right = 248.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 5 )
+text = "x5"
+
+[node name="TimerDisplay" type="Label" parent="Root/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 68.0
+margin_right = 286.0
+margin_bottom = 105.0
+custom_fonts/font = ExtResource( 5 )
+text = "Time: 20.5818"
+script = ExtResource( 7 )
+
+[node name="Score" type="VBoxContainer" parent="Root"]
+unique_name_in_owner = true
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -60.0
+margin_bottom = 40.0
+grow_horizontal = 0
+script = ExtResource( 8 )
+
+[node name="Score" type="Label" parent="Root/Score"]
+margin_right = 264.0
+margin_bottom = 37.0
+grow_horizontal = 0
+custom_fonts/font = ExtResource( 5 )
+text = "Score: 42069"
+align = 2
+
+[node name="Highscore" type="Label" parent="Root/Score"]
+margin_top = 41.0
+margin_right = 264.0
+margin_bottom = 61.0
+text = "Highscore: 0"
+align = 2
+
+[node name="ScoreElementTarget" type="Position2D" parent="Root/Score"]
+position = Vector2( 188, 18 )
+
+[node name="Tutorial" type="Control" parent="Root"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 14 )
+
+[node name="Movement" type="VBoxContainer" parent="Root/Tutorial"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.1
+anchor_right = 0.5
+anchor_bottom = 0.1
+margin_left = -100.0
+margin_right = 100.0
+margin_bottom = 132.0
+alignment = 1
+
+[node name="Background" type="TextureRect" parent="Root/Tutorial/Movement"]
+margin_right = 200.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 11 )
+stretch_mode = 6
+
+[node name="Gylph" type="TextureRect" parent="Root/Tutorial/Movement/Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 12 )
+stretch_mode = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Root/Tutorial/Movement"]
+margin_top = 68.0
+margin_right = 200.0
+margin_bottom = 132.0
+alignment = 1
+
+[node name="Background2" type="TextureRect" parent="Root/Tutorial/Movement/HBoxContainer"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 11 )
+stretch_mode = 6
+
+[node name="Gylph" type="TextureRect" parent="Root/Tutorial/Movement/HBoxContainer/Background2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 13 )
+stretch_mode = 6
+
+[node name="Background3" type="TextureRect" parent="Root/Tutorial/Movement/HBoxContainer"]
+margin_left = 68.0
+margin_right = 132.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 11 )
+stretch_mode = 6
+
+[node name="Gylph" type="TextureRect" parent="Root/Tutorial/Movement/HBoxContainer/Background3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 9 )
+stretch_mode = 6
+
+[node name="Background4" type="TextureRect" parent="Root/Tutorial/Movement/HBoxContainer"]
+margin_left = 136.0
+margin_right = 200.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 11 )
+stretch_mode = 6
+
+[node name="Gylph" type="TextureRect" parent="Root/Tutorial/Movement/HBoxContainer/Background4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 10 )
+stretch_mode = 6
+
+[node name="Shooting" type="TextureRect" parent="Root/Tutorial"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.9
+anchor_right = 0.5
+anchor_bottom = 0.9
+margin_left = -96.0
+margin_top = -64.0
+margin_right = 96.0
+texture = ExtResource( 15 )
+stretch_mode = 6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Root/Tutorial"]
+anims/FadeIn = SubResource( 1 )
+anims/RESET = SubResource( 2 )

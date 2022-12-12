@@ -36,7 +36,7 @@ var attacker_numbers = [
 var player;
 
 func _ready():
-	player = get_node(player_path);
+	player = get_tree().get_nodes_in_group("PLAYER")[0];
 	#spawn_ships();
 
 func spawn_ships():

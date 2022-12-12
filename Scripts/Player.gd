@@ -1,6 +1,8 @@
 class_name Player
 extends KinematicBody2D
 
+signal OnPlayedDied;
+
 #CONSTANTS FOR MOVEMENT
 const ACCELERATION := 2500;
 const FRICTION := 0.2;
@@ -53,6 +55,13 @@ var powerups := {
 };
 var remaining_poop_shields = 0;
 
+
+var _controlsLocked = true;
+
+func SetControlsLocked(state: bool):
+	_controlsLocked = state;
+
+
 func _ready():
 	shooting_timer.connect("timeout", self, "set_can_shoot", [true]);
 	bfl_timer.connect("timeout", self, "set_can_shoot", [true]);
@@ -78,7 +87,8 @@ func _physics_process(delta):
 	if(test_powerup && can_shoot):
 		fire_bullet(BULLET_TYPES.FRACTAL);
 	
-	look_at(get_global_mouse_position());
+	if (!_controlsLocked):
+		look_at(get_global_mouse_position());
 
 func fire_bullet(bullet_type) -> void:
 	var bullet_type_scene = BULLET_TYPES_SCENES[bullet_type];
@@ -103,15 +113,21 @@ func fire_bullet(bullet_type) -> void:
 		parent.add_child(new_bullet2);
 
 func check_input() -> void:
-	input = Input.get_vector(
-		"move_left",
-		"move_right",
-		"move_up",
-		"move_down"
-	);
+	if (_controlsLocked):
+		input = Vector2.ZERO;
+		shoot = false;
+		test_powerup = false;
 	
-	shoot = Input.is_action_pressed("shoot");
-	test_powerup = Input.is_action_just_pressed("test_powerup");
+	else:
+		input = Input.get_vector(
+			"move_left",
+			"move_right",
+			"move_up",
+			"move_down"
+		);
+		
+		shoot = Input.is_action_pressed("shoot");
+		test_powerup = Input.is_action_just_pressed("test_powerup");
 
 func fire_BFL() -> void:
 	restrict_shooting = true;

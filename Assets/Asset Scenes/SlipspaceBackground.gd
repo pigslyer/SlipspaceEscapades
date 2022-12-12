@@ -1,5 +1,7 @@
 extends Node2D
 
+signal FinishedTransition;
+
 export var _acceptsInput: bool = true;
 export var _autoStart: bool = false;
 
@@ -12,7 +14,8 @@ func _ready():
 		SetSlipspace(true);
 
 func StartShaders() -> void:
-	$StarryNight.GenerateStars();
+#	$StarryNight.GenerateStars();
+	$StarryNightMesh.GenerateStars();
 	$RainbowStreamShader.StartStreams();
 
 func _input(event):
@@ -28,8 +31,15 @@ func SetSlipspace(state: bool) -> void:
 		$RainbowStreamShader.SetOn(!state);
 		
 		if state:
-			$StarryNight.RemoveStars();
+#			$StarryNight.RemoveStars();
+			$StarryNightMesh.HideStars();
+			
+			yield(get_tree().create_timer(0.5),"timeout");
+			emit_signal("FinishedTransition");
 		else:
 			# result of eyeballing, starts them just as the "exiting" effect is strongest
 			yield(get_tree().create_timer(2.0), "timeout");
-			$StarryNight.GenerateStars();
+#			$StarryNight.GenerateStars();
+			$StarryNightMesh.GenerateStars();
+			
+			emit_signal("FinishedTransition");
