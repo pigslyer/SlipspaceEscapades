@@ -6,6 +6,8 @@ const FADE_TIME = 0.9;
 
 var _visible: bool = true;
 
+export (String, MULTILINE) var OpeningStory;
+
 func _ready():
 	$HighScoreDisplay.text = "Highscore: %d" % Save.GetHighscore();
 
@@ -31,4 +33,4 @@ func _on_Quit_pressed():
 
 
 func _on_Story_pressed():
-	$TextDisplay.Open("Some story");
+	$TextDisplay.Open(OpeningStory);

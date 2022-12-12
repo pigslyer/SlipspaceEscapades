@@ -10,6 +10,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
+OpeningStory = "You are the space captain of a vessel of space thieves that recently stole a prized artifact from the space king. However, now he's coming after you and he's got the space police in tow.
+You have to give them the slip - using SLIPSPACE!"
 
 [node name="Title" type="RichTextLabel" parent="."]
 anchor_left = 0.5

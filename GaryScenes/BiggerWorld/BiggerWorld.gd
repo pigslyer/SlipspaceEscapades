@@ -2,6 +2,8 @@ extends Control
 
 export (float) var gameplayTime = 60;
 
+export (String, MULTILINE) var wonText;
+
 func _on_MainMenu_OnStartGame():
 	$CanvasLayer/MainMenu.ChangeMenuVisibility(false);
 	$SlipspaceBackground.SetSlipspace(true);
@@ -22,7 +24,7 @@ func _on_World_OnTimerEnded():
 	
 	yield($SlipspaceBackground,"FinishedTransition");
 	
-	$CanvasLayer/EndingText.Open("Hi, you won");
+	$CanvasLayer/EndingText.Open(wonText);
 	
 	yield($CanvasLayer/EndingText, "OnHidden");
 	

@@ -8,6 +8,7 @@ export (Vector2) var hiddenVector = Vector2.LEFT;
 
 func _ready():
 	rect_scale = hiddenVector;
+	show();
 
 func Open(text: String):
 	$Panel/Panel/RichTextLabel.text = text;
