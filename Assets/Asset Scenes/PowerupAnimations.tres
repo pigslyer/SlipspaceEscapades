@@ -1,0 +1,43 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform bool isFlashing = false;
+uniform bool isRed = false;
+uniform float t0;
+
+float Time()
+{
+	return TIME - t0;
+}
+
+void fragment()
+{
+	
+	vec2 uv = UV;
+	
+	if (isFlashing)
+	{
+		
+		vec2 dir = normalize(uv - vec2(0.5));
+		uv += dir * sin(Time() * 10.0) * 0.01;
+	}
+	
+	COLOR = texture(TEXTURE, uv);
+	float dist = distance(UV, vec2(0.5));
+	
+	if (isRed)
+	{
+		COLOR = mix(COLOR, vec2(1.0,0.0).yyyx, (1.0 - dist) * 0.5);
+		
+		float val = (1.0 - dist) / (dist * 20.0);
+		COLOR.rga += vec3(val, -val, val * 1.2);
+	}
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/isFlashing = true
+shader_param/isRed = false
+shader_param/t0 = null

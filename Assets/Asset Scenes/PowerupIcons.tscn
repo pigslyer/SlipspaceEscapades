@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Asset Scenes/PowerupIcons.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sprites/Icons/ExplosiveShot.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/PowerupIconBackground.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Asset Scenes/PowerupAnimations.tres" type="Material" id=4]
+
+[node name="PowerupIcons" type="Node2D"]
+script = ExtResource( 1 )
+isFlashing = 6
+isRed = 4
+
+[node name="Background" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="Powerup" type="Sprite" parent="."]
+material = ExtResource( 4 )
+texture = ExtResource( 2 )
