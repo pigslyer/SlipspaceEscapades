@@ -47,7 +47,7 @@ var test_powerup := false;
 var hps := 3;
 var armor := 0;
 var powerups := {
-	"barrage": 2,
+	"barrage": 0,
 	"fire_rate": 0,
 	"explosive_rounds": 0
 };

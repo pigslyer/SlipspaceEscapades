@@ -1,43 +1,66 @@
 class_name FractalMissile
 extends Area2D
 
-const offset := Vector2.RIGHT * 10;
+const SPEED := 250;
+
+export(int) var strength = 10;
 
 onready var visibility_notifier := $VisibilityNotifier2D;
 onready var timer := $Timer;
+onready var spawn_timer := $SpawnTimer;
+onready var fractal_model := $FractalModel;
 
-var velocity := Vector2.RIGHT * 250;
 var level := 0;
+var m_layer;
+var c_layer;
 
 func _ready():
-	var variables := get_node("/root/MissilePowerupVariables");
 	timer.connect("timeout", self, "multiply");
-	timer.start(variables.FRACTAL_TIME);
+	timer.start(MissilePowerupVariables.FRACTAL_TIME);
+	
+	m_layer = collision_mask;
+	c_layer = collision_layer;
+	
+	collision_layer = 0;
+	collision_mask = 0;
+	
+	spawn_timer.connect("timeout", self, "enable_layers");
+	spawn_timer.start();
+
+func enable_layers() -> void:
+	collision_layer = c_layer;
+	collision_mask = m_layer;
 
 func _physics_process(delta):
-	global_position += velocity.rotated(rotation) * delta;
+	global_position += Vector2.RIGHT.rotated(rotation) * SPEED * delta;
 	
 	if(!visibility_notifier.is_on_screen()):
 		queue_free();
 
-func explode(entity = null) -> void:
+func explode(area) -> void:
+	fractal_model.Explode(area);
+	set_physics_process(false);
+	yield(fractal_model, "OnExplosionFinished");
 	queue_free();
 
-func multiply() -> void:
-	var variables := get_node("/root/MissilePowerupVariables");
+func multiply(area = null) -> void:
+	yield(get_tree(), "idle_frame");
 	
-	if(level < variables.FRACTAL_LEVELS):
+	if(level < MissilePowerupVariables.FRACTAL_LEVELS):
+		var angle = 2 * PI / MissilePowerupVariables.FRACTAL_NUMBER;
 		
-		var angle = 2 * PI / variables.FRACTAL_NUMBER;
-		
-		for i in variables.FRACTAL_NUMBER:
-			var new_fractal_missile = variables.FRACTAL_MISSILE_SCENE.instance();
+		for i in MissilePowerupVariables.FRACTAL_NUMBER:
+			var new_fractal_missile;
+			if(level < MissilePowerupVariables.FRACTAL_LEVELS - 1):
+				new_fractal_missile = MissilePowerupVariables.FRACTAL_MISSILE_SCENE.instance();
+				new_fractal_missile.strength = max(strength - 1, 1);
+				new_fractal_missile.level = level + 1;
+			else:
+				new_fractal_missile = MissilePowerupVariables.EXPLOSIVE_MISSILE_SCENE.instance();
 			get_parent().add_child(new_fractal_missile);
-			new_fractal_missile.scale *= 0.5;
-			new_fractal_missile.velocity = velocity.rotated(i * angle) * 1.2;
-			new_fractal_missile.rotation = i * angle;
-			new_fractal_missile.global_position = global_position + offset.rotated(i * angle);
-			new_fractal_missile.level = level + 1;
-			new_fractal_missile.timer.start(variables.FRACTAL_TIME * 0.2);
+			new_fractal_missile.timer.start(MissilePowerupVariables.FRACTAL_TIME * 0.2);
+			new_fractal_missile.scale *= 0.8;
+			new_fractal_missile.global_rotation = i * angle;
+			new_fractal_missile.global_position = global_position;
 	
-		explode();
+		explode(area);

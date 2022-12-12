@@ -23,7 +23,7 @@ var player;
 
 func _ready():
 	player = get_node(player_path);
-	spawn_ships();
+	#spawn_ships();
 
 func spawn_ships():
 	for i in range(5):
@@ -48,5 +48,4 @@ func _physics_process(delta):
 		if !child.is_queued_for_deletion() && child is BasicShip && !child.is_attacking:
 			if attacker_numbers[SHIP_TYPES.BASIC] < MAX_ATTACKER_NUMBERS[SHIP_TYPES.BASIC]:
 				child.is_attacking = true;
-				print(child.name, " ", child.is_attacking);
 				attacker_numbers[SHIP_TYPES.BASIC] += 1;

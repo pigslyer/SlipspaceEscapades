@@ -102,11 +102,9 @@ func _physics_process(delta):
 
 var _dying := false;
 
-func on_body_entered(entity: Node):
-	if (entity.has_method("OnCollision")):
-		entity.OnCollision(entity);
+func on_body_entered(entity):
 	
-	hp -= 1;
+	hp -= entity.strength;
 	if(hp <= 0):
 		emit_signal("dying");
 		queue_free();
