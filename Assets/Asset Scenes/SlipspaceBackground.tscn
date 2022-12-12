@@ -22,7 +22,7 @@ z_index = -10
 texture = ExtResource( 2 )
 centered = false
 script = ExtResource( 8 )
-StarCount = 1800
+StarCount = 200
 
 [node name="SineStreamShader" type="Sprite" parent="."]
 visible = false

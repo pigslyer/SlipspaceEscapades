@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/Enemies/BasicShip.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Enemies/BasicVariantShip.gd" type="Script" id=1]
 [ext_resource path="res://Assets/pixel.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Asset Scenes/Explosion.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
 
-[node name="BasicShip" type="Area2D" groups=["BasicShips"]]
+[node name="BasicVariantShip" type="Area2D" groups=["BasicVariantShips"]]
 collision_layer = 4
 collision_mask = 72
 script = ExtResource( 1 )
@@ -21,7 +21,6 @@ scale = Vector2( 20, 40 )
 texture = ExtResource( 2 )
 
 [node name="ShootingTimer" type="Timer" parent="."]
-wait_time = 0.05
 
 [node name="FiringPosition" type="Position2D" parent="."]
 position = Vector2( -14, 0 )

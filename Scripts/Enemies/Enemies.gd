@@ -2,20 +2,34 @@ class_name Enemies
 extends Node2D
 
 enum SHIP_TYPES {
-	BASIC
+	BASIC,
+	BASIC_VARIANT,
+	PLASMA
 };
 
 const SHIP_TYPES_SCENES = [
-	preload("res://Scenes/Enemies/BasicShip.tscn")
+	preload("res://Scenes/Enemies/BasicShip.tscn"),
+	preload("res://Scenes/Enemies/BasicVariantShip.tscn"),
+	preload("res://Scenes/Enemies/PlasmaShip.tscn")
+];
+
+const SHIP_GROUPS = [
+	"BasicShips",
+	"BasicVariantShips",
+	"PlasmaShips"
 ];
 
 const MAX_ATTACKER_NUMBERS = [
-	2
+	2,
+	1,
+	3
 ];
 
 export(NodePath) var player_path;
 
 var attacker_numbers = [
+	0,
+	0,
 	0
 ];
 
@@ -27,25 +41,34 @@ func _ready():
 
 func spawn_ships():
 	for i in range(5):
-		spawn_simple_ship();
+		spawn_ship(SHIP_TYPES.PLASMA);
 
-func spawn_simple_ship() -> void:
-	var new_simple_ship = SHIP_TYPES_SCENES[SHIP_TYPES.BASIC].instance();
+func get_spawn_pos() -> Vector2:
 	var viewport_size = get_viewport_rect().size;
-	new_simple_ship.global_position = Vector2(
+	var spawn_pos := Vector2(
 		rand_range(viewport_size.x * 0.8, viewport_size.x * 0.9),
 		rand_range(viewport_size.y * 0.1, viewport_size.y * 0.9)
 	);
-	new_simple_ship.player = player;
-	new_simple_ship.connect("dying", self, "remove_attacker", [SHIP_TYPES.BASIC]);
-	add_child(new_simple_ship);
+	return spawn_pos;
+
+func spawn_ship(ship_type) -> void:
+	var new_ship = SHIP_TYPES_SCENES[ship_type].instance();
+	new_ship.global_position = get_spawn_pos();
+	new_ship.player = player;
+	new_ship.connect("attacking", self, "add_attacker", [ship_type]);
+	new_ship.connect("dying", self, "remove_attacker", [ship_type]);
+	add_child(new_ship);
+
+func add_attacker(type : int) -> void:
+	attacker_numbers[type] += 1;
 
 func remove_attacker(type : int) -> void:
 	attacker_numbers[type] -= 1;
 
 func _physics_process(delta):
-	for child in get_children():
-		if !child.is_queued_for_deletion() && child is BasicShip && !child.is_attacking:
-			if attacker_numbers[SHIP_TYPES.BASIC] < MAX_ATTACKER_NUMBERS[SHIP_TYPES.BASIC]:
-				child.is_attacking = true;
-				attacker_numbers[SHIP_TYPES.BASIC] += 1;
+	for type in SHIP_TYPES.values():
+		for child in get_children():
+			if !child.is_queued_for_deletion() && child.is_in_group(SHIP_GROUPS[type]) && !child.is_attacking:
+				if attacker_numbers[type] < MAX_ATTACKER_NUMBERS[type]:
+					child.is_attacking = true;
+					attacker_numbers[type] += 1;

@@ -1,16 +1,16 @@
 signal attacking()
 signal dying()
 
-class_name BasicShip
+class_name BasicVariantShip
 extends Area2D
 
-const BULLET_SCENE := preload("res://Scenes/Bullet.tscn");
+const EXPLOSIVE_MISSILE_SCENE := preload("res://Scenes/Powerups/ExplosiveMissile.tscn");
 const ANGLE := 0.1;
 const ACCELERATION := 40;
 const FRICTION := 0.4;
 const IDLE_DIST := 50;
 
-export(int) var hp := 4;
+export(int) var hp := 3;
 
 onready var viewport_rect = get_viewport().size;
 onready var shooting_timer := $ShootingTimer;
@@ -35,13 +35,10 @@ func _ready():
 func attack(delta) -> void:
 	go_to.y = player.global_position.y + y_offset;
 	
-	look_at(player.global_position);
-	
 	if(abs(go_to.y - global_position.y) > 25):
 		var diff = go_to - global_position;
 		velocity += diff * ACCELERATION * delta;
 		velocity *= 1 - FRICTION;
-		velocity.x *= 0.1;
 		global_position += velocity * delta;
 		set_new_x = false;
 	elif(!set_new_x):
@@ -50,24 +47,26 @@ func attack(delta) -> void:
 		set_new_x = true;
 	else:
 		fire();
+	
+	look_at(player.global_position);
 
 func fire() -> void:
 	if(can_shoot):
 		var parent = get_parent();
 		
-		var new_bullet = BULLET_SCENE.instance();
+		var new_bullet = EXPLOSIVE_MISSILE_SCENE.instance();
 		new_bullet.rotation = rotation;
 		new_bullet.global_position = global_position;
 		new_bullet.collision_layer = 128;
 		parent.add_child(new_bullet);
 		
-		var new_bullet1 = BULLET_SCENE.instance();
+		var new_bullet1 = EXPLOSIVE_MISSILE_SCENE.instance();
 		new_bullet1.rotation = rotation - ANGLE;
 		new_bullet1.global_position = global_position;
 		new_bullet1.collision_layer = 128;
 		parent.add_child(new_bullet1);
 		
-		var new_bullet2 = BULLET_SCENE.instance();
+		var new_bullet2 = EXPLOSIVE_MISSILE_SCENE.instance();
 		new_bullet2.rotation = rotation + ANGLE;
 		new_bullet2.global_position = global_position;
 		new_bullet2.collision_layer = 128;
