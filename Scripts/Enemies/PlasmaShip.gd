@@ -25,7 +25,6 @@ var go_to : Vector2;
 var set_new_x := false;
 var y_offset := rand_range(-20, 20);
 var can_shoot := false;
-var player = null;
 var is_on_run := false;
 var is_setting_up := false;
 var shoot_index := 0;

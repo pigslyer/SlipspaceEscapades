@@ -56,7 +56,7 @@ var powerups := {
 var remaining_poop_shields = 0;
 
 
-var _controlsLocked = true;
+var _controlsLocked = false;
 
 func SetControlsLocked(state: bool):
 	_controlsLocked = state;

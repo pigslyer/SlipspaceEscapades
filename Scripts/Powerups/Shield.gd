@@ -1,21 +1,29 @@
 class_name Shield
 extends Area2D
 
-const MAX_HP := 7;
+const FRICTION := 0.1;
+
+export(int) var max_hp := 7;
 
 var hp := 1.0;
 var growing := true;
+var velocity := Vector2();
 
-func _physics_process(_delta):
-	if(growing):
-		var size = hp / MAX_HP;
-		scale = Vector2(size, size);
-		hp += 0.1 / log(hp + 1);
-		growing = hp <= MAX_HP;
-	
+func _physics_process(delta):
 	if(hp <= 0):
 		queue_free();
+	
+	if(growing):
+		var size = hp / max_hp;
+		scale = Vector2(size, size);
+		hp += 1/hp;
+		growing = hp <= max_hp;
+	
+	velocity *= 1 - FRICTION;
+	global_position += velocity * delta;
 
 func bullet_entered(body):
-	hp -= 1
-	body.queue_free();
+	hp -= body.strength;
+	growing = false;
+	if(hp <= 0):
+		queue_free();

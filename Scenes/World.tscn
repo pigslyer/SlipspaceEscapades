@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/World.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/Enemies/Enemies.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -45,6 +46,9 @@ text = "Respawn ships"
 [node name="GameplayCountdown" type="Timer" parent="."]
 wait_time = 60.0
 one_shot = true
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 119, 323 )
 
 [connection signal="pressed" from="Button" to="Enemies" method="spawn_ships"]
 [connection signal="timeout" from="GameplayCountdown" to="." method="_on_GameplayCountdown_timeout"]
