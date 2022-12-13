@@ -5,6 +5,10 @@ const ENTERING_SLIPSPACE := preload("res://Assets/SFX/EnteringSlipspace.wav");
 export (float) var gameplayTime = 60;
 
 export (String, MULTILINE) var wonText;
+export (String, MULTILINE) var lostText;
+
+func _ready():
+	$Player.SetControlsLocked(true);
 
 func _on_MainMenu_OnStartGame():
 	$CanvasLayer/MainMenu.ChangeMenuVisibility(false);
@@ -30,9 +34,11 @@ func _on_World_OnTimerEnded():
 	
 	yield($SlipspaceBackground,"FinishedTransition");
 	
-	$CanvasLayer/EndingText.Open(wonText);
+	_displayEndingText(wonText);
 	
 	yield($CanvasLayer/EndingText, "OnHidden");
+	
+	
 	
 	$CanvasLayer/MainMenu.ChangeMenuVisibility(true);
 
@@ -43,5 +49,6 @@ func _on_Player_OnPlayedDied():
 	# play an explosion or somesuch
 	
 
-
+func _displayEndingText(end: String):
+	$CanvasLayer/EndingText.Open("%s\n\nScore: %d\nHighscore: %d" % [end, $HUD.GetScore(), Save.GetHighscore()]);
 

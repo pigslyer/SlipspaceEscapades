@@ -3,6 +3,8 @@ extends KinematicBody2D
 
 signal OnPlayedDied;
 
+const SHOOT_EFFECT = preload("res://Assets/SFX/GunSound.wav")
+
 #CONSTANTS FOR MOVEMENT
 const ACCELERATION := 2500;
 const FRICTION := 0.2;
@@ -159,7 +161,7 @@ func fire_BFL() -> void:
 
 func clear_bfls() -> void:
 	for child in bfls.get_children():
-		child.queue_free();
+		child.Disable();
 
 func poop_shields() -> void:
 	if(remaining_poop_shields > 0):
