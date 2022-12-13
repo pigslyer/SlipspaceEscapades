@@ -12,3 +12,9 @@ func SetMovingDirection(dir: Vector2):
 		tex.region.position = Vector2(24,0);
 	else:
 		tex.region.position = Vector2(48,0);
+
+func Explode():
+	var tween := create_tween().set_parallel();
+	
+	tween.tween_callback($Explosion, "Explode", [true, true]).set_delay(rand_range(0.0,0.4));
+	tween.tween_callback($Explosion2, "Explode", [true, true]).set_delay(rand_range(0.0,0.4));

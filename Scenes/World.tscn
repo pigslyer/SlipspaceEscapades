@@ -1,8 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/World.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Enemies/BigBoy.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/Enemies/Enemies.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -38,9 +36,6 @@ shape = SubResource( 2 )
 z_index = 1
 script = ExtResource( 4 )
 
-[node name="BigBoy" parent="Enemies" instance=ExtResource( 3 )]
-position = Vector2( 862, 292 )
-
 [node name="Button" type="Button" parent="."]
 margin_right = 12.0
 margin_bottom = 20.0
@@ -50,9 +45,6 @@ text = "Respawn ships"
 [node name="GameplayCountdown" type="Timer" parent="."]
 wait_time = 60.0
 one_shot = true
-
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 119, 323 )
 
 [connection signal="pressed" from="Button" to="Enemies" method="spawn_ships"]
 [connection signal="timeout" from="GameplayCountdown" to="." method="_on_GameplayCountdown_timeout"]

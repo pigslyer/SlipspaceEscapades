@@ -18,6 +18,7 @@ func Start(timerTime: float):
 
 func Stop():
 	
+	timerDisplay.StopTimer();
 	var tween := create_tween();
 	tween.tween_property($Root, "modulate:a", 0.0, FADE_IN_TIME).set_trans(Tween.TRANS_CUBIC);
 	tween.tween_callback(self, "hide");

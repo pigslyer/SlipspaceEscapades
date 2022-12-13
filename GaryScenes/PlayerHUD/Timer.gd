@@ -9,6 +9,9 @@ var _hasPlayedSound: bool = false;
 func _ready():
 	set_process(false);
 
+func StopTimer():
+	set_process(false);
+
 func StartTimer(totalTime: float):
 	set_process(true);
 	_curTime = totalTime;
