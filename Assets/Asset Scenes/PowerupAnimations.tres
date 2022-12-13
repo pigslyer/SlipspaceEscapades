@@ -37,6 +37,7 @@ void fragment()
 }"
 
 [resource]
+resource_local_to_scene = true
 shader = SubResource( 1 )
 shader_param/isFlashing = true
 shader_param/isRed = false

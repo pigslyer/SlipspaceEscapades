@@ -8,7 +8,6 @@ const MAX_POOPED := 3;
 
 onready var movement_timer := $MovementTimer;
 onready var shield_poop_timer := $ShieldPoopTimer;
-onready var viewport_size := get_viewport().size;
 
 export(int) var hp := 5;
 
@@ -46,10 +45,7 @@ func poop_shield() -> void:
 	get_parent().add_child(new_shield);
 
 func set_new_go_to() -> void:
-	go_to = Vector2(
-			rand_range(viewport_size.x * 0.8, viewport_size.x * 0.9),
-			rand_range(viewport_size.y * 0.1, viewport_size.y * 0.9)
-	);
+	go_to = Global.get_possible_enemy_pos();
 
 func body_entered(entity):
 	hp -= entity.strength;

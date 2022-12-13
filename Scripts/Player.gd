@@ -1,3 +1,5 @@
+signal OnPlayerHealthArmorChanged(health, armor)
+
 class_name Player
 extends KinematicBody2D
 
@@ -36,6 +38,7 @@ onready var firing_position := $FiringPosition;
 onready var shooting_timer := $ShootingTimer;
 onready var shield_pooper_timer := $ShieldPooperTimer;
 onready var bfl_timer := $BFLTimer;
+onready var pussy_timer := $PussyTimer;
 onready var bfls := $BFLS;
 
 #MOVEMENT VARIABLES
@@ -49,14 +52,15 @@ var restrict_shooting := false;
 var test_powerup := false;
 
 #POWERUP VARIABLES
-var hps := 3;
+export(int) var hp = 3;
 var armor := 0;
 var powerups := {
 	"barrage": 0,
 	"fire_rate": 0,
-	"explosive_rounds": 0
+	"explosive_rounds": false
 };
 var remaining_poop_shields = 0;
+var next_shot_fractal := false;
 
 
 var _controlsLocked = false;
@@ -70,7 +74,7 @@ func _ready():
 	bfl_timer.connect("timeout", self, "set_can_shoot", [true]);
 	bfl_timer.connect("timeout", self, "clear_bfls");
 	bfl_timer.connect("timeout", self, "set_restrict_shoting", [false]);
-	shield_pooper_timer.connect("timeout", self, "poop_shields");
+	shield_pooper_timer.connect("timeout", self, "poop_shields", [], CONNECT_DEFERRED);
 
 func _physics_process(delta):
 	check_input();
@@ -83,13 +87,15 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector2.UP);
 	
 	if(can_shoot && shoot):
-		fire_bullet(BULLET_TYPES.NORMAL);
+		var bullet_type;
+		if(next_shot_fractal):
+			bullet_type = BULLET_TYPES.FRACTAL;
+			next_shot_fractal = false;
+		else:
+			bullet_type = BULLET_TYPES.NORMAL if !powerups["explosive_rounds"] else BULLET_TYPES.EXPLOSIVE;
+		fire_bullet(bullet_type);
 		can_shoot = false;
-		shooting_timer.start(1.0/(2*powerups["fire_rate"]+10));
-	
-	if(test_powerup && can_shoot):
-#		fire_BFL();
-		fire_bullet(BULLET_TYPES.FRACTAL);
+		shooting_timer.start(1.0/(2*powerups["fire_rate"]+3));
 	
 	if (!_controlsLocked):
 		look_at(get_global_mouse_position());
@@ -108,11 +114,11 @@ func fire_bullet(bullet_type) -> void:
 	
 	var pitchMult = 1 + powerups["fire_rate"] * 0.1;
 	
-	Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(0.9,1.1));
+	Sounds.PlaySound(sound, null, 0.0, pitchMult * rand_range(0.9,1.1));
 	
 	if (powerups["barrage"] > 0):
-		Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(1.2,1.4),0.1);
-		Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(1.2,1.4),0.2);
+		Sounds.PlaySound(sound, null, 0.0, pitchMult * rand_range(1.2,1.4),0.1);
+		Sounds.PlaySound(sound, null, 0.0, pitchMult * rand_range(1.2,1.4),0.2);
 	
 	
 	for i in powerups["barrage"]:
@@ -131,6 +137,31 @@ func fire_bullet(bullet_type) -> void:
 		parent.add_child(new_bullet2);
 	
 	
+
+func add_powerup(powerup) -> void:
+	match(powerup):
+		Global.POWERUPS.HEALTH:
+			hp += 1;
+			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
+		Global.POWERUPS.ARMOR:
+			armor += 1;
+			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
+		Global.POWERUPS.BFL:
+			fire_BFL();
+		Global.POWERUPS.BARRAGE:
+			powerups["barrage"] += 1;
+		Global.POWERUPS.EXPLOSIVE:
+			powerups["explosive_rounds"] = true;
+			MissilePowerupVariables.explosive_number += 2;
+			MissilePowerupVariables.explosive_strength += 1;
+		Global.POWERUPS.FIRERATE:
+			powerups["firerate"] += 1;
+		Global.POWERUPS.FRACTAL:
+			next_shot_fractal = true;
+		Global.POWERUPS.SHIELD:
+			shield_pooper_timer.stop();
+			remaining_poop_shields += SHIELD_POOPS_AMOUNT;
+			call_deferred("poop_shields");
 
 func check_input() -> void:
 	if (_controlsLocked):
@@ -187,6 +218,7 @@ func poop_shields() -> void:
 	if(remaining_poop_shields > 0):
 		var new_shield = SHIELD_SCENE.instance();
 		new_shield.global_position = global_position;
+		new_shield.collision_mask = 136;
 		get_parent().add_child(new_shield);
 		
 		remaining_poop_shields = remaining_poop_shields - 1;
@@ -198,3 +230,9 @@ func set_restrict_shoting(can : bool) -> void:
 func set_can_shoot(can : bool) -> void:
 	if(!restrict_shooting && can_shoot == false):
 		can_shoot = can;
+
+func body_entered(entity):
+	if(!entity.is_in_group("Powerups") && pussy_timer.is_stopped()):
+		hp -= 1; #Pussy move as well
+		pussy_timer.start();
+		print(hp);

@@ -21,7 +21,7 @@ scale = Vector2( 20, 40 )
 texture = ExtResource( 2 )
 
 [node name="ShootingTimer" type="Timer" parent="."]
-wait_time = 0.05
+wait_time = 0.4
 
 [node name="FiringPosition" type="Position2D" parent="."]
 position = Vector2( -14, 0 )

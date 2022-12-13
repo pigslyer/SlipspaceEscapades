@@ -29,6 +29,7 @@ position = Vector2( 17, 0 )
 [node name="ShootingTimer" type="Timer" parent="."]
 
 [node name="ShieldPooperTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="BFLTimer" type="Timer" parent="."]
 
@@ -36,10 +37,16 @@ position = Vector2( 17, 0 )
 
 [node name="Area2D" type="Area2D" parent="." groups=["Entity"]]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 136
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 2 )
 
 [node name="Listener2D" type="Listener2D" parent="."]
 current = true
+
+[node name="PussyTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="area_entered" from="Area2D" to="." method="body_entered"]

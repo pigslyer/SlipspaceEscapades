@@ -10,12 +10,11 @@ const BULLET_SCENE := preload("res://Scenes/Bullet.tscn");
 
 export(int) var hp := 3;
 
-onready var left_positions = [$L_1, $L_2, $L_3];
-onready var right_positions = [$R_1, $R_2, $R_3];
+onready var left_positions = $PlasmaSiegeShip/LeftSide.get_children();
+onready var right_positions = $PlasmaSiegeShip/RightSide.get_children();
 onready var idle_timer = $IdleTimer;
 onready var attack_timer = $AttackTimer;
 onready var shoot_timer = $ShootTimer;
-onready var viewport_rect = get_viewport().size;
 
 var is_attacking := false;
 var starting_position : Vector2;
@@ -30,7 +29,7 @@ var is_setting_up := false;
 var shoot_index := 0;
 
 func _ready():
-	go_to.x = rand_range(viewport_rect.x * 0.7, viewport_rect.x * 0.9);
+	go_to.x = Global.get_possible_enemy_pos().x;
 	idle_timer.connect("timeout", self, "set_is_idle_set", [false]);
 	attack_timer.connect("timeout", self, "setup_bombing_run");
 	starting_position = global_position;
@@ -52,6 +51,7 @@ func attack(delta):
 		if(shoot_timer.is_stopped()):
 			var new_bullet = BULLET_SCENE.instance();
 			new_bullet.rotation = PI;
+			new_bullet.collision_layer = 128;
 			
 			if(rotation == 0):
 				new_bullet.global_position = left_positions[shoot_index].global_position;
@@ -62,15 +62,14 @@ func attack(delta):
 			shoot_index = (shoot_index + 1) % 3;
 			shoot_timer.start();
 	elif(!is_setting_up):
+		var tween := create_tween();
+		tween.tween_property(self, "rotation", rotation + PI, attack_timer.wait_time * 0.8).set_trans(Tween.TRANS_CUBIC);
 		attack_timer.start();
-		velocity *= 0;
 		is_setting_up = true;
 
 func setup_bombing_run() -> void:
-	go_to = Vector2(
-		rand_range(viewport_rect.x * 0.8, viewport_rect.x * 0.9),
-		viewport_rect.y * 0.9 if global_position.y < viewport_rect.y * 0.5 else viewport_rect.y * 0.1
-	);
+	go_to.x = Global.get_possible_enemy_pos().x;
+	go_to.y = Global.bottom_right.y if global_position.y < Global.bottom_right.y * 0.5 else Global.bottom_right.y * 0.1;
 	is_setting_up = false;
 
 func set_is_idle_set(is_set : bool) -> void:
