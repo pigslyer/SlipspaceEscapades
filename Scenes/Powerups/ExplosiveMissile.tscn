@@ -7,7 +7,7 @@
 extents = Vector2( 9, 4 )
 
 [node name="ExplosiveMissile" type="Area2D"]
-collision_layer = 64
+collision_layer = 0
 collision_mask = 0
 script = ExtResource( 1 )
 
@@ -25,4 +25,8 @@ rect = Rect2( -25, -25, 50, 50 )
 
 [node name="MissileModel" parent="." instance=ExtResource( 2 )]
 
+[node name="ExplosionTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="area_entered" from="." to="." method="multiply"]
+[connection signal="timeout" from="ExplosionTimer" to="." method="multiply"]

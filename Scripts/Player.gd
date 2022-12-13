@@ -8,10 +8,10 @@ const ACCELERATION := 2500;
 const FRICTION := 0.2;
 
 #SCENE CONSTANTS
-const BULLET_TYPES_SCENES := [
-	preload("res://Scenes/Bullet.tscn"),
-	preload("res://Scenes/Powerups/ExplosiveMissile.tscn"),
-	preload("res://Scenes/Powerups/FractalMissile.tscn"),
+var BULLET_TYPES_SCENES := [
+	MissilePowerupVariables.BULLET_SCENE,
+	MissilePowerupVariables.EXPLOSIVE_MISSILE_SCENE,
+	MissilePowerupVariables.FRACTAL_MISSILE_SCENE,
 	preload("res://Scenes/Powerups/BFL.tscn")
 ];
 const SHIELD_SCENE := preload("res://Scenes/Powerups/Shield.tscn");
@@ -96,6 +96,7 @@ func fire_bullet(bullet_type) -> void:
 	
 	var new_bullet = bullet_type_scene.instance();
 	new_bullet.global_position = firing_position.global_position;
+	new_bullet.collision_layer = 64;
 	new_bullet.rotation = rotation;
 	parent.add_child(new_bullet);
 	
@@ -105,11 +106,13 @@ func fire_bullet(bullet_type) -> void:
 		var new_bullet1 = bullet_type_scene.instance();
 		new_bullet1.rotation = rotation + angle;
 		new_bullet1.global_position = firing_position.global_position;
+		new_bullet1.collision_layer = 64;
 		parent.add_child(new_bullet1);
 		
 		var new_bullet2 = bullet_type_scene.instance();
 		new_bullet2.rotation = rotation - angle;
 		new_bullet2.global_position = firing_position.global_position;
+		new_bullet2.collision_layer = 64;
 		parent.add_child(new_bullet2);
 
 func check_input() -> void:

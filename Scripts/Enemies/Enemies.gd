@@ -21,19 +21,15 @@ const SHIP_GROUPS = [
 	"BasicShips",
 	"BasicVariantShips",
 	"PlasmaShips",
-	"BigBoyShips",
-	"ShieldPooperShips"
 ];
 
 const MAX_ATTACKER_NUMBERS = [
 	2,
 	1,
 	3,
-	1
 ];
 
 var attacker_numbers = [
-	0,
 	0,
 	0,
 	0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Asset Scenes/BasicShip.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
@@ -6,9 +6,12 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 13, 8 )
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 13, 13 )
+
 [node name="Player" type="KinematicBody2D" groups=["PLAYER"]]
-collision_layer = 2
-collision_mask = 17
+collision_layer = 0
+collision_mask = 16
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_horizontal_guides_": [  ]
@@ -30,3 +33,10 @@ position = Vector2( 17, 0 )
 [node name="BFLTimer" type="Timer" parent="."]
 
 [node name="BFLS" type="Node2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="." groups=["Entity"]]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
