@@ -1,11 +1,17 @@
 extends Control
 
+const ENTERING_SLIPSPACE := preload("res://Assets/SFX/EnteringSlipspace.wav");
+
 export (float) var gameplayTime = 60;
 
 export (String, MULTILINE) var wonText;
 
 func _on_MainMenu_OnStartGame():
 	$CanvasLayer/MainMenu.ChangeMenuVisibility(false);
+	Sounds.PlaySound(ENTERING_SLIPSPACE);
+	
+	# eyeballed
+	yield(get_tree().create_timer(0.5),"timeout");
 	$SlipspaceBackground.SetSlipspace(true);
 	
 	yield($SlipspaceBackground,"FinishedTransition");

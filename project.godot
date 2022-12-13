@@ -83,6 +83,7 @@ config/icon="res://icon.png"
 Global="*res://Scripts/Global.gd"
 MissilePowerupVariables="*res://Scripts/Powerups/MissilePowerupVariables.gd"
 Save="*res://GaryScenes/Autoloads/SaveHelper.gd"
+Sounds="*res://GaryScenes/Autoloads/Sounds.gd"
 
 [display]
 
