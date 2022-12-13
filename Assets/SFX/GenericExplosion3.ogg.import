@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/GenericExplosion3.ogg-f0d0d2c424b3c3bab1c3df51e476dcc0.oggstr"
+
+[deps]
+
+source_file="res://Assets/SFX/GenericExplosion3.ogg"
+dest_files=[ "res://.import/GenericExplosion3.ogg-f0d0d2c424b3c3bab1c3df51e476dcc0.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

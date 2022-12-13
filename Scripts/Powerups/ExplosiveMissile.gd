@@ -22,12 +22,13 @@ func _physics_process(delta):
 func explode() -> void:
 	missile_model.Explode(null);
 	set_physics_process(false);
+	set_deferred("collision_layer", 0);
+	set_deferred("collision_mask", 0);
 	yield(missile_model, "OnExplosionFinished");
 	queue_free();
 
 func multiply(_body_entered = null) -> void:
-	yield(get_tree(), "idle_frame");
-	
+		
 	var angle = 2 * PI / MissilePowerupVariables.explosive_number;
 	for i in MissilePowerupVariables.explosive_number:
 		var new_bullet = MissilePowerupVariables.BULLET_SCENE.instance();

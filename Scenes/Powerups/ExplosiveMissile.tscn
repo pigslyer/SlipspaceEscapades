@@ -28,5 +28,5 @@ rect = Rect2( -25, -25, 50, 50 )
 [node name="ExplosionTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="area_entered" from="." to="." method="multiply"]
-[connection signal="timeout" from="ExplosionTimer" to="." method="multiply"]
+[connection signal="area_entered" from="." to="." method="multiply" flags=3]
+[connection signal="timeout" from="ExplosionTimer" to="." method="multiply" flags=3]

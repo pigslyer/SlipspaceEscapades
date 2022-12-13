@@ -1,6 +1,8 @@
 class_name FractalMissile
 extends Area2D
 
+const MULTIPLY_EXPLOSION := preload("res://Assets/SFX/FractalMissile.wav");
+
 const SPEED := 250;
 
 export(int) var strength = 10;
@@ -31,6 +33,7 @@ func explode(area) -> void:
 
 func multiply(area = null) -> void:
 	yield(get_tree(), "idle_frame");
+	Sounds.PlaySound(MULTIPLY_EXPLOSION, global_position, 0.0, 1 + level * 0.1, rand_range(0.0,0.2));
 	
 	if(level < MissilePowerupVariables.FRACTAL_LEVELS):
 		var angle = 2 * PI / MissilePowerupVariables.FRACTAL_NUMBER;

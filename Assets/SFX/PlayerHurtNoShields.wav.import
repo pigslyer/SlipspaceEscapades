@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/PlayerDeath2.wav-10ea1fef69c5886c1424b1f5b719fd0e.sample"
+path="res://.import/PlayerHurtNoShields.wav-daf3e3dc0a82c06dd7208b3fa2d669f4.sample"
 
 [deps]
 
-source_file="res://Assets/SFX/PlayerDeath2.wav"
-dest_files=[ "res://.import/PlayerDeath2.wav-10ea1fef69c5886c1424b1f5b719fd0e.sample" ]
+source_file="res://Assets/SFX/PlayerHurtNoShields.wav"
+dest_files=[ "res://.import/PlayerHurtNoShields.wav-daf3e3dc0a82c06dd7208b3fa2d669f4.sample" ]
 
 [params]
 
