@@ -1,6 +1,8 @@
 class_name Enemies
 extends Node2D
 
+const BARRAGE_TIME := 40;
+
 enum SHIP_TYPES {
 	BASIC,
 	BASIC_VARIANT,
@@ -36,14 +38,22 @@ var attacker_numbers = [
 ];
 
 var player;
+var basic_ships_barrage := false;
+var countdown_timer;
 
 func _ready():
 	player = get_tree().get_nodes_in_group("PLAYER")[0];
 	#spawn_ships();
 
 func spawn_ships():
-	for i in range(5):
+	for i in range(3):
 		spawn_ship(SHIP_TYPES.BASIC_VARIANT);
+	for i in range(2):
+		spawn_ship(SHIP_TYPES.BASIC);
+	for i in range(2):
+		spawn_ship(SHIP_TYPES.PLASMA);
+	for i in range(4):
+		spawn_ship(SHIP_TYPES.SHIELD_POOPER);
 
 func get_spawn_pos() -> Vector2:
 	var viewport_size = get_viewport_rect().size;
@@ -61,6 +71,8 @@ func spawn_ship(ship_type) -> void:
 			new_ship.player = player;
 		new_ship.connect("attacking", self, "add_attacker", [ship_type]);
 		new_ship.connect("dying", self, "remove_attacker", [ship_type]);
+	if(ship_type == SHIP_TYPES.BASIC or ship_type == SHIP_TYPES.BASIC_VARIANT):
+		new_ship.barrage = countdown_timer.time_left < BARRAGE_TIME;
 	add_child(new_ship);
 
 func add_attacker(type : int) -> void:

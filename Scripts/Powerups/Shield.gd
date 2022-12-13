@@ -5,6 +5,8 @@ const FRICTION := 0.1;
 
 export(int) var max_hp := 7;
 
+onready var pussy_timer := $PussyTimer;
+
 var hp := 1.0;
 var growing := true;
 var velocity := Vector2();
@@ -23,7 +25,12 @@ func _physics_process(delta):
 	global_position += velocity * delta;
 
 func bullet_entered(body):
-	hp -= body.strength;
-	growing = false;
-	if(hp <= 0):
-		queue_free();
+	if(pussy_timer.is_stopped()):
+		if(collision_mask & 136 == 136):
+			hp -= 1
+		else:
+			hp -= body.strength;
+		pussy_timer.start();
+		growing = false;
+		if(hp <= 0):
+			queue_free();

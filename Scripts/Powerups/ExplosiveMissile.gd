@@ -1,7 +1,7 @@
 class_name ExplosiveMissile
 extends Area2D
 
-export(int) var strength = 3;
+export(int) var strength = 2;
 
 var velocity := Vector2.RIGHT * 500;
 
@@ -19,7 +19,7 @@ func _physics_process(delta):
 	if(!visibility_notifier.is_on_screen()):
 		queue_free();
 
-func explode() -> void:
+func explode(area = null) -> void:
 	missile_model.Explode(null);
 	set_physics_process(false);
 	set_deferred("collision_layer", 0);
@@ -36,7 +36,7 @@ func multiply(_body_entered = null) -> void:
 		new_bullet.collision_mask = collision_mask;
 		new_bullet.collision_layer = collision_layer;
 		new_bullet.strength = MissilePowerupVariables.explosive_strength;
-		new_bullet.rotation = i * angle;
+		new_bullet.rotation = rotation + i * angle;
 		new_bullet.global_position = global_position;
 	
 	explode();

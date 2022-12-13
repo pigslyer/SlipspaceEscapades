@@ -38,6 +38,7 @@ onready var firing_position := $FiringPosition;
 onready var shooting_timer := $ShootingTimer;
 onready var shield_pooper_timer := $ShieldPooperTimer;
 onready var bfl_timer := $BFLTimer;
+onready var pussy_timer := $PussyTimer;
 onready var bfls := $BFLS;
 
 #MOVEMENT VARIABLES
@@ -73,7 +74,7 @@ func _ready():
 	bfl_timer.connect("timeout", self, "set_can_shoot", [true]);
 	bfl_timer.connect("timeout", self, "clear_bfls");
 	bfl_timer.connect("timeout", self, "set_restrict_shoting", [false]);
-	shield_pooper_timer.connect("timeout", self, "poop_shields");
+	shield_pooper_timer.connect("timeout", self, "poop_shields", [], CONNECT_DEFERRED);
 
 func _physics_process(delta):
 	check_input();
@@ -91,10 +92,10 @@ func _physics_process(delta):
 			bullet_type = BULLET_TYPES.FRACTAL;
 			next_shot_fractal = false;
 		else:
-			BULLET_TYPES.NORMAL if powerups["explosive_rounds"] else BULLET_TYPES.EXPLOSIVE;
+			bullet_type = BULLET_TYPES.NORMAL if !powerups["explosive_rounds"] else BULLET_TYPES.EXPLOSIVE;
 		fire_bullet(bullet_type);
 		can_shoot = false;
-		shooting_timer.start(1.0/(2*powerups["fire_rate"]+10));
+		shooting_timer.start(1.0/(2*powerups["fire_rate"]+3));
 	
 	if (!_controlsLocked):
 		look_at(get_global_mouse_position());
@@ -113,11 +114,11 @@ func fire_bullet(bullet_type) -> void:
 	
 	var pitchMult = 1 + powerups["fire_rate"] * 0.1;
 	
-	Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(0.9,1.1));
+	Sounds.PlaySound(sound, null, 0.0, pitchMult * rand_range(0.9,1.1));
 	
 	if (powerups["barrage"] > 0):
-		Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(1.2,1.4),0.1);
-		Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(1.2,1.4),0.2);
+		Sounds.PlaySound(sound, null, 0.0, pitchMult * rand_range(1.2,1.4),0.1);
+		Sounds.PlaySound(sound, null, 0.0, pitchMult * rand_range(1.2,1.4),0.2);
 	
 	
 	for i in powerups["barrage"]:
@@ -160,7 +161,7 @@ func add_powerup(powerup) -> void:
 		Global.POWERUPS.SHIELD:
 			shield_pooper_timer.stop();
 			remaining_poop_shields += SHIELD_POOPS_AMOUNT;
-			poop_shields();
+			call_deferred("poop_shields");
 
 func check_input() -> void:
 	if (_controlsLocked):
@@ -217,6 +218,7 @@ func poop_shields() -> void:
 	if(remaining_poop_shields > 0):
 		var new_shield = SHIELD_SCENE.instance();
 		new_shield.global_position = global_position;
+		new_shield.collision_mask = 136;
 		get_parent().add_child(new_shield);
 		
 		remaining_poop_shields = remaining_poop_shields - 1;
@@ -230,5 +232,7 @@ func set_can_shoot(can : bool) -> void:
 		can_shoot = can;
 
 func body_entered(entity):
-	if!(entity.is_in_group("Powerups")):
-		hp -= entity.strength;
+	if(!entity.is_in_group("Powerups") && pussy_timer.is_stopped()):
+		hp -= 1; #Pussy move as well
+		pussy_timer.start();
+		print(hp);

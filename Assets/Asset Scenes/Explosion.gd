@@ -12,7 +12,7 @@ func Explode(full: bool):
 	if (Global.MayExplode()):
 		if (full):
 			$Explosion.emitting = true;
-			Sounds.PlaySound(EXPLOSION_SOUNDS[randi() % EXPLOSION_SOUNDS.size()], global_position, -8, rand_range(0.8, 1.2));
+			Sounds.PlaySound(EXPLOSION_SOUNDS[randi() % EXPLOSION_SOUNDS.size()], null, -8, rand_range(0.8, 1.2));
 		
 		$Smoke.emitting = true;
 	

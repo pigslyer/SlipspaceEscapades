@@ -6,16 +6,15 @@ extends Area2D
 
 const BULLET_SCENE := preload("res://Scenes/Bullet.tscn");
 const ANGLE := 0.1;
-const ACCELERATION := 40;
-const FRICTION := 0.4;
+const SPEED := 150;
 const IDLE_DIST := 50;
 
 export(int) var hp := 4;
 
-onready var viewport_rect = get_viewport().size;
 onready var shooting_timer := $ShootingTimer;
 onready var idle_timer := $IdleTimer;
 
+var barrage = false;
 var player = null;
 var velocity := Vector2.ZERO;
 var go_to : Vector2;
@@ -27,7 +26,7 @@ var starting_position : Vector2;
 var is_idle_set := false;
 
 func _ready():
-	go_to.x = rand_range(viewport_rect.x * 0.7, viewport_rect.x * 0.9);
+	go_to.x = Global.get_possible_enemy_pos().x;
 	idle_timer.connect("timeout", self, "set_is_idle_set", [false]);
 	shooting_timer.connect("timeout", self, "set_can_shoot", [true]);
 	starting_position = global_position;
@@ -39,14 +38,11 @@ func attack(delta) -> void:
 	
 	if(abs(go_to.y - global_position.y) > 25):
 		var diff = go_to - global_position;
-		velocity += diff * ACCELERATION * delta;
-		velocity *= 1 - FRICTION;
-		velocity.x *= 0.1;
+		velocity = diff.normalized() * SPEED;
 		global_position += velocity * delta;
 		set_new_x = false;
 	elif(!set_new_x):
-		go_to.x = rand_range(viewport_rect.x * 0.7, viewport_rect.x * 0.9);
-		velocity *= 0;
+		go_to.x = Global.get_possible_enemy_pos().x;
 		set_new_x = true;
 	else:
 		fire();
@@ -61,17 +57,18 @@ func fire() -> void:
 		new_bullet.collision_layer = 128;
 		parent.add_child(new_bullet);
 		
-		var new_bullet1 = BULLET_SCENE.instance();
-		new_bullet1.rotation = rotation - ANGLE;
-		new_bullet1.global_position = global_position;
-		new_bullet1.collision_layer = 128;
-		parent.add_child(new_bullet1);
-		
-		var new_bullet2 = BULLET_SCENE.instance();
-		new_bullet2.rotation = rotation + ANGLE;
-		new_bullet2.global_position = global_position;
-		new_bullet2.collision_layer = 128;
-		parent.add_child(new_bullet2);
+		if(barrage):
+			var new_bullet1 = BULLET_SCENE.instance();
+			new_bullet1.rotation = rotation - ANGLE;
+			new_bullet1.global_position = global_position;
+			new_bullet1.collision_layer = 128;
+			parent.add_child(new_bullet1);
+			
+			var new_bullet2 = BULLET_SCENE.instance();
+			new_bullet2.rotation = rotation + ANGLE;
+			new_bullet2.global_position = global_position;
+			new_bullet2.collision_layer = 128;
+			parent.add_child(new_bullet2);
 		
 		can_shoot = false;
 		shooting_timer.start();
@@ -87,9 +84,8 @@ func idle_movement(delta) -> void:
 		is_idle_set = true;
 	
 	var diff = go_to - global_position;
-	velocity += diff * ACCELERATION * delta;
-	velocity *= 1 - FRICTION;
-	global_position += velocity * delta;
+	velocity = diff.normalized() * SPEED;
+	global_position = velocity * delta;
 	
 	if((global_position - go_to).length() < 5 && idle_timer.is_stopped()):
 		idle_timer.start();
@@ -102,6 +98,8 @@ func _physics_process(delta):
 		attack(delta);
 	else:
 		idle_movement(delta);
+	
+	look_at(player.global_position);
 
 var _dying := false;
 
