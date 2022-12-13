@@ -34,6 +34,7 @@ func multiply(_body_entered = null) -> void:
 		get_parent().add_child(new_bullet);
 		new_bullet.collision_mask = collision_mask;
 		new_bullet.collision_layer = collision_layer;
+		new_bullet.strength = MissilePowerupVariables.explosive_strength;
 		new_bullet.rotation = i * angle;
 		new_bullet.global_position = global_position;
 	

@@ -1,3 +1,5 @@
+signal OnPlayerHealthArmorChanged(health, armor)
+
 class_name Player
 extends KinematicBody2D
 
@@ -48,14 +50,15 @@ var restrict_shooting := false;
 var test_powerup := false;
 
 #POWERUP VARIABLES
-var hps := 3;
+export(int) var hp = 3;
 var armor := 0;
 var powerups := {
 	"barrage": 0,
 	"fire_rate": 0,
-	"explosive_rounds": 0
+	"explosive_rounds": false
 };
 var remaining_poop_shields = 0;
+var next_shot_fractal := false;
 
 
 var _controlsLocked = false;
@@ -82,12 +85,15 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector2.UP);
 	
 	if(can_shoot && shoot):
-		fire_bullet(BULLET_TYPES.NORMAL);
+		var bullet_type;
+		if(next_shot_fractal):
+			bullet_type = BULLET_TYPES.FRACTAL;
+			next_shot_fractal = false;
+		else:
+			BULLET_TYPES.NORMAL if powerups["explosive_rounds"] else BULLET_TYPES.EXPLOSIVE;
+		fire_bullet(bullet_type);
 		can_shoot = false;
 		shooting_timer.start(1.0/(2*powerups["fire_rate"]+10));
-	
-	if(test_powerup && can_shoot):
-		fire_bullet(BULLET_TYPES.FRACTAL);
 	
 	if (!_controlsLocked):
 		look_at(get_global_mouse_position());
@@ -116,6 +122,31 @@ func fire_bullet(bullet_type) -> void:
 		new_bullet2.global_position = firing_position.global_position;
 		new_bullet2.collision_layer = 64;
 		parent.add_child(new_bullet2);
+
+func add_powerup(powerup) -> void:
+	match(powerup):
+		Global.POWERUPS.HEALTH:
+			hp += 1;
+			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
+		Global.POWERUPS.ARMOR:
+			armor += 1;
+			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
+		Global.POWERUPS.BFL:
+			fire_BFL();
+		Global.POWERUPS.BARRAGE:
+			powerups["barrage"] += 1;
+		Global.POWERUPS.EXPLOSIVE:
+			powerups["explosive_rounds"] = true;
+			MissilePowerupVariables.explosive_number += 2;
+			MissilePowerupVariables.explosive_strength += 1;
+		Global.POWERUPS.FIRERATE:
+			powerups["firerate"] += 1;
+		Global.POWERUPS.FRACTAL:
+			next_shot_fractal = true;
+		Global.POWERUPS.SHIELD:
+			shield_pooper_timer.stop();
+			remaining_poop_shields += SHIELD_POOPS_AMOUNT;
+			poop_shields();
 
 func check_input() -> void:
 	if (_controlsLocked):
@@ -178,3 +209,7 @@ func set_restrict_shoting(can : bool) -> void:
 func set_can_shoot(can : bool) -> void:
 	if(!restrict_shooting && can_shoot == false):
 		can_shoot = can;
+
+func body_entered(entity):
+	if!(entity.is_in_group("Powerups")):
+		hp -= entity.strength;
