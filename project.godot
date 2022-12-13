@@ -171,8 +171,7 @@ test_powerup={
 2d_physics/layer_4="Asteroid"
 2d_physics/layer_5="PlayerLimit"
 2d_physics/layer_6="PowerUp"
-2d_physics/layer_7="FriendlyBullet"
-2d_physics/layer_8="EnemyBullet"
+2d_physics/layer_7="Bullet"
 
 [physics]
 

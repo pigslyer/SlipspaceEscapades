@@ -10,3 +10,15 @@ enum POWERUPS{
 	SHIELD = 64, 
 	ARMOR = 128,
 }
+
+var _mayExplode: bool = true;
+
+func _process(_delta):
+	_mayExplode = true;
+
+func MayExplode() -> bool:
+	if (_mayExplode):
+		_mayExplode = false;
+		return true;
+	
+	return false;

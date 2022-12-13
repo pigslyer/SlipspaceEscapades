@@ -43,7 +43,7 @@ func _ready():
 
 func spawn_ships():
 	for i in range(5):
-		spawn_ship(SHIP_TYPES.SHIELD_POOPER);
+		spawn_ship(SHIP_TYPES.BASIC_VARIANT);
 
 func get_spawn_pos() -> Vector2:
 	var viewport_size = get_viewport_rect().size;

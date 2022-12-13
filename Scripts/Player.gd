@@ -5,7 +5,8 @@ extends KinematicBody2D
 
 signal OnPlayedDied;
 
-const SHOOT_EFFECT = preload("res://Assets/SFX/GunSound.wav")
+const SHOOT_EFFECT = preload("res://Assets/SFX/GunSound.wav");
+const SHOOT_EFFECT_FRACTAL = preload("res://Assets/SFX/FractalMissile.wav");
 
 #CONSTANTS FOR MOVEMENT
 const ACCELERATION := 2500;
@@ -99,6 +100,8 @@ func _physics_process(delta):
 		look_at(get_global_mouse_position());
 
 func fire_bullet(bullet_type) -> void:
+	var sound = SHOOT_EFFECT_FRACTAL if bullet_type == BULLET_TYPES.FRACTAL else SHOOT_EFFECT;
+	
 	var bullet_type_scene = BULLET_TYPES_SCENES[bullet_type];
 	var parent = get_parent();
 	
@@ -107,6 +110,15 @@ func fire_bullet(bullet_type) -> void:
 	new_bullet.collision_layer = 64;
 	new_bullet.rotation = rotation;
 	parent.add_child(new_bullet);
+	
+	var pitchMult = 1 + powerups["fire_rate"] * 0.1;
+	
+	Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(0.9,1.1));
+	
+	if (powerups["barrage"] > 0):
+		Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(1.2,1.4),0.1);
+		Sounds.PlaySound(sound, global_position, 0.0, pitchMult * rand_range(1.2,1.4),0.2);
+	
 	
 	for i in powerups["barrage"]:
 		var angle = (i + 1) * BULLET_SPACING;
@@ -122,6 +134,8 @@ func fire_bullet(bullet_type) -> void:
 		new_bullet2.global_position = firing_position.global_position;
 		new_bullet2.collision_layer = 64;
 		parent.add_child(new_bullet2);
+	
+	
 
 func add_powerup(powerup) -> void:
 	match(powerup):
@@ -171,9 +185,12 @@ func fire_BFL() -> void:
 	
 	var bfl_scene = BULLET_TYPES_SCENES[BULLET_TYPES.BFL];
 	
+	var pitchMult = powerups["fire_rate"];
+	
 	var new_bfl = bfl_scene.instance();
 	new_bfl.position = firing_position.position;
 	bfls.add_child(new_bfl);
+	new_bfl.SetSoundSettings(1 + pitchMult * 0.1, 0);
 	
 	for i in powerups["barrage"]:
 		var angle = (i + 1) * BULLET_SPACING;
@@ -182,12 +199,14 @@ func fire_BFL() -> void:
 		new_bfl1.rotation = angle;
 		new_bfl1.position = firing_position.position;
 		bfls.add_child(new_bfl1);
+		new_bfl1.SetSoundSettings(1 + (i + pitchMult) * 0.1, i * 0.1);
 		
 		var new_bfl2 = bfl_scene.instance();
 		new_bfl2.rotation = -angle;
 		new_bfl2.position = firing_position.position;
 		bfls.add_child(new_bfl2);
-	
+		new_bfl2.SetSoundSettings(1 + (i + pitchMult) * 0.1, i * 0.1);
+		
 	bfl_timer.start(BFL_TIME);
 
 func clear_bfls() -> void:

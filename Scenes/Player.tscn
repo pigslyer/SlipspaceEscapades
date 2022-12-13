@@ -42,3 +42,5 @@ collision_mask = 136
 shape = SubResource( 2 )
 
 [connection signal="area_entered" from="Area2D" to="." method="body_entered"]
+[node name="Listener2D" type="Listener2D" parent="."]
+current = true
