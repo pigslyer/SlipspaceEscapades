@@ -46,6 +46,7 @@ var big_boy = null;
 var basic_ships_barrage := false;
 var countdown_timer;
 var gameplay_stopped := true;
+var big_boy_spawned := false;
 
 func _ready():
 	player = get_tree().get_nodes_in_group("PLAYER")[0];
@@ -78,6 +79,7 @@ func remove_attacker(type : int) -> void:
 func stop_gameplay() -> void:
 	gameplay_stopped = true;
 	big_boy = null;
+	big_boy_spawned = false;
 	for child in get_children():
 		if(child.is_in_group("Entities")):
 			child.gameplay_stopped = true;
@@ -98,9 +100,10 @@ func _physics_process(delta):
 		if(time_left < SHIELD_TIME and shield_spawn_timer.is_stopped()):
 			spawn_ship(Global.SHIP_TYPES.SHIELD_POOPER);
 			shield_spawn_timer.start();
-		if(time_left < BIG_BOY_TIME and big_boy == null):
+		if(time_left < BIG_BOY_TIME and big_boy == null and !big_boy_spawned):
 			big_boy = SHIP_TYPES_SCENES[Global.SHIP_TYPES.BIG_BOY].instance();
 			big_boy.global_position = get_spawn_pos();
+			big_boy_spawned = true;
 			add_child(big_boy);
 		if(time_left < BIG_BOY_FRACTAL_TIME and big_boy != null):
 			big_boy.can_shoot_fractals = true;
