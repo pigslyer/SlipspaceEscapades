@@ -69,12 +69,6 @@ position = Vector2( 626, 29 )
 [node name="BottomRight" type="Position2D" parent="Enemies/EnemyStartingArea"]
 position = Vector2( 988, 571 )
 
-[node name="Button" type="Button" parent="."]
-margin_right = 12.0
-margin_bottom = 20.0
-focus_mode = 0
-text = "Respawn ships"
-
 [node name="GameplayCountdown" type="Timer" parent="."]
 wait_time = 60.0
 one_shot = true
@@ -106,7 +100,6 @@ autostart = true
 wait_time = 0.5
 autostart = true
 
-[connection signal="pressed" from="Button" to="Enemies" method="spawn_ships"]
 [connection signal="timeout" from="GameplayCountdown" to="." method="_on_GameplayCountdown_timeout"]
 [connection signal="timeout" from="Asteroids/BigSpawnTimer" to="Asteroids" method="spawn_asteroid" binds= [ 1 ]]
 [connection signal="timeout" from="Asteroids/SmallSpawnTimer" to="Asteroids" method="spawn_asteroid" binds= [ 0 ]]

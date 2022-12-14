@@ -65,17 +65,6 @@ var gameplay_stopped := true;
 
 func _ready():
 	player = get_tree().get_nodes_in_group("PLAYER")[0];
-	#spawn_ships();
-
-func spawn_ships():
-	for i in range(3):
-		spawn_ship(SHIP_TYPES.BASIC_VARIANT);
-	for i in range(2):
-		spawn_ship(SHIP_TYPES.BASIC);
-	for i in range(2):
-		spawn_ship(SHIP_TYPES.PLASMA);
-	for i in range(4):
-		spawn_ship(SHIP_TYPES.SHIELD_POOPER);
 
 func get_spawn_pos() -> Vector2:
 	var spawn_pos := Vector2(
