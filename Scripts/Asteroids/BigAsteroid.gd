@@ -51,7 +51,9 @@ func body_entered(entity):
 			var new_powerup = POWERUP_ICON_PRELOADS[new_index].instance();
 			new_powerup.global_position = global_position;
 			get_parent().call_deferred("add_child", new_powerup);
-				
+			
+			$AsteroidModel.AsteroidDestroyedDropsPowerup();
+			yield($AsteroidModel,"OnDestroyed");
 			queue_free();
 		else:
 			var diff = global_position - entity.global_position;
@@ -59,3 +61,4 @@ func body_entered(entity):
 			var rot_diff = entity_velocity.normalized().cross(diff.normalized()) * 0.1;
 			rotation_speed += rot_diff;
 			velocity += entity_velocity * entity.strength * 0.02;
+			$AsteroidModel.AsteroidHit();

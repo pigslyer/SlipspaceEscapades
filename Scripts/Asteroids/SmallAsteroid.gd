@@ -44,6 +44,9 @@ func body_entered(entity):
 		hp -= entity.strength;
 		if(hp <= 0):
 			if(randf() <= DROP_CHANCE):
+				$AsteroidModel.AsteroidDestroyedDropsPowerup();
+				yield($AsteroidModel,"OnDestroyed");
+				
 				var new_index = randi() % Global.POWERUPS.size();
 				var player = get_tree().get_nodes_in_group("PLAYER")[0];
 				if(player.hp >= player.MAX_HP and new_index == 0):
@@ -54,4 +57,10 @@ func body_entered(entity):
 				new_powerup.global_position = global_position;
 				get_parent().call_deferred("add_child", new_powerup);
 				
+			else:
+				$AsteroidModel.AsteroidDestroyed();
+				yield($AsteroidModel,"OnDestroyed");
+			
 			queue_free();
+		else:
+			$AsteroidModel.AsteroidHit();

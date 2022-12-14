@@ -3,8 +3,6 @@ extends Node2D
 signal OnStoppedIFrames;
 # warning-ignore:unused_signal
 signal OnDestroyed;
-# warning-ignore:unused_signal
-signal OnShouldSpawn;
 
 export var iframeFlashLength: float = 0.1;
 export var iframeLength: float = 0.5;
@@ -62,7 +60,7 @@ func AsteroidDestroyedDropsPowerup() -> void:
 	tween.parallel().tween_property($OnHit,"modulate:a", 0.0, fadeOutLength).set_delay(fadeOutTime).set_trans(Tween.TRANS_CUBIC);
 	tween.parallel().tween_property($OnHitPair,"modulate:a", 0.0, fadeOutLength).set_delay(fadeOutTime).set_trans(Tween.TRANS_CUBIC);
 	
-	tween.tween_callback(self,"emit_signal",["OnShouldSpawn"]);
+	tween.tween_callback(self,"emit_signal",["OnDestroyed"]);
 	
 	# for debugging
 	yield(get_tree().create_timer(2),"timeout");
