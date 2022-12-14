@@ -48,6 +48,7 @@ func _on_World_OnTimerEnded():
 	if (_hasLost):
 		return;
 	
+	Global.AddScore(1000);
 	Sounds.PlayMusic(Sounds.MUSIC.NONE);
 	Save.SetHighscore($HUD.GetScore());
 	
@@ -102,7 +103,7 @@ func _on_Player_OnPlayedDied():
 	
 	yield(get_tree().create_timer(2.2), "timeout");
 	
-	_displayEndingText(lostText);
+	_displayEndingText(lostText % int(gameplayTime - $HUD.GetTime()));
 	
 	yield($CanvasLayer/EndingText, "OnHidden");
 	# faster than moving the player around and shit

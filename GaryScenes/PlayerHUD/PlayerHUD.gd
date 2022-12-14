@@ -36,6 +36,9 @@ func GetScore() -> int:
 func StartTimer(time: float):
 	timerDisplay.StartTimer(time);
 
+func GetTime():
+	return timerDisplay.GetTime();
+
 func ResetScore():
 	scoreDisplay.ResetScore();
 

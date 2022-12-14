@@ -28,3 +28,6 @@ func _process(delta):
 
 func _updateText():
 	text = "Time: %6.3f" % _curTime;
+
+func GetTime():
+	return _curTime;
