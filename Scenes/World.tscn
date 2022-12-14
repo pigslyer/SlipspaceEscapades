@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/World.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/Asteroids/Asteroids.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/Enemies/Enemies.gd" type="Script" id=4]
 
@@ -79,9 +78,6 @@ text = "Respawn ships"
 [node name="GameplayCountdown" type="Timer" parent="."]
 wait_time = 60.0
 one_shot = true
-
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 119, 323 )
 
 [node name="Asteroids" type="Node2D" parent="."]
 script = ExtResource( 3 )
