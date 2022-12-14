@@ -99,6 +99,8 @@ Sounds="*res://GaryScenes/Autoloads/Sounds.gd"
 
 [display]
 
+window/size/borderless=true
+window/size/fullscreen=true
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 

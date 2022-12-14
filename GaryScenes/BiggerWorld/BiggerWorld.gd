@@ -48,9 +48,9 @@ func _on_World_OnTimerEnded():
 	if (_hasLost):
 		return;
 	
+	Global.AddScore(1000);
 	var score = $HUD.GetScore();
 	
-	Global.AddScore(1000);
 	Sounds.PlayMusic(Sounds.MUSIC.NONE);
 	Save.SetHighscore(score);
 	
