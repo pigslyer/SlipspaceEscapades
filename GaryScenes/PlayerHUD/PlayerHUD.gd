@@ -12,7 +12,10 @@ func Start(timerTime: float):
 	StartTimer(timerTime);
 	ResetScore();
 	OnPlayerHealthChanged(3,0);
-	StartTutorial();
+	
+	if (Save.GetHighscore() == 0):
+		StartTutorial();
+	
 	show();
 	
 	create_tween().tween_property($Root,"modulate:a",1.0, FADE_IN_TIME).set_trans(Tween.TRANS_CUBIC).from(0.0);
