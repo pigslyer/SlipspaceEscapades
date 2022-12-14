@@ -1,6 +1,7 @@
 extends Node2D
 
 signal OnTimerEnded;
+signal OnScoreGained(amount, from);
 
 func _ready():
 	Global.top_left = $EnemySpawnArea/TopLeft.global_position;
@@ -11,7 +12,13 @@ func StartGameplay(time: float):
 	$GameplayCountdown.start(time);
 
 func StopGameplay():
-	pass
+	$GameplayCountdown.stop();
+	
+	for enemy in $Enemies.get_children():
+		enemy.set_physics_process(false);
 
 func _on_GameplayCountdown_timeout():
 	emit_signal("OnTimerEnded");
+
+func AddScore(amount: int, from):
+	emit_signal("OnScoreGained", amount, from);

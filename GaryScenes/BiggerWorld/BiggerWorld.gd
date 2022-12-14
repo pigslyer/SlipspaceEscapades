@@ -13,13 +13,20 @@ export (String, MULTILINE) var wonText;
 export (String, MULTILINE) var lostText;
 
 func _ready():
+	BeginPlayerPassiveAnimation();
+	Sounds.PlayMusic(Sounds.MUSIC.MENU);
 	$Player.SetControlsLocked(true);
 	
 	$CanvasLayer/BlackScreen.modulate.a = 1.0;
 	create_tween().tween_property($CanvasLayer/BlackScreen, "modulate:a",0.0, GAME_OVER_FADE_TIME);
 
 func _on_MainMenu_OnStartGame():
+	EndPlayerPassiveAnimation();
+	# add the entering slipspace thing
+	Sounds.PlayMusic(Sounds.MUSIC.GAMEPLAY);
 	$CanvasLayer/MainMenu.ChangeMenuVisibility(false);
+	
+	yield(get_tree().create_timer(5.5),"timeout");
 	Sounds.PlaySound(ENTERING_SLIPSPACE);
 	
 	# eyeballed
@@ -33,8 +40,8 @@ func _on_MainMenu_OnStartGame():
 	$World.StartGameplay(gameplayTime);
 	
 	# uncomment for guaranteed quick game over
-	#yield(get_tree().create_timer(2.0),"timeout");
-	#_on_Player_OnPlayedDied();
+#	yield(get_tree().create_timer(2.0),"timeout");
+#	_on_Player_OnPlayedDied();
 
 
 # win
@@ -42,9 +49,11 @@ func _on_World_OnTimerEnded():
 	if (_hasLost):
 		return;
 	
+	Sounds.PlayMusic(Sounds.MUSIC.NONE);
 	Save.SetHighscore($HUD.GetScore());
 	
 	$Player.SetControlsLocked(true);
+	$Player.RotateRight(true);
 	$SlipspaceBackground.SetSlipspace(false);
 	$HUD.Stop();
 	
@@ -61,16 +70,21 @@ func _on_World_OnTimerEnded():
 	
 	yield($CanvasLayer/EndingText, "OnHidden");
 	
+	$Player.RotateRight(false);
 	tween.kill();
 	$CanvasLayer/MainMenu.ChangeMenuVisibility(true);
+	Sounds.PlayMusic(Sounds.MUSIC.MENU);
+	BeginPlayerPassiveAnimation();
 
 var _hasLost = false;
 
 # lose
 func _on_Player_OnPlayedDied():
+	Sounds.PlayMusic(Sounds.MUSIC.NONE);
 	_hasLost = true;
 	Save.SetHighscore($HUD.GetScore());
 	
+	$World.StopGameplay();
 	$HUD.Stop();
 	Sounds.PlaySound(PLAYER_DIED);
 	$Player.SetControlsLocked(true);
@@ -95,3 +109,19 @@ func _on_Player_OnPlayedDied():
 func _displayEndingText(end: String):
 	$CanvasLayer/EndingText.Open("%s\n\nScore: %d\nHighscore: %d" % [end, $HUD.GetScore(), Save.GetHighscore()]);
 
+
+# it ain't perfect, but it's what we got (is it enough for you?)
+var tween: SceneTreeTween;
+
+const PASSIVE_DELTA = 8;
+const PASSIVE_TIME = 3;
+
+func BeginPlayerPassiveAnimation():
+	tween = create_tween().set_loops();
+	
+	tween.tween_property($Player,"position", $Player.position + Vector2(0, -PASSIVE_DELTA), PASSIVE_TIME).set_delay(0.5)#.set_trans(Tween.TRANS_CUBIC);
+	tween.tween_property($Player,"position", $Player.position + Vector2(0, PASSIVE_DELTA), PASSIVE_TIME * 2).set_delay(0.5)#.set_trans(Tween.TRANS_CUBIC);
+	
+
+func EndPlayerPassiveAnimation():
+	tween.kill();

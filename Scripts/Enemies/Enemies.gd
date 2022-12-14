@@ -19,6 +19,14 @@ const SHIP_TYPES_SCENES = [
 	preload("res://Scenes/Enemies/ShieldPooperShip.tscn")
 ];
 
+const SHIP_SCORES = [
+	100,
+	250,
+	500,
+	3000,
+	500,
+];
+
 const SHIP_GROUPS = [
 	"BasicShips",
 	"BasicVariantShips",
@@ -70,7 +78,7 @@ func spawn_ship(ship_type) -> void:
 		if(ship_type != SHIP_TYPES.PLASMA):
 			new_ship.player = player;
 		new_ship.connect("attacking", self, "add_attacker", [ship_type]);
-		new_ship.connect("dying", self, "remove_attacker", [ship_type]);
+		new_ship.connect("dying", self, "remove_attacker", [new_ship, ship_type, SHIP_SCORES[ship_type]]);
 	if(ship_type == SHIP_TYPES.BASIC or ship_type == SHIP_TYPES.BASIC_VARIANT):
 		new_ship.barrage = countdown_timer.time_left < BARRAGE_TIME;
 	add_child(new_ship);
@@ -78,8 +86,9 @@ func spawn_ship(ship_type) -> void:
 func add_attacker(type : int) -> void:
 	attacker_numbers[type] += 1;
 
-func remove_attacker(type : int) -> void:
+func remove_attacker(inst: Node2D, type : int, score: int) -> void:
 	attacker_numbers[type] -= 1;
+	get_parent().AddScore(score, inst.global_position);
 
 func _physics_process(delta):
 	for type in SHIP_TYPES.values():

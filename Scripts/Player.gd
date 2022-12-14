@@ -63,14 +63,21 @@ var powerups := {
 var remaining_poop_shields = 0;
 var next_shot_fractal := false;
 
-
+const ROTATION_SPEED = PI * 0.75;
 var _controlsLocked = false;
 
 func SetControlsLocked(state: bool):
 	_controlsLocked = state;
 
+func RotateRight(state: bool):
+	set_process(state);
+
+func _process(delta):
+	rotation = lerp_angle(rotation, 0, ROTATION_SPEED * delta);
 
 func _ready():
+	set_process(false);
+	
 	shooting_timer.connect("timeout", self, "set_can_shoot", [true]);
 	bfl_timer.connect("timeout", self, "set_can_shoot", [true]);
 	bfl_timer.connect("timeout", self, "clear_bfls");
@@ -238,3 +245,4 @@ func body_entered(entity):
 		else:
 			hp -= 1;
 		pussy_timer.start();
+		$BasicShip.InvulnFlash();

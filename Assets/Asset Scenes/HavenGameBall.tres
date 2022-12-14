@@ -1,0 +1,78 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
+
+[sub_resource type="Shader" id=23]
+code = "shader_type canvas_item;
+
+uniform vec2 pos;
+uniform sampler2D distoriton;
+uniform float distort_amount: hint_range(0.0,1.0);
+
+uniform sampler2D fade_away_curve;
+uniform float fade_away_perc: hint_range(0.0,1.0);
+
+uniform float t0;
+
+const float R = 0.5;
+
+float Time()
+{
+	return TIME - t0;
+}
+
+void fragment(){
+	
+	float dist = distance(vec2(0.5),UV);
+	if (dist >= R || (dist < fade_away_perc-0.6 + texture(fade_away_curve,vec2(fract(TIME*0.1+UV.x+UV.y))).r*0.2)){
+		discard;
+	}
+	
+	vec2 new_coord = abs(UV-pos);
+	
+	// depth
+	new_coord += (UV-vec2(0.5))*0.2;
+	
+	// blooping
+	new_coord += vec2(sin(Time()*0.74)*0.04+cos(Time()*1.35)*0.03);
+	
+	// wrapping
+	new_coord -= vec2(abs(0.5-(UV.x+UV.y)))*0.1;
+	
+	COLOR = texture(TEXTURE,new_coord);
+	COLOR.a -= dist;
+	COLOR.a = mix(COLOR.a,texture(distoriton,new_coord).r,distort_amount);
+	//COLOR.a -= clamp(sin(TIME*0.8+(new_coord.x+new_coord.y)*0.005)*0.2,0.0,1.0);
+	
+	COLOR.rgb -= length(UV-vec2(0.5))*length(UV-vec2(0.5))*2.8;
+	
+}
+
+"
+
+[sub_resource type="OpenSimplexNoise" id=24]
+period = 10.0
+persistence = 0.0
+lacunarity = 2.29
+
+[sub_resource type="NoiseTexture" id=25]
+width = 64
+height = 64
+seamless = true
+bump_strength = 11.0
+noise = SubResource( 24 )
+
+[sub_resource type="Curve" id=26]
+_data = [ Vector2( 0, 0.443182 ), 0.0, 0.0, 0, 0, Vector2( 0.246305, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.408867, 0.425 ), 0.0, 0.0, 0, 0, Vector2( 0.561576, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.724138, 0.834091 ), 0.0, 0.0, 0, 0, Vector2( 0.788177, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.434091 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=27]
+resource_local_to_scene = true
+curve = SubResource( 26 )
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 23 )
+shader_param/pos = Vector2( 1.83374, -1.83374 )
+shader_param/distort_amount = 0.4
+shader_param/fade_away_perc = 0.0
+shader_param/t0 = null
+shader_param/distoriton = SubResource( 25 )
+shader_param/fade_away_curve = SubResource( 27 )

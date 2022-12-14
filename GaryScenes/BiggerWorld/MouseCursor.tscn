@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://GaryScenes/BiggerWorld/MouseCursor.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sprites/MouseIcon.png" type="Texture" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+void fragment()
+{
+	
+/*	vec2 uv = UV;
+	
+	vec2 dir = normalize(uv - vec2(0.5));
+	uv += dir * sin(TIME * 10.0) * 0.01;
+	
+	COLOR = texture(TEXTURE, uv);
+	*/
+	COLOR = texture(TEXTURE, UV + vec2(normalize(UV - vec2(0.5)) * sin(TIME * 2.4) * 0.08));
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[node name="MouseCursor" type="Sprite"]
+material = SubResource( 2 )
+texture = ExtResource( 2 )
+script = ExtResource( 1 )

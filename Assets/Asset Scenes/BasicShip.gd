@@ -2,6 +2,9 @@ extends Sprite
 
 onready var tex: AtlasTexture = texture as AtlasTexture;
 
+export (float) var invulnFlashLength = 0.2;
+export (float) var invulnLength = 0.6;
+
 # negative y values correspond to up, positive to down, 0 to stationary
 func SetMovingDirection(dir: Vector2):
 	var val = dir.cross(Vector2.RIGHT.rotated(global_rotation));
@@ -18,3 +21,16 @@ func Explode():
 	
 	tween.tween_callback($Explosion, "Explode", [true, true]).set_delay(rand_range(0.0,0.4));
 	tween.tween_callback($Explosion2, "Explode", [true, true]).set_delay(rand_range(0.0,0.4));
+
+func InvulnFlash():
+	var sum := 0.0;
+	var isOn = true;
+	
+	while (sum < invulnLength):
+		modulate.a = 0.3 if isOn else 1;
+		isOn = !isOn;
+		yield(get_tree().create_timer(invulnFlashLength),"timeout");
+		sum += invulnFlashLength;
+		
+	
+	modulate.a = 1.0;

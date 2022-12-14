@@ -10,13 +10,11 @@ enum MUSIC{
 };
 
 const TRACKS = {
-	
+	MUSIC.GAMEPLAY : preload("res://Assets/Music/40GrittyBitty-4.mp3"),
+	MUSIC.MENU : preload("res://Assets/Music/Menu.mp3"),
 };
 
 var _music: AudioStreamPlayer = null;
-
-func _ready():
-	VisualServer.set_default_clear_color(Color.black);
 
 func PlayMusic(m):
 	
@@ -41,7 +39,7 @@ func PlayMusic(m):
 		_music.volume_db = SILENT_VOLUME;
 		_music.play();
 		
-		tween.tween_property(_music, "volume_db", 0, FADE_TIME);
+		tween.tween_property(_music, "volume_db", 0.0, FADE_TIME).from(SILENT_VOLUME);
 
 
 func PlaySound(stream: AudioStream, pos = null, volume: float = 0.0, pitch: float = 1.0, delay: float = 0.0):

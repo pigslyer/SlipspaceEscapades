@@ -6,16 +6,10 @@ const FRACTAL_MISSILE_SCENE := preload("res://Scenes/Powerups/FractalMissile.tsc
 
 export(int) var hp = 100;
 
-onready var firing_positions = [
-	$FiringPosition1,
-	$FiringPosition2,
-	$FiringPosition3,
-	$FiringPosition4,
-	$FiringPosition5,
-	$FiringPosition6
-];
 
-onready var fractal_position = $FractalPosition;
+onready var firing_positions = $BigBoyModel.GetMissileArrayPositions();
+
+onready var fractal_position = $BigBoyModel.GetFractalCannonPosition();
 onready var bullet_timer = $BulletTimer;
 
 func _physics_process(delta):

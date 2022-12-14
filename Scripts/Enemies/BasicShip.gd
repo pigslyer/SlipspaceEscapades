@@ -40,6 +40,7 @@ func attack(delta) -> void:
 		var diff = go_to - global_position;
 		velocity = diff.normalized() * SPEED;
 		global_position += velocity * delta;
+		$BasicEnemyShipModel.SetGlobalDirection(velocity);
 		set_new_x = false;
 	elif(!set_new_x):
 		go_to.x = Global.get_possible_enemy_pos().x;
@@ -86,6 +87,7 @@ func idle_movement(delta) -> void:
 	var diff = go_to - global_position;
 	velocity = diff.normalized() * SPEED;
 	global_position = velocity * delta;
+	$BasicEnemyShipModel.SetGlobalDirection(velocity);
 	
 	if((global_position - go_to).length() < 5 && idle_timer.is_stopped()):
 		idle_timer.start();

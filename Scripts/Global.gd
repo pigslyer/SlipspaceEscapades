@@ -1,5 +1,14 @@
 extends Node
 
+
+func _ready():
+	VisualServer.set_default_clear_color(Color.black);
+	
+	if get_tree().current_scene.name == "BiggerWorld":
+		Input.set_custom_mouse_cursor(preload("res://Assets/Sprites/MouseIcon.png"), Input.CURSOR_ARROW, Vector2(12,12));
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN;
+	
+
 enum POWERUPS{
 	HEALTH = 1,
 	FRACTAL = 2, 

@@ -11,14 +11,16 @@ var hp := 1.0;
 var growing := true;
 var velocity := Vector2();
 
+func _ready():
+	scale = Vector2.ZERO;
+	$Shield.material.set_shader_param("t0", OS.get_ticks_msec());
+
 func _physics_process(delta):
-	if(hp <= 0):
-		queue_free();
-	
 	if(growing):
 		var size = hp / max_hp;
 		scale = Vector2(size, size);
 		hp += 1/hp;
+		_updateShaderTear();
 		growing = hp <= max_hp;
 	
 	velocity *= 1 - FRICTION;
@@ -30,7 +32,21 @@ func bullet_entered(body):
 			hp -= 1
 		else:
 			hp -= body.strength;
+		_updateShaderTear();
 		pussy_timer.start();
 		growing = false;
 		if(hp <= 0):
 			queue_free();
+
+func _updateShaderTear():
+	create_tween().tween_method(
+		self, 
+		"_uselessMethod", 
+		$Shield.material.get_shader_param("fade_away_perc"),
+		1 - float(hp) / max_hp,
+		$PussyTimer.wait_time
+	).set_trans(Tween.TRANS_CUBIC);
+
+
+func _uselessMethod(val: float):
+	$Shield.material.set_shader_param("fade_away_perc", val);

@@ -10,6 +10,7 @@ var was_visible := false;
 var velocity := Vector2();
 
 func _ready():
+	$PowerupIcons.Appear();
 	$PowerupIcons.ShowIcon(powerup_type);
 
 func _physics_process(delta):
@@ -23,4 +24,6 @@ func _physics_process(delta):
 
 func player_entered(player):
 	player.get_parent().add_powerup(powerup_type);
+	$PowerupIcons.Disappear();
+	yield($PowerupIcons,"OnAnimationFinished");
 	queue_free();

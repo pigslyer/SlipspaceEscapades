@@ -1,6 +1,8 @@
 class_name ShieldPooperShip
 extends Area2D
 
+const ROTATION_SPEED = PI * 1.4;
+
 const SPEED := 50;
 const SHIELD_SCENE := preload("res://Scenes/Powerups/Shield.tscn");
 const SHIELD_POOP_SPEED := 500;
@@ -20,6 +22,7 @@ var angle_of_poop := 0.0;
 func _ready():
 	go_to = global_position;
 	movement_timer.connect("timeout", self, "set_new_go_to");
+	look_at(get_tree().get_nodes_in_group("PLAYER")[0].global_position);
 
 func _physics_process(delta):
 	var diff = go_to - global_position;
@@ -35,12 +38,16 @@ func _physics_process(delta):
 		poop_shield();
 		shield_poop_timer.start();
 
+func _process(delta):
+	if (velocity.length_squared() > 0):
+		rotation = lerp_angle(rotation, velocity.angle(), ROTATION_SPEED * delta);
+
 func poop_shield() -> void:
 	var angle = 2 * PI * pooped / MAX_POOPED;
 	
 	var new_shield = SHIELD_SCENE.instance();
 	new_shield.collision_mask = 64;
-	new_shield.global_position = global_position;
+	new_shield.global_position = $ShieldPooperModel.GetShieldPoopSource();
 	new_shield.velocity = (Vector2.RIGHT * SHIELD_POOP_SPEED).rotated(angle + angle_of_poop);
 	get_parent().add_child(new_shield);
 
