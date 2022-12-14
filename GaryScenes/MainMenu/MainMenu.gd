@@ -13,6 +13,7 @@ func _ready():
 
 func ChangeMenuVisibility(new_vis: bool):
 	if (new_vis != _visible):
+		$HighScoreDisplay.text = "Highscore: %d" % Save.GetHighscore();
 		_visible = new_vis;
 		
 		if (_visible):

@@ -15,6 +15,6 @@ func Hit():
 	$ExplodableModel.Hit();
 
 func Explode():
-	$ExplodableModel.Explode();
+	$ExplodableModel.Destroy();
 	yield($ExplodableModel, "OnDestroyed");
 	emit_signal("OnExplosionFinished");

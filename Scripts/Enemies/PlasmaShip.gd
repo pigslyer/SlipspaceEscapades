@@ -102,6 +102,9 @@ func on_body_entered(entity):
 	if(hp <= 0):
 		emit_signal("dying");
 		$PlasmaSiegeShip.Destroy();
+		
+		set_deferred("collision_layer",0);
+		set_deferred("collision_mask",0);
 		yield($PlasmaSiegeShip,"OnDestroyed");
 		queue_free();
 	else:
