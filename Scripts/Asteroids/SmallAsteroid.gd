@@ -1,7 +1,7 @@
 extends Area2D
 
 const MAX_ROTATION_SPEED := 2;
-const MAX_SPEED := 20;
+const MAX_SPEED := 50;
 const DROP_CHANCE := 0.20;
 
 const POWERUP_ICON_PRELOADS = [
@@ -40,7 +40,7 @@ func _physics_process(delta):
 		was_visible = true;
 
 func body_entered(entity):
-	if!(entity.is_in_group("Entity")):
+	if!(entity.is_in_group("Entity") or entity.is_in_group("SHIELD")):
 		hp -= entity.strength;
 		if(hp <= 0):
 			if(randf() <= DROP_CHANCE):

@@ -3,7 +3,7 @@ extends Area2D
 
 const EXPLOSIVE_MISSILE_SCENE := preload("res://Scenes/Powerups/ExplosiveMissile.tscn");
 const FRACTAL_MISSILE_SCENE := preload("res://Scenes/Powerups/FractalMissile.tscn");
-const SPEED := 50;
+const SPEED := 500;
 
 export(int) var hp = 100;
 
@@ -13,16 +13,23 @@ onready var firing_positions = $BigBoyModel.GetMissileArrayPositions();
 onready var fractal_position = $BigBoyModel.GetFractalCannonPosition();
 onready var bullet_timer = $BulletTimer;
 onready var fractal_timer = $FractalTimer;
+onready var idle_timer = $IdleTimer;
 
 var can_shoot_fractals := false;
 var gameplay_stopped := false;
 var go_to := Vector2();
 
+func _ready():
+	go_to = Global.get_enemy_starting_pos();
+	go_to.x = 1000;
+
 func _physics_process(delta):
 	if(!gameplay_stopped):
 		var diff = go_to - global_position;
-		if(diff.length() < 10):
+		if(diff.length() > 5):
 			global_position += diff.normalized() * SPEED * delta;
+		elif(idle_timer.is_stopped()):
+			idle_timer.start();
 		
 		if(bullet_timer.is_stopped()):
 			bullet_timer.start();
@@ -30,6 +37,9 @@ func _physics_process(delta):
 		if(fractal_timer.is_stopped() and can_shoot_fractals):
 			fractal_timer.start();
 			fire_fractal();
+
+func set_new_go_to() -> void:
+	go_to.y = Global.get_enemy_starting_pos().y;
 
 func fire_missile(pos : Vector2):
 	var new_missile = EXPLOSIVE_MISSILE_SCENE.instance();

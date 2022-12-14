@@ -86,9 +86,10 @@ func idle_movement(delta) -> void:
 		is_idle_set = true;
 	
 	var diff = go_to - global_position;
-	velocity = diff.normalized() * SPEED;
-	global_position = velocity * delta;
-	$BasicEnemyShipModel.SetGlobalDirection(velocity);
+	if(diff.length() > 5):
+		velocity = diff.normalized() * SPEED;
+		global_position += velocity * delta;
+		$BasicEnemyShipModel.SetGlobalDirection(velocity);
 	
 	if((global_position - go_to).length() < 5 && idle_timer.is_stopped()):
 		idle_timer.start();

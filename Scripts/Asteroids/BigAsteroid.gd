@@ -39,7 +39,7 @@ func _physics_process(delta):
 		was_visible = true;
 
 func body_entered(entity):
-	if!(entity.is_in_group("Entity")):
+	if!(entity.is_in_group("Entity") or entity.is_in_group("SHIELD")):
 		hp -= entity.strength;
 		if(hp <= 0):
 			var new_index = randi() % Global.POWERUPS.size();

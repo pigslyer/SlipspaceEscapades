@@ -201,7 +201,7 @@ func fire_BFL() -> void:
 	
 	var new_bfl = bfl_scene.instance();
 	new_bfl.position = firing_position.position;
-	bfls.call_deffered("add_child", new_bfl);
+	bfls.add_child(new_bfl);
 	new_bfl.SetSoundSettings(1 + pitchMult * 0.1, 0);
 	
 	for i in powerups["barrage"]:

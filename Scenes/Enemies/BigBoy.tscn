@@ -23,10 +23,11 @@ position = Vector2( -32.5, -0.5 )
 shape = SubResource( 1 )
 
 [node name="BulletTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 0.5
 one_shot = true
 
 [node name="FractalTimer" type="Timer" parent="."]
+wait_time = 5.0
 one_shot = true
 autostart = true
 
@@ -34,5 +35,10 @@ autostart = true
 position = Vector2( -126, 0 )
 shape = SubResource( 2 )
 
+[node name="IdleTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="area_entered" from="." to="." method="body_entered"]
 [connection signal="timeout" from="FractalTimer" to="." method="fire_fractal"]
+[connection signal="timeout" from="IdleTimer" to="." method="set_new_go_to"]

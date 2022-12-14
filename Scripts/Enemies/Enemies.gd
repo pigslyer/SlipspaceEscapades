@@ -45,7 +45,11 @@ const MAX_ATTACKER_NUMBERS = [
 ];
 
 onready var basic_spawn_timer := $BasicSpawnTimer;
-
+onready var basic_variant_spawn_timer := $BasicVariantSpawnTimer;
+onready var plasma_spawn_timer := $PlasmaSpawnTimer;
+onready var shield_spawn_timer := $ShieldSpawnTimer;
+onready var enemy_spawn_top_left = $EnemySpawnArea/TopLeft.global_position;
+onready var enemy_spawn_bottom_right = $EnemySpawnArea/BotomRight.global_position;
 
 var attacker_numbers = [
 	0,
@@ -57,6 +61,7 @@ var player;
 var big_boy = null;
 var basic_ships_barrage := false;
 var countdown_timer;
+var gameplay_stopped := true;
 
 func _ready():
 	player = get_tree().get_nodes_in_group("PLAYER")[0];
@@ -73,10 +78,9 @@ func spawn_ships():
 		spawn_ship(SHIP_TYPES.SHIELD_POOPER);
 
 func get_spawn_pos() -> Vector2:
-	var viewport_size = get_viewport_rect().size;
 	var spawn_pos := Vector2(
-		rand_range(viewport_size.x * 0.8, viewport_size.x * 0.9),
-		rand_range(viewport_size.y * 0.1, viewport_size.y * 0.9)
+		rand_range(enemy_spawn_top_left.x, enemy_spawn_bottom_right.x),
+		rand_range(enemy_spawn_top_left.y, enemy_spawn_bottom_right.y)
 	);
 	return spawn_pos;
 
@@ -100,16 +104,37 @@ func remove_attacker(inst: Node2D, type : int, score: int) -> void:
 	get_parent().AddScore(score, inst.global_position);
 
 func stop_gameplay() -> void:
+	gameplay_stopped = true;
 	for child in get_children():
 		child.gameplay_stopped = true;
 
 func _physics_process(delta):
-	
-	
-	for type in SHIP_TYPES.values():
-		if(type != SHIP_TYPES.SHIELD_POOPER and type != SHIP_TYPES.BIG_BOY):
-			for child in get_children():
-				if !child.is_queued_for_deletion() && child.is_in_group(SHIP_GROUPS[type]) && !child.is_attacking:
-					if attacker_numbers[type] < MAX_ATTACKER_NUMBERS[type]:
-						child.is_attacking = true;
-						attacker_numbers[type] += 1;
+	if(!gameplay_stopped):
+		var time_left = countdown_timer.time_left;
+		
+		if(basic_spawn_timer.is_stopped()):
+			spawn_ship(SHIP_TYPES.BASIC);
+			basic_spawn_timer.start();
+		if(time_left < BASIC_VARIANT_TIME and basic_variant_spawn_timer.is_stopped()):
+			spawn_ship(SHIP_TYPES.BASIC_VARIANT);
+			basic_variant_spawn_timer.start();
+		if(time_left < PLASMA_TIME and plasma_spawn_timer.is_stopped()):
+			spawn_ship(SHIP_TYPES.PLASMA);
+			plasma_spawn_timer.start();
+		if(time_left < SHIELD_TIME and shield_spawn_timer.is_stopped()):
+			spawn_ship(SHIP_TYPES.SHIELD_POOPER);
+			shield_spawn_timer.start();
+		if(time_left < BIG_BOY_TIME and big_boy == null):
+			big_boy = SHIP_TYPES_SCENES[SHIP_TYPES.BIG_BOY].instance();
+			big_boy.global_position = get_spawn_pos();
+			add_child(big_boy);
+		if(time_left < BIG_BOY_FRACTAL_TIME and big_boy != null):
+			big_boy.can_shoot_fractals = true;
+		
+		for type in SHIP_TYPES.values():
+			if(type != SHIP_TYPES.SHIELD_POOPER and type != SHIP_TYPES.BIG_BOY):
+				for child in get_children():
+					if !child.is_queued_for_deletion() && child.is_in_group(SHIP_GROUPS[type]) && !child.is_attacking:
+						if attacker_numbers[type] < MAX_ATTACKER_NUMBERS[type]:
+							child.is_attacking = true;
+							attacker_numbers[type] += 1;

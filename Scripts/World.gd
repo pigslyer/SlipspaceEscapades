@@ -4,8 +4,8 @@ signal OnTimerEnded;
 signal OnScoreGained(amount, from);
 
 func _ready():
-	Global.top_left = $EnemyStartingArea/TopLeft.global_position;
-	Global.bottom_right = $EnemyStartingArea/BottomRight.global_position;
+	Global.enemy_start_top_left = $Enemies/EnemyStartingArea/TopLeft.global_position;
+	Global.enemy_start_bottom_right = $Enemies/EnemyStartingArea/BottomRight.global_position;
 	$Enemies.countdown_timer = $GameplayCountdown;
 
 func StartGameplay(time: float):

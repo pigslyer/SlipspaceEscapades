@@ -71,7 +71,7 @@ func attack(delta):
 
 func setup_bombing_run() -> void:
 	go_to.x = Global.get_enemy_starting_pos().x;
-	go_to.y = Global.bottom_right.y if global_position.y < Global.bottom_right.y * 0.5 else Global.bottom_right.y * 0.1;
+	go_to.y = Global.enemy_start_bottom_right.y if global_position.y < Global.enemy_start_bottom_right.y * 0.5 else Global.enemy_start_bottom_right.y * 0.1;
 	is_setting_up = false;
 
 func set_is_idle_set(is_set : bool) -> void:
@@ -89,8 +89,9 @@ func idle_movement(delta) -> void:
 			idle_timer.start();
 	else:
 		var diff = go_to - global_position;
-		velocity = diff.normalized() * SPEED;
-		global_position += velocity * delta;
+		if(diff.length() > 5):
+			velocity = diff.normalized() * SPEED;
+			global_position += velocity * delta;
 
 func on_body_entered(entity):
 	if(!is_attacking):
