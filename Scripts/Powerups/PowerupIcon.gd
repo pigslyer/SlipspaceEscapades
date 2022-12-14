@@ -26,4 +26,5 @@ func player_entered(player):
 	player.get_parent().add_powerup(powerup_type);
 	$PowerupIcons.Disappear();
 	yield($PowerupIcons,"OnAnimationFinished");
+	Global.AddScore(Global.POWERUP_SCORE, global_position);
 	queue_free();

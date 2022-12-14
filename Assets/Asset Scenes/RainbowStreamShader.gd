@@ -1,7 +1,8 @@
 extends Sprite
 
 const COLORS = [
-	Color.red, Color.orange, Color.yellow, 
+	#Color.red, Color.orange, Color.yellow, 
+	Color.blueviolet, Color.darkviolet, Color.indigo,
 	Color.green, Color.blue, Color.violet, 
 	Color.green, Color.blue, Color.violet, 
 	Color.green, Color.blue, Color.violet,

@@ -61,6 +61,7 @@ func body_entered(entity):
 				$AsteroidModel.AsteroidDestroyed();
 				yield($AsteroidModel,"OnDestroyed");
 			
+			Global.AddScore(Global.SMALL_ASTEROID_SCORE, global_position);
 			queue_free();
 		else:
 			$AsteroidModel.AsteroidHit();

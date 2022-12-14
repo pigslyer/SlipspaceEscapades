@@ -8,6 +8,7 @@ onready var scoreDisplay: VBoxContainer = get_node("%Score");
 onready var tutorial: Control = get_node("%Tutorial");
 
 func Start(timerTime: float):
+	Global.HUD = self;
 	StartTimer(timerTime);
 	ResetScore();
 	OnPlayerHealthChanged(3,0);

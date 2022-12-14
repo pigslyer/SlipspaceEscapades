@@ -74,3 +74,4 @@ texture = ExtResource( 2 )
 centered = false
 script = ExtResource( 5 )
 StreamLength = 10
+BaseHeight = 0.02

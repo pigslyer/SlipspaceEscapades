@@ -16,6 +16,8 @@ shape = SubResource( 1 )
 
 [node name="AsteroidModel" parent="." instance=ExtResource( 1 )]
 scale = Vector2( 5, 5 )
+iframeFlashLength = 0.1
+iframeLength = 0.3
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 

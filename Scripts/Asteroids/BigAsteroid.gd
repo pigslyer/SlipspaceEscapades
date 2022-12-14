@@ -54,6 +54,8 @@ func body_entered(entity):
 			
 			$AsteroidModel.AsteroidDestroyedDropsPowerup();
 			yield($AsteroidModel,"OnDestroyed");
+			
+			Global.AddScore(Global.BIG_ASTEROID_SCORE, global_position);
 			queue_free();
 		else:
 			var diff = global_position - entity.global_position;

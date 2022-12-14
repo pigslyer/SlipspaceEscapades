@@ -35,8 +35,15 @@ func bullet_entered(body):
 		_updateShaderTear();
 		pussy_timer.start();
 		growing = false;
+		
 		if(hp <= 0):
 			queue_free();
+
+func DestroyShield():
+	hp = 0;
+	_updateShaderTear();
+	yield(get_tree().create_timer($PussyTimer.wait_time + 0.1), "timeout");
+	queue_free();
 
 func _updateShaderTear():
 	create_tween().tween_method(

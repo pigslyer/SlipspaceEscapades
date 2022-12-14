@@ -1,5 +1,15 @@
 extends Node
 
+const BIG_ASTEROID_SCORE = 1000;
+const SMALL_ASTEROID_SCORE = 100;
+const BIG_BOY_SCORE = 5000;
+const POWERUP_SCORE = 1000;
+
+var HUD;
+
+func AddScore(amount: int, pos: Vector2 = Vector2(-1,-1)):
+	if (HUD != null):
+		HUD.OnScoreGained(amount, pos);
 
 func _ready():
 	VisualServer.set_default_clear_color(Color.black);

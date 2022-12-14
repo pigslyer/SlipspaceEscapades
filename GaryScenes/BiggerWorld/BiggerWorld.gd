@@ -52,6 +52,7 @@ func _on_World_OnTimerEnded():
 	Sounds.PlayMusic(Sounds.MUSIC.NONE);
 	Save.SetHighscore($HUD.GetScore());
 	
+	get_tree().call_group("SHIELD","DestroyShield");
 	$Player.SetControlsLocked(true);
 	$Player.RotateRight(true);
 	$SlipspaceBackground.SetSlipspace(false);
@@ -84,6 +85,7 @@ func _on_Player_OnPlayedDied():
 	_hasLost = true;
 	Save.SetHighscore($HUD.GetScore());
 	
+	get_tree().call_group("SHIELD","DestroyShield");
 	$World.StopGameplay();
 	$HUD.Stop();
 	Sounds.PlaySound(PLAYER_DIED);
