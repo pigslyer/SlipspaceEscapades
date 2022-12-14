@@ -10,7 +10,7 @@ func _process(delta):
 func GetShieldPoopSource() -> Vector2:
 	if is_processing():
 		return $Generator.global_position;
-	return Vector2.ZERO;
+	return global_position;
 
 func Hit():
 	$ExplodableModel.Hit();
