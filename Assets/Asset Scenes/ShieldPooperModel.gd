@@ -8,7 +8,9 @@ func _process(delta):
 	$Generator.global_rotation += deg2rad(rotationSpeed) * delta;
 
 func GetShieldPoopSource() -> Vector2:
-	return $Generator.global_position;
+	if is_processing():
+		return $Generator.global_position;
+	return global_position;
 
 func Hit():
 	$ExplodableModel.Hit();
