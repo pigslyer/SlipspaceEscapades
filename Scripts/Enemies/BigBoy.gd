@@ -68,6 +68,8 @@ func body_entered(entity) -> void:
 		$BigBoyModel.Explode();
 		yield($BigBoyModel,"OnExplosionFinished");
 		
+		get_parent().big_boy = null;
+		
 		queue_free();
 	else:
 		$BigBoyModel.Hit();

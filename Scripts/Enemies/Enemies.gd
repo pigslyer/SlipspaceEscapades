@@ -106,7 +106,8 @@ func _physics_process(delta):
 			big_boy_spawned = true;
 			add_child(big_boy);
 		if(time_left < BIG_BOY_FRACTAL_TIME and big_boy != null):
-			big_boy.can_shoot_fractals = true;
+			if is_instance_valid(big_boy):
+				big_boy.can_shoot_fractals = true;
 		
 		for type in Global.SHIP_TYPES.values():
 			if(type != Global.SHIP_TYPES.SHIELD_POOPER and type != Global.SHIP_TYPES.BIG_BOY):
