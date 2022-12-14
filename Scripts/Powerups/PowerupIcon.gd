@@ -1,6 +1,6 @@
 extends Area2D
 
-export(Global.POWERUPS) var powerup_type;
+export(Global.POWERUPS) var powerup_type = 1;
 
 const ACCELERATION := 10;
 

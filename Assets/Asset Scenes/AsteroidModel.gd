@@ -1,6 +1,6 @@
 extends Node2D
 
-signal OnStoppedIFrames;
+#signal OnStoppedIFrames;
 # warning-ignore:unused_signal
 signal OnDestroyed;
 
@@ -11,7 +11,6 @@ export var destructionShaderLength = 0.4;
 export var destructionParticleStart = 0.2;
 export var fadeOutLength = 0.2;
 export var fadeOutTime = 0.2;
-
 
 onready var onHitMaterial: ShaderMaterial = $OnHit.material as ShaderMaterial;
 
@@ -28,7 +27,7 @@ func AsteroidHit() -> void:
 	
 	onHitMaterial.set_shader_param("flashAmount", 1.0);
 	
-	emit_signal("OnStoppedIFrames");
+#	emit_signal("OnStoppedIFrames");
 
 func AsteroidDestroyed() -> void:
 	$OnHitPair.show();
@@ -43,11 +42,11 @@ func AsteroidDestroyed() -> void:
 	tween.tween_callback(self,"emit_signal",["OnDestroyed"]);
 	
 	# for debugging
-	yield(get_tree().create_timer(2),"timeout");
-	$OnHit.modulate.a = 1;
-	$OnHitPair.modulate.a = 1;
-	onHitMaterial.set_shader_param("flashAmount", 1);
-	$OnHitPair.hide();
+#	yield(get_tree().create_timer(2),"timeout");
+#	$OnHit.modulate.a = 1;
+#	$OnHitPair.modulate.a = 1;
+#	onHitMaterial.set_shader_param("flashAmount", 1);
+#	$OnHitPair.hide();
 	
 
 func AsteroidDestroyedDropsPowerup() -> void:
@@ -63,11 +62,11 @@ func AsteroidDestroyedDropsPowerup() -> void:
 	tween.tween_callback(self,"emit_signal",["OnDestroyed"]);
 	
 	# for debugging
-	yield(get_tree().create_timer(2),"timeout");
-	$OnHit.modulate.a = 1;
-	$OnHitPair.modulate.a = 1;
-	onHitMaterial.set_shader_param("flashAmount", 1);
-	$OnHitPair.hide();
+#	yield(get_tree().create_timer(2),"timeout");
+#	$OnHit.modulate.a = 1;
+#	$OnHitPair.modulate.a = 1;
+#	onHitMaterial.set_shader_param("flashAmount", 1);
+#	$OnHitPair.hide();
 
 func _setShaderValue(amount: float):
 	onHitMaterial.set_shader_param("flashAmount", amount);
