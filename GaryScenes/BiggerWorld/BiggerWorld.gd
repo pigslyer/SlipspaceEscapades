@@ -48,9 +48,11 @@ func _on_World_OnTimerEnded():
 	if (_hasLost):
 		return;
 	
+	var score = $HUD.GetScore();
+	
 	Global.AddScore(1000);
 	Sounds.PlayMusic(Sounds.MUSIC.NONE);
-	Save.SetHighscore($HUD.GetScore());
+	Save.SetHighscore(score);
 	
 	get_tree().call_group("SHIELD","DestroyShield");
 	$Player.SetControlsLocked(true);
@@ -69,7 +71,7 @@ func _on_World_OnTimerEnded():
 	
 	yield(get_tree().create_timer(2),"timeout");
 	
-	_displayEndingText(wonText);
+	_displayEndingText(wonText, score);
 	
 	yield($CanvasLayer/EndingText, "OnHidden");
 	
@@ -85,7 +87,8 @@ var _hasLost = false;
 func _on_Player_OnPlayedDied():
 	Sounds.PlayMusic(Sounds.MUSIC.NONE);
 	_hasLost = true;
-	Save.SetHighscore($HUD.GetScore());
+	var score = $HUD.GetScore();
+	Save.SetHighscore(score);
 	
 	get_tree().call_group("SHIELD","DestroyShield");
 	$World.StopGameplay();
@@ -103,14 +106,14 @@ func _on_Player_OnPlayedDied():
 	
 	yield(get_tree().create_timer(2.2), "timeout");
 	
-	_displayEndingText(lostText % int(gameplayTime - $HUD.GetTime()));
+	_displayEndingText(lostText % int(gameplayTime - $HUD.GetTime()), score);
 	
 	yield($CanvasLayer/EndingText, "OnHidden");
 	# faster than moving the player around and shit
 	get_tree().reload_current_scene();
 
-func _displayEndingText(end: String):
-	$CanvasLayer/EndingText.Open("%s\n\nScore: %d\nHighscore: %d" % [end, $HUD.GetScore(), Save.GetHighscore()]);
+func _displayEndingText(end: String, score: int):
+	$CanvasLayer/EndingText.Open("%s\n\nScore: %d\nHighscore: %d" % [end, score, Save.GetHighscore()]);
 
 
 # it ain't perfect, but it's what we got (is it enough for you?)
