@@ -2,6 +2,11 @@ class_name Enemies
 extends Node2D
 
 const BARRAGE_TIME := 40;
+const BASIC_VARIANT_TIME := 50;
+const PLASMA_TIME := 35;
+const SHIELD_TIME := 30;
+const BIG_BOY_TIME := 20;
+const BIG_BOY_FRACTAL_TIME := 10;
 
 enum SHIP_TYPES {
 	BASIC,
@@ -15,7 +20,7 @@ const SHIP_TYPES_SCENES = [
 	preload("res://Scenes/Enemies/BasicShip.tscn"),
 	preload("res://Scenes/Enemies/BasicVariantShip.tscn"),
 	preload("res://Scenes/Enemies/PlasmaShip.tscn"),
-	null,
+	preload("res://Scenes/Enemies/BigBoy.tscn"),
 	preload("res://Scenes/Enemies/ShieldPooperShip.tscn")
 ];
 
@@ -39,6 +44,9 @@ const MAX_ATTACKER_NUMBERS = [
 	3,
 ];
 
+onready var basic_spawn_timer := $BasicSpawnTimer;
+
+
 var attacker_numbers = [
 	0,
 	0,
@@ -46,6 +54,7 @@ var attacker_numbers = [
 ];
 
 var player;
+var big_boy = null;
 var basic_ships_barrage := false;
 var countdown_timer;
 
@@ -90,7 +99,13 @@ func remove_attacker(inst: Node2D, type : int, score: int) -> void:
 	attacker_numbers[type] -= 1;
 	get_parent().AddScore(score, inst.global_position);
 
+func stop_gameplay() -> void:
+	for child in get_children():
+		child.gameplay_stopped = true;
+
 func _physics_process(delta):
+	
+	
 	for type in SHIP_TYPES.values():
 		if(type != SHIP_TYPES.SHIELD_POOPER and type != SHIP_TYPES.BIG_BOY):
 			for child in get_children():

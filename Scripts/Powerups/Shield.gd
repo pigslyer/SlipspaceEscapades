@@ -19,7 +19,7 @@ func _physics_process(delta):
 	if(growing):
 		var size = hp / max_hp;
 		scale = Vector2(size, size);
-		hp += 1/hp;
+		hp += 0.1/hp;
 		_updateShaderTear();
 		growing = hp <= max_hp;
 	

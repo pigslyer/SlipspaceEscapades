@@ -18,6 +18,7 @@ var go_to := Vector2();
 var pooped := 0;
 var player;
 var angle_of_poop := 0.0;
+var gameplay_stopped := false;
 
 func _ready():
 	go_to = global_position;
@@ -25,18 +26,19 @@ func _ready():
 	look_at(get_tree().get_nodes_in_group("PLAYER")[0].global_position);
 
 func _physics_process(delta):
-	var diff = go_to - global_position;
-	if(diff.length() > 5):
-		velocity = diff.normalized() * SPEED;
-		global_position += velocity * delta;
-	elif(movement_timer.is_stopped()):
-		movement_timer.start();
-		pooped = 0;
-		angle_of_poop = rand_range(0, 2 * PI);
-	elif(pooped < MAX_POOPED and shield_poop_timer.is_stopped()):
-		pooped += 1;
-		poop_shield();
-		shield_poop_timer.start();
+	if(!gameplay_stopped):
+		var diff = go_to - global_position;
+		if(diff.length() > 5):
+			velocity = diff.normalized() * SPEED;
+			global_position += velocity * delta;
+		elif(movement_timer.is_stopped()):
+			movement_timer.start();
+			pooped = 0;
+			angle_of_poop = rand_range(0, 2 * PI);
+		elif(pooped < MAX_POOPED and shield_poop_timer.is_stopped()):
+			pooped += 1;
+			poop_shield();
+			shield_poop_timer.start();
 
 func _process(delta):
 	if (velocity.length_squared() > 0):
@@ -52,7 +54,7 @@ func poop_shield() -> void:
 	get_parent().add_child(new_shield);
 
 func set_new_go_to() -> void:
-	go_to = Global.get_possible_enemy_pos();
+	go_to = Global.get_enemy_starting_pos();
 
 func body_entered(entity):
 	hp -= entity.strength;

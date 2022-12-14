@@ -27,18 +27,20 @@ var can_shoot := false;
 var is_on_run := false;
 var is_setting_up := false;
 var shoot_index := 0;
+var gameplay_stopped := false;
 
 func _ready():
-	go_to.x = Global.get_possible_enemy_pos().x;
+	starting_position = Global.get_enemy_starting_pos();
+	go_to.x = starting_position.x;
 	idle_timer.connect("timeout", self, "set_is_idle_set", [false]);
 	attack_timer.connect("timeout", self, "setup_bombing_run");
-	starting_position = global_position;
 
 func _physics_process(delta):
-	if(is_attacking):
-		attack(delta);
-	else:
-		idle_movement(delta);
+	if(!gameplay_stopped):
+		if(is_attacking):
+			attack(delta);
+		else:
+			idle_movement(delta);
 
 func attack(delta):
 	if(abs(go_to.y - global_position.y) > 25):
@@ -68,7 +70,7 @@ func attack(delta):
 		is_setting_up = true;
 
 func setup_bombing_run() -> void:
-	go_to.x = Global.get_possible_enemy_pos().x;
+	go_to.x = Global.get_enemy_starting_pos().x;
 	go_to.y = Global.bottom_right.y if global_position.y < Global.bottom_right.y * 0.5 else Global.bottom_right.y * 0.1;
 	is_setting_up = false;
 

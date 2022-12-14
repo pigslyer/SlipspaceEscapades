@@ -23,7 +23,7 @@ enum POWERUPS{
 var top_left;
 var bottom_right;
 
-func get_possible_enemy_pos() -> Vector2:
+func get_enemy_starting_pos() -> Vector2:
 	var new_pos = Vector2(
 		rand_range(top_left.x, bottom_right.x),
 		rand_range(top_left.y, bottom_right.y)

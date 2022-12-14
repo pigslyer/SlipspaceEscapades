@@ -6,7 +6,7 @@
 [ext_resource path="res://Assets/Sprites/PaletteSwappableExplosiveShip.png" type="Texture" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 26.5, 27 )
+extents = Vector2( 10, 20 )
 
 [sub_resource type="AtlasTexture" id=2]
 resource_local_to_scene = true

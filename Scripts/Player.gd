@@ -162,7 +162,7 @@ func add_powerup(powerup) -> void:
 			MissilePowerupVariables.explosive_number += 2;
 			MissilePowerupVariables.explosive_strength += 1;
 		Global.POWERUPS.FIRERATE:
-			powerups["firerate"] += 1;
+			powerups["fire_rate"] += 1;
 		Global.POWERUPS.FRACTAL:
 			next_shot_fractal = true;
 		Global.POWERUPS.SHIELD:

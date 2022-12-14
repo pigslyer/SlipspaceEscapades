@@ -24,12 +24,13 @@ var can_shoot := true;
 var is_attacking := false;
 var starting_position : Vector2;
 var is_idle_set := false;
+var gameplay_stopped := false;
 
 func _ready():
-	go_to.x = Global.get_possible_enemy_pos().x;
+	starting_position = Global.get_enemy_starting_pos();
+	go_to.x = starting_position.x;
 	idle_timer.connect("timeout", self, "set_is_idle_set", [false]);
 	shooting_timer.connect("timeout", self, "set_can_shoot", [true]);
-	starting_position = global_position;
 
 func attack(delta) -> void:
 	go_to.y = player.global_position.y + y_offset;
@@ -41,7 +42,7 @@ func attack(delta) -> void:
 		$BasicEnemyShipModel.SetGlobalDirection(velocity);
 		set_new_x = false;
 	elif(!set_new_x):
-		go_to.x = Global.get_possible_enemy_pos().x;
+		go_to.x = Global.get_enemy_starting_pos().x;
 		set_new_x = true;
 	else:
 		fire();
@@ -94,12 +95,13 @@ func set_is_idle_set(is_set : bool) -> void:
 	is_idle_set = is_set;
 
 func _physics_process(delta):
-	if(is_attacking):
-		attack(delta);
-	else:
-		idle_movement(delta);
-	
-	look_at(player.global_position);
+	if(!gameplay_stopped):
+		if(is_attacking):
+			attack(delta);
+		else:
+			idle_movement(delta);
+		
+		look_at(player.global_position);
 
 var _dying := false;
 
