@@ -64,7 +64,7 @@ func body_entered(entity) -> void:
 		set_deferred("collision_layer",0);
 		set_deferred("collision_mask",0);
 		$BigBoyModel.Explode();
-		yield($BigBoyModel,"OnDestroyed");
+		yield($BigBoyModel,"OnExplosionFinished");
 		
 		queue_free();
 	else:
