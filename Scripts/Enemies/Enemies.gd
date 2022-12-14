@@ -77,8 +77,10 @@ func remove_attacker(type : int) -> void:
 
 func stop_gameplay() -> void:
 	gameplay_stopped = true;
+	big_boy = null;
 	for child in get_children():
-		child.gameplay_stopped = true;
+		if(child.is_in_group("Entities")):
+			child.gameplay_stopped = true;
 
 func _physics_process(delta):
 	if(!gameplay_stopped && !countdown_timer.is_stopped()):

@@ -18,7 +18,7 @@ class Obj:
 
 func StopGameplay():
 	$GameplayCountdown.stop();
-	$Enemies.gameplay_stopped = true;
+	$Enemies.stop_gameplay();
 	$Asteroids.gameplay_stopped = true;
 	
 	var obj = Obj.new();

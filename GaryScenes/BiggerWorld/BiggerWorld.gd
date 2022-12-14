@@ -6,7 +6,7 @@ const WON_SOUND = preload("res://Assets/Music/ChirpyW.wav");
 
 const GAME_OVER_FADE_TIME = 1.4;
 
-export (float) var gameplayTime = 60;
+export (float) var gameplayTime = 10;
 
 export (String, MULTILINE) var wonText;
 export (String, MULTILINE) var lostText;

@@ -38,19 +38,19 @@ z_index = 1
 script = ExtResource( 4 )
 
 [node name="BasicSpawnTimer" type="Timer" parent="Enemies"]
-wait_time = 3.0
-one_shot = true
-
-[node name="BasicVariantSpawnTimer" type="Timer" parent="Enemies"]
-wait_time = 5.0
-one_shot = true
-
-[node name="PlasmaSpawnTimer" type="Timer" parent="Enemies"]
 wait_time = 8.0
 one_shot = true
 
+[node name="BasicVariantSpawnTimer" type="Timer" parent="Enemies"]
+wait_time = 12.0
+one_shot = true
+
+[node name="PlasmaSpawnTimer" type="Timer" parent="Enemies"]
+wait_time = 17.0
+one_shot = true
+
 [node name="ShieldSpawnTimer" type="Timer" parent="Enemies"]
-wait_time = 10.0
+wait_time = 20.0
 one_shot = true
 
 [node name="EnemySpawnArea" type="Node2D" parent="Enemies"]
@@ -70,7 +70,7 @@ position = Vector2( 626, 29 )
 position = Vector2( 988, 571 )
 
 [node name="GameplayCountdown" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 10.0
 one_shot = true
 
 [node name="Asteroids" type="Node2D" parent="."]
@@ -97,7 +97,7 @@ wait_time = 10.0
 autostart = true
 
 [node name="SmallSpawnTimer" type="Timer" parent="Asteroids"]
-wait_time = 0.5
+wait_time = 4.0
 autostart = true
 
 [connection signal="timeout" from="GameplayCountdown" to="." method="_on_GameplayCountdown_timeout"]
