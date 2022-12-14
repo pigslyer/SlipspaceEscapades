@@ -2,7 +2,7 @@ extends Area2D
 
 const MAX_ROTATION_SPEED := 2;
 const MAX_SPEED := 50;
-const DROP_CHANCE := 0.20;
+const DROP_CHANCE := 0.28;
 
 const POWERUP_ICON_PRELOADS = [
 	preload("res://Scenes/PowerupIcons/HealthPowerup.tscn"),

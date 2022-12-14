@@ -10,9 +10,13 @@ func _ready():
 
 func StartGameplay(time: float):
 	$GameplayCountdown.start(time);
+	$Enemies.gameplay_stopped = false;
+	$Asteroids.gameplay_stopped = false;
 
 func StopGameplay():
 	$GameplayCountdown.stop();
+	$Enemies.gameplay_stopped = true;
+	$Asteroids.gameplay_stopped = true;
 	
 	for enemy in $Enemies.get_children():
 		enemy.set_physics_process(false);

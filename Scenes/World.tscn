@@ -103,7 +103,7 @@ wait_time = 10.0
 autostart = true
 
 [node name="SmallSpawnTimer" type="Timer" parent="Asteroids"]
-wait_time = 3.0
+wait_time = 0.5
 autostart = true
 
 [connection signal="pressed" from="Button" to="Enemies" method="spawn_ships"]
