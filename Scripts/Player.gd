@@ -1,12 +1,15 @@
-signal OnPlayerHealthArmorChanged(health, armor)
+
 
 class_name Player
 extends KinematicBody2D
 
 signal OnPlayedDied;
+signal OnPlayerHealthArmorChanged(health, armor);
 
 const SHOOT_EFFECT = preload("res://Assets/SFX/GunSound.wav");
 const SHOOT_EFFECT_FRACTAL = preload("res://Assets/SFX/FractalMissile.wav");
+const PLAYER_HURT_EFFECT = preload("res://Assets/SFX/PlayerHurtNoShields.wav");
+const PLAYER_DIED := preload("res://Assets/SFX/PlayerDeath.wav");
 
 #CONSTANTS FOR MOVEMENT
 const ACCELERATION := 2500;
@@ -90,7 +93,8 @@ func _physics_process(delta):
 	velocity += input * ACCELERATION * delta;
 	velocity *= 1 - FRICTION;
 	
-	$BasicShip.SetMovingDirection(input);
+	if (!_controlsLocked):
+		$BasicShip.SetMovingDirection(input);
 	
 	velocity = move_and_slide(velocity, Vector2.UP);
 	
@@ -245,4 +249,12 @@ func body_entered(entity):
 		else:
 			hp -= 1;
 		pussy_timer.start();
-		$BasicShip.InvulnFlash();
+		
+		if hp > 0:
+			$BasicShip.InvulnFlash();
+			Sounds.PlaySound(PLAYER_HURT_EFFECT, null, 0, rand_range(0.9, 1.1));
+			emit_signal("OnPlayerHealthArmorChanged");
+		else:
+			$BasicShip.Explode();
+			Sounds.PlaySound(PLAYER_DIED);
+			emit_signal("OnPlayedDied");

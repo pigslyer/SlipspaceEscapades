@@ -49,6 +49,8 @@ hiddenVector = Vector2( 1, -1 )
 
 [node name="MouseCursor" parent="CanvasLayer" instance=ExtResource( 9 )]
 
+[connection signal="OnPlayedDied" from="Player" to="." method="_on_Player_OnPlayedDied"]
+[connection signal="OnPlayerHealthArmorChanged" from="Player" to="HUD" method="OnPlayerHealthChanged"]
 [connection signal="OnScoreGained" from="World" to="HUD" method="OnScoreGained"]
 [connection signal="OnTimerEnded" from="World" to="." method="_on_World_OnTimerEnded"]
 [connection signal="OnStartGame" from="CanvasLayer/MainMenu" to="." method="_on_MainMenu_OnStartGame"]

@@ -1,7 +1,6 @@
 extends Control
 
 const ENTERING_SLIPSPACE := preload("res://Assets/SFX/EnteringSlipspace.wav");
-const PLAYER_DIED := preload("res://Assets/SFX/PlayerDeath.wav");
 const GAME_OVER_VOICE := preload("res://Assets/SFX/GameOverVoice.wav");
 const WON_SOUND = preload("res://Assets/Music/ChirpyW.wav");
 
@@ -88,7 +87,6 @@ func _on_Player_OnPlayedDied():
 	get_tree().call_group("SHIELD","DestroyShield");
 	$World.StopGameplay();
 	$HUD.Stop();
-	Sounds.PlaySound(PLAYER_DIED);
 	$Player.SetControlsLocked(true);
 	
 	var tween := create_tween().set_parallel();
