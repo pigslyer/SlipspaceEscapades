@@ -52,7 +52,8 @@ var restrict_shooting := false;
 var test_powerup := false;
 
 #POWERUP VARIABLES
-export(int) var hp = 3;
+export(int) var max_hp = 3;
+var hp = max_hp;
 var armor := 0;
 var powerups := {
 	"barrage": 0,
@@ -135,13 +136,12 @@ func fire_bullet(bullet_type) -> void:
 		new_bullet2.global_position = firing_position.global_position;
 		new_bullet2.collision_layer = 64;
 		parent.add_child(new_bullet2);
-	
-	
 
 func add_powerup(powerup) -> void:
 	match(powerup):
 		Global.POWERUPS.HEALTH:
-			hp += 1;
+			hp = max_hp;
+			pussy_timer.start();
 			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
 		Global.POWERUPS.ARMOR:
 			armor += 1;
@@ -190,7 +190,7 @@ func fire_BFL() -> void:
 	
 	var new_bfl = bfl_scene.instance();
 	new_bfl.position = firing_position.position;
-	bfls.add_child(new_bfl);
+	bfls.call_deffered("add_child", new_bfl);
 	new_bfl.SetSoundSettings(1 + pitchMult * 0.1, 0);
 	
 	for i in powerups["barrage"]:
@@ -233,6 +233,8 @@ func set_can_shoot(can : bool) -> void:
 
 func body_entered(entity):
 	if(!entity.is_in_group("Powerups") && pussy_timer.is_stopped()):
-		hp -= 1; #Pussy move as well
+		if(armor > 0):
+			armor -= 1;
+		else:
+			hp -= 1;
 		pussy_timer.start();
-		print(hp);

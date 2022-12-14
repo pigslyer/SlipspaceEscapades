@@ -1,9 +1,9 @@
 class_name ExplosiveMissile
 extends Area2D
 
-export(int) var strength = 2;
+const SPEED := 400;
 
-var velocity := Vector2.RIGHT * 500;
+export(int) var strength = 2;
 
 onready var timer := $Timer;
 onready var explosion_timer := $ExplosionTimer;
@@ -14,7 +14,7 @@ func _ready():
 	explosion_timer.start(rand_range(0.9, 1.1));
 
 func _physics_process(delta):
-	global_position += velocity.rotated(rotation) * delta;
+	global_position += (Vector2.RIGHT * SPEED).rotated(rotation) * delta;
 	
 	if(!visibility_notifier.is_on_screen()):
 		queue_free();
