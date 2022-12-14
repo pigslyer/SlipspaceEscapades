@@ -112,6 +112,9 @@ func on_body_entered(entity):
 		emit_signal("attacking");
 	hp -= entity.strength;
 	if(hp <= 0):
+		
+		set_deferred("collision_layer",0);
+		set_deferred("collision_mask",0);
 		emit_signal("dying");
 		$BasicEnemyShipModel.Explode();
 		yield($BasicEnemyShipModel,"FinishedExploding");

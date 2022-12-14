@@ -60,6 +60,9 @@ func body_entered(entity):
 	hp -= entity.strength;
 	if(hp <= 0):
 		$ShieldPooperModel.Destroy();
+		
+		set_deferred("collision_layer",0);
+		set_deferred("collision_mask",0);
 		yield($ShieldPooperModel, "OnDestroyed");
 		queue_free();
 	else:

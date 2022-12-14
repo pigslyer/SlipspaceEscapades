@@ -60,6 +60,9 @@ func fire_fractal() -> void:
 func body_entered(entity) -> void:
 	hp -= entity.strength;
 	if(hp <= 0):
+		
+		set_deferred("collision_layer",0);
+		set_deferred("collision_mask",0);
 		$BigBoyModel.Explode();
 		yield($BigBoyModel,"OnDestroyed");
 		

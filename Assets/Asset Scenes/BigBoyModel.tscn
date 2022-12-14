@@ -13,10 +13,8 @@ model = ExtResource( 2 )
 
 [node name="FractalCannon" type="Position2D" parent="ExplodableModel"]
 position = Vector2( 11.5, 0 )
-scale = Vector2( 1, 1 )
 
 [node name="MissileArray" type="Node2D" parent="ExplodableModel"]
-scale = Vector2( 1, 1 )
 
 [node name="Position2D" type="Position2D" parent="ExplodableModel/MissileArray"]
 position = Vector2( 5.6, 8 )

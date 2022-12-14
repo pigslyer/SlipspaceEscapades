@@ -14,6 +14,9 @@ func Hit():
 	$ExplodableModel.Hit();
 
 func Destroy():
+	set_process(false);
+	set_deferred("collision_layer",0);
+	set_deferred("collision_mask",0);
 	$Generator.queue_free();
 	$ExplodableModel.Destroy();
 	yield($ExplodableModel,"OnDestroyed");
