@@ -243,7 +243,7 @@ func set_can_shoot(can : bool) -> void:
 		can_shoot = can;
 
 func body_entered(entity):
-	if(!entity.is_in_group("Powerups") && pussy_timer.is_stopped()):
+	if(!entity.is_in_group("Powerups") && pussy_timer.is_stopped()) && !_controlsLocked:
 		if(armor > 0):
 			armor -= 1;
 		else:
