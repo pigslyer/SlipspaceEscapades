@@ -158,7 +158,7 @@ func add_powerup(powerup) -> void:
 			armor += 1;
 			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
 		Global.POWERUPS.BFL:
-			fire_BFL();
+			call_deferred("fire_BFL");
 		Global.POWERUPS.BARRAGE:
 			powerups["barrage"] += 1;
 		Global.POWERUPS.EXPLOSIVE:

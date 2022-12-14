@@ -38,10 +38,16 @@ func _physics_process(delta):
 	if(!was_visible and visibility_notifier.is_on_screen()):
 		was_visible = true;
 
+var _isExploding = false;
+
 func body_entered(entity):
-	if!(entity.is_in_group("Entity") or entity.is_in_group("SHIELD")):
+	if (!(entity.is_in_group("Entity") or entity.is_in_group("SHIELD"))) && !_isExploding:
 		hp -= entity.strength;
 		if(hp <= 0):
+			_isExploding = true;
+			set_deferred("collision_layer", 0);
+			set_deferred("collision_mask", 0);
+			
 			var new_index = randi() % Global.POWERUPS.size();
 			var player = get_tree().get_nodes_in_group("PLAYER")[0];
 			if(player.hp >= player.MAX_HP and new_index == 0):

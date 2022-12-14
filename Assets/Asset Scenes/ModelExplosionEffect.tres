@@ -16,5 +16,6 @@ void fragment()
 }"
 
 [resource]
+resource_local_to_scene = true
 shader = SubResource( 13 )
 shader_param/flashAmount = 1.0

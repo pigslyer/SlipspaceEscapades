@@ -39,10 +39,16 @@ func _physics_process(delta):
 	if(!was_visible and visibility_notifier.is_on_screen()):
 		was_visible = true;
 
+var _isExploding: bool = false;
+
 func body_entered(entity):
-	if!(entity.is_in_group("Entity") or entity.is_in_group("SHIELD")):
+	if!(entity.is_in_group("Entity") or entity.is_in_group("SHIELD")) && !_isExploding:
 		hp -= entity.strength;
 		if(hp <= 0):
+			_isExploding = true;
+			set_deferred("collision_mask", 0);
+			set_deferred("collision_layer", 0);
+			
 			if(randf() <= DROP_CHANCE):
 				$AsteroidModel.AsteroidDestroyedDropsPowerup();
 				yield($AsteroidModel,"OnDestroyed");

@@ -3,6 +3,8 @@ extends Area2D
 
 const FADE_OUT_TIME = 2;
 
+var strength = 99999999;
+
 func SetSoundSettings(pitch: float, delay: float):
 	$BflLoop.pitch_scale = pitch;
 	
