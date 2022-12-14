@@ -253,7 +253,7 @@ func body_entered(entity):
 		if hp > 0:
 			$BasicShip.InvulnFlash();
 			Sounds.PlaySound(PLAYER_HURT_EFFECT, null, 0, rand_range(0.9, 1.1));
-			emit_signal("OnPlayerHealthArmorChanged");
+			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
 		else:
 			$BasicShip.Explode();
 			Sounds.PlaySound(PLAYER_DIED);

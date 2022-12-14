@@ -109,7 +109,7 @@ func stop_gameplay() -> void:
 		child.gameplay_stopped = true;
 
 func _physics_process(delta):
-	if(!gameplay_stopped):
+	if(!gameplay_stopped && !countdown_timer.is_stopped()):
 		var time_left = countdown_timer.time_left;
 		
 		if(basic_spawn_timer.is_stopped()):

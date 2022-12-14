@@ -87,7 +87,7 @@ _global_script_class_icons={
 [application]
 
 config/name="SlipspaceEscapades"
-run/main_scene="res://Scenes/World.tscn"
+run/main_scene="res://GaryScenes/BiggerWorld/BiggerWorld.tscn"
 config/icon="res://icon.png"
 
 [autoload]
