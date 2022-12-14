@@ -57,9 +57,10 @@ func multiply(area = null) -> void:
 		explode(area);
 
 func body_entered(entity) -> void:
-	if(entity.is_in_group("Entity")):
-		multiply();
-	elif(!entity.is_in_group("SHIELD")):
-		hp -= entity.strength;
-		if(hp <= 0):
-			explode(null);
+	if entity is Node:
+		if(entity.is_in_group("Entity")):
+			multiply();
+		elif(!entity.is_in_group("SHIELD")):
+			hp -= entity.strength;
+			if(hp <= 0):
+				explode(null);

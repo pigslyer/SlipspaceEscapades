@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 30.0
 
-[node name="FractalMissile" type="Area2D"]
+[node name="FractalMissile" type="Area2D" groups=["GARBAGE"]]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource( 1 )

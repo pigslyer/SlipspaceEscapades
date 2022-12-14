@@ -5,7 +5,7 @@
 
 [sub_resource type="CircleShape2D" id=1]
 
-[node name="SmallAsteroid" type="Area2D"]
+[node name="SmallAsteroid" type="Area2D" groups=["GARBAGE"]]
 collision_layer = 8
 collision_mask = 192
 script = ExtResource( 2 )

@@ -61,6 +61,9 @@ func body_entered(entity):
 	if(hp <= 0):
 		$ShieldPooperModel.Destroy();
 		
+		if entity is Node:
+			Global.AddScore(Global.SHIP_SCORES[Global.SHIP_TYPES.SHIELD_POOPER], global_position);
+		
 		set_deferred("collision_layer",0);
 		set_deferred("collision_mask",0);
 		yield($ShieldPooperModel, "OnDestroyed");

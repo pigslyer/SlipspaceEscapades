@@ -10,6 +10,7 @@ var was_visible := false;
 var velocity := Vector2();
 
 func _ready():
+	add_to_group("GARBAGE");
 	$PowerupIcons.Appear();
 	$PowerupIcons.ShowIcon(powerup_type);
 

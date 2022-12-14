@@ -25,7 +25,7 @@ void fragment()
 [sub_resource type="ShaderMaterial" id=3]
 shader = SubResource( 2 )
 
-[node name="BFL" type="Area2D"]
+[node name="BFL" type="Area2D" groups=["GARBAGE"]]
 collision_layer = 64
 collision_mask = 0
 script = ExtResource( 2 )

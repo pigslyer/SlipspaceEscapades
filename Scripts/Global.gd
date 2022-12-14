@@ -19,6 +19,23 @@ func _ready():
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN;
 	
 
+enum SHIP_TYPES {
+	BASIC,
+	BASIC_VARIANT,
+	PLASMA,
+	BIG_BOY,
+	SHIELD_POOPER
+};
+
+const SHIP_SCORES = [
+	100,
+	250,
+	500,
+	10000,
+	500,
+];
+
+
 enum POWERUPS{
 	HEALTH = 1,
 	FRACTAL = 2, 

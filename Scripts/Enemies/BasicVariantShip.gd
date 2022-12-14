@@ -113,6 +113,9 @@ func on_body_entered(entity):
 	hp -= entity.strength;
 	if(hp <= 0):
 		
+		if entity is Node:
+			Global.AddScore(Global.SHIP_SCORES[Global.SHIP_TYPES.BASIC_VARIANT], global_position);
+		
 		set_deferred("collision_layer",0);
 		set_deferred("collision_mask",0);
 		emit_signal("dying");

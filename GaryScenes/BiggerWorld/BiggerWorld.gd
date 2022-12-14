@@ -56,9 +56,11 @@ func _on_World_OnTimerEnded():
 	$Player.RotateRight(true);
 	$SlipspaceBackground.SetSlipspace(false);
 	$HUD.Stop();
+	$World.StopGameplay();
 	
 	yield($SlipspaceBackground,"FinishedTransition");
 	
+	get_tree().call_group("GARBAGE","queue_free");
 	Sounds.PlaySound(WON_SOUND);
 	
 	var tween = create_tween().set_loops();

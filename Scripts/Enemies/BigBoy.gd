@@ -60,6 +60,8 @@ func fire_fractal() -> void:
 func body_entered(entity) -> void:
 	hp -= entity.strength;
 	if(hp <= 0):
+		if entity is Node:
+			Global.AddScore(Global.SHIP_SCORES[Global.SHIP_TYPES.BIG_BOY], global_position);
 		
 		set_deferred("collision_layer",0);
 		set_deferred("collision_mask",0);

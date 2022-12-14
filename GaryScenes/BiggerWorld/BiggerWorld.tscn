@@ -14,6 +14,7 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
+gameplayTime = 10.0
 wonText = "\"We've done it!\" your space first mate shouts. His joyous roar is joined by the rest of your space crew.
 \"Y'know what lads!\", you shout out \"It's time for us to get knackered! TO THE SPACE BAR!\""
 lostText = "And so your space crew's journey ends. You had a good run, until you failed to slip away."
