@@ -1,0 +1,57 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Asset Scenes/ExplodableModel.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Asset Scenes/ModelExplosionEffect.tres" type="Material" id=2]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 4
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id=9]
+interpolation_mode = 2
+offsets = PoolRealArray( 0.0258065, 0.767742, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
+
+[sub_resource type="Curve" id=11]
+min_value = 1.0
+max_value = 2.0
+_data = [ Vector2( 0, 2 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=12]
+curve = SubResource( 11 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 120.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = -100.0
+radial_accel = 1.0
+scale_curve = SubResource( 12 )
+color_ramp = SubResource( 10 )
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[node name="ExplodableModel" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="OnHit" type="Sprite" parent="."]
+material = ExtResource( 2 )
+
+[node name="OnHitPair" type="Sprite" parent="."]
+material = ExtResource( 2 )
+
+[node name="Explosion" type="Particles2D" parent="."]
+material = SubResource( 1 )
+emitting = false
+amount = 16
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource( 8 )

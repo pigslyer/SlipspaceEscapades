@@ -113,7 +113,12 @@ func on_body_entered(entity):
 	hp -= entity.strength;
 	if(hp <= 0):
 		emit_signal("dying");
+		$BasicEnemyShipModel.Explode();
+		yield($BasicEnemyShipModel,"FinishedExploding");
+		
 		queue_free();
+	else:
+		$BasicEnemyShipModel.Hit();
 
 
 

@@ -60,4 +60,9 @@ func fire_fractal() -> void:
 func body_entered(entity) -> void:
 	hp -= entity.strength;
 	if(hp <= 0):
+		$BigBoyModel.Explode();
+		yield($BigBoyModel,"OnDestroyed");
+		
 		queue_free();
+	else:
+		$BigBoyModel.Hit();

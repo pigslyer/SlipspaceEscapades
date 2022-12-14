@@ -14,22 +14,27 @@ export var fadeOutTime = 0.2;
 
 onready var onHitMaterial: ShaderMaterial = $OnHit.material as ShaderMaterial;
 
+var _isExploding := false;
+
 func AsteroidHit() -> void:
+	
 	var wasFlashed: bool = false;
 	
 	var length := 0.0;
-	while (length < iframeLength):
+	while (length < iframeLength && !_isExploding):
 		onHitMaterial.set_shader_param("flashAmount", 1.0 if wasFlashed else 0.01);
-		
+
 		yield(get_tree().create_timer(iframeFlashLength),"timeout");
 		length += iframeFlashLength;
 		wasFlashed = !wasFlashed;
-	
-	onHitMaterial.set_shader_param("flashAmount", 1.0);
-	
-#	emit_signal("OnStoppedIFrames");
+
+	if (!_isExploding):
+		onHitMaterial.set_shader_param("flashAmount", 1.0);
+
 
 func AsteroidDestroyed() -> void:
+	_isExploding = true;
+	
 	$OnHitPair.show();
 	
 	var tween := create_tween();
@@ -50,6 +55,7 @@ func AsteroidDestroyed() -> void:
 	
 
 func AsteroidDestroyedDropsPowerup() -> void:
+	_isExploding = true;
 	$OnHitPair.show();
 	
 	var tween := create_tween();

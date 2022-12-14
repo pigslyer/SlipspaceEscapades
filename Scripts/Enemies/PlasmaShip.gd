@@ -101,4 +101,8 @@ func on_body_entered(entity):
 	hp -= entity.strength;
 	if(hp <= 0):
 		emit_signal("dying");
+		$PlasmaSiegeShip.Destroy();
+		yield($PlasmaSiegeShip,"OnDestroyed");
 		queue_free();
+	else:
+		$PlasmaSiegeShip.Hit();

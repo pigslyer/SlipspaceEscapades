@@ -1,5 +1,7 @@
 extends Sprite
 
+signal OnDestroyed;
+
 var _rightSide: bool = false;
 
 func SetSideRight(isRight: bool) -> void:
@@ -10,3 +12,11 @@ func get_left_children() -> Array:
 
 func get_right_children() -> Array:
 	return $RightSide.get_children();
+
+func Hit():
+	$ExplodableModel.Hit();
+
+func Destroy():
+	$ExplodableModel.Destroy();
+	yield($ExplodableModel, "OnDestroyed");
+	emit_signal("OnDestroyed");

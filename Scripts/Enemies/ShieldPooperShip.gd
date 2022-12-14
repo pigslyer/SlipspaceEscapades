@@ -59,4 +59,8 @@ func set_new_go_to() -> void:
 func body_entered(entity):
 	hp -= entity.strength;
 	if(hp <= 0):
+		$ShieldPooperModel.Destroy();
+		yield($ShieldPooperModel, "OnDestroyed");
 		queue_free();
+	else:
+		$ShieldPooperModel.Hit();

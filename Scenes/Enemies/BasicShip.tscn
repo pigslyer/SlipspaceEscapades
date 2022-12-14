@@ -1,10 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Enemies/BasicShip.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Sprites/BasicEnemyShip.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Asset Scenes/BasicEnemyShipModel.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
+
+[sub_resource type="AtlasTexture" id=2]
+resource_local_to_scene = true
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 24, 24 )
 
 [node name="BasicShip" type="Area2D" groups=["BasicShips", "Entity"]]
 collision_layer = 4
@@ -26,6 +32,7 @@ one_shot = true
 
 [node name="BasicEnemyShipModel" parent="." instance=ExtResource( 3 )]
 scale = Vector2( 1.5, 1.5 )
+texture = SubResource( 2 )
 
 [connection signal="area_entered" from="." to="." method="on_body_entered"]
 [connection signal="body_entered" from="." to="." method="on_body_entered"]

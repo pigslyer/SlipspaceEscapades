@@ -1,10 +1,20 @@
 extends Node2D
 
+signal OnExplosionFinished;
+
 func GetFractalCannonPosition() -> Position2D:
-	return $Sprite/FractalCannon as Position2D;
+	return $ExplodableModel/FractalCannon as Position2D;
 
 func GetMissileArrayPositions() -> Array:
-	return $Sprite/MissileArray.get_children();
+	return $ExplodableModel/MissileArray.get_children();
 
 func SetMovingDirection(dir: Vector2) -> void:
-	$Sprite.texture.region.position = Vector2(sign(dir.y) * 23, 0);
+	$ExplodableModel.model.region.position = Vector2(sign(dir.y) * 23, 0);
+
+func Hit():
+	$ExplodableModel.Hit();
+
+func Explode():
+	$ExplodableModel.Explode();
+	yield($ExplodableModel, "OnDestroyed");
+	emit_signal("OnExplosionFinished");
