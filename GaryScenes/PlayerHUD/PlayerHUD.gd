@@ -11,7 +11,6 @@ func Start(timerTime: float):
 	Global.HUD = self;
 	StartTimer(timerTime);
 	ResetScore();
-	OnPlayerHealthChanged(3,0);
 	
 	if (Save.GetHighscore() == 0):
 		StartTutorial();
@@ -20,12 +19,19 @@ func Start(timerTime: float):
 	
 	create_tween().tween_property($Root,"modulate:a",1.0, FADE_IN_TIME).set_trans(Tween.TRANS_CUBIC).from(0.0);
 
+# like Stop, but does some additiaonl shit
+func StopPlayerDied():
+	Stop();
+	$Root/VBoxContainer/TimerDisplay/LeavingSlipspace.stop();
+
 func Stop():
-	
 	timerDisplay.StopTimer();
 	var tween := create_tween();
 	tween.tween_property($Root, "modulate:a", 0.0, FADE_IN_TIME).set_trans(Tween.TRANS_CUBIC);
 	tween.tween_callback(self, "hide");
+
+func SetDisplayTime(time):
+	timerDisplay.SetTime(time);
 
 func StartTutorial():
 	tutorial.StartTutorial();

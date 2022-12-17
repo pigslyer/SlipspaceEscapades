@@ -26,6 +26,6 @@ func EnableTrail(state: bool):
 	visible = state;
 	$Particles2D.emitting = state;
 
-func _process(delta):
+func _process(_delta):
 	$Particles2D.emitting = global_position != prevPos;
 	prevPos = global_position;

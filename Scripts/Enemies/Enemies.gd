@@ -84,27 +84,33 @@ func stop_gameplay() -> void:
 		if(child.is_in_group("Entities")):
 			child.gameplay_stopped = true;
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if(!gameplay_stopped && !countdown_timer.is_stopped()):
 		var time_left = countdown_timer.time_left;
 		
 		if(basic_spawn_timer.is_stopped()):
 			spawn_ship(Global.SHIP_TYPES.BASIC);
 			basic_spawn_timer.start();
+		
 		if(time_left < BASIC_VARIANT_TIME and basic_variant_spawn_timer.is_stopped()):
 			spawn_ship(Global.SHIP_TYPES.BASIC_VARIANT);
 			basic_variant_spawn_timer.start();
+		
 		if(time_left < PLASMA_TIME and plasma_spawn_timer.is_stopped()):
 			spawn_ship(Global.SHIP_TYPES.PLASMA);
 			plasma_spawn_timer.start();
+		
 		if(time_left < SHIELD_TIME and shield_spawn_timer.is_stopped()):
 			spawn_ship(Global.SHIP_TYPES.SHIELD_POOPER);
 			shield_spawn_timer.start();
+		
+		
 		if(time_left < BIG_BOY_TIME and big_boy == null and !big_boy_spawned):
 			big_boy = SHIP_TYPES_SCENES[Global.SHIP_TYPES.BIG_BOY].instance();
 			big_boy.global_position = get_spawn_pos();
 			big_boy_spawned = true;
 			add_child(big_boy);
+		
 		if(time_left < BIG_BOY_FRACTAL_TIME and big_boy != null):
 			if is_instance_valid(big_boy):
 				big_boy.can_shoot_fractals = true;

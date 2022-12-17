@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://GaryScenes/PlayerHUD/PlayerHUD.gd" type="Script" id=1]
 [ext_resource path="res://Assets/UI/DefaultUITheme.tres" type="Theme" id=2]
@@ -14,7 +14,8 @@
 [ext_resource path="res://Assets/Sprites/Icons/TutorialGylphW.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Sprites/Icons/TutorialGylphA.png" type="Texture" id=13]
 [ext_resource path="res://GaryScenes/PlayerHUD/Tutorial.gd" type="Script" id=14]
-[ext_resource path="res://Assets/Sprites/Icons/TutorialGylphSpace.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Sprites/Icons/TutorialGlyphLMB.png" type="Texture" id=15]
+[ext_resource path="res://Assets/SFX/LeavingSlipspace.wav" type="AudioStream" id=16]
 
 [sub_resource type="Animation" id=1]
 resource_name = "FadeIn"
@@ -143,6 +144,10 @@ custom_fonts/font = ExtResource( 5 )
 text = "Time: 20.5818"
 script = ExtResource( 7 )
 
+[node name="LeavingSlipspace" type="AudioStreamPlayer" parent="Root/VBoxContainer/TimerDisplay"]
+stream = ExtResource( 16 )
+bus = "Sfx"
+
 [node name="Score" type="VBoxContainer" parent="Root"]
 unique_name_in_owner = true
 anchor_left = 1.0
@@ -250,12 +255,13 @@ stretch_mode = 6
 [node name="Shooting" type="TextureRect" parent="Root/Tutorial"]
 modulate = Color( 1, 1, 1, 0 )
 anchor_left = 0.5
-anchor_top = 0.9
+anchor_top = 0.8
 anchor_right = 0.5
-anchor_bottom = 0.9
-margin_left = -96.0
-margin_top = -64.0
-margin_right = 96.0
+anchor_bottom = 0.8
+margin_left = -48.0
+margin_top = -48.0
+margin_right = 48.0
+margin_bottom = 48.0
 texture = ExtResource( 15 )
 stretch_mode = 6
 

@@ -26,6 +26,8 @@ func _physics_process(delta):
 func player_entered(player):
 	player.get_parent().add_powerup(powerup_type);
 	$PowerupIcons.Disappear();
+	set_deferred("collision_layer", 0);
+	set_deferred("collision_mask", 0);
 	yield($PowerupIcons,"OnAnimationFinished");
 	Global.AddScore(Global.POWERUP_SCORE, global_position);
 	queue_free();

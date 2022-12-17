@@ -46,6 +46,7 @@ script = ExtResource( 1 )
 material = ExtResource( 2 )
 
 [node name="OnHitPair" type="Sprite" parent="."]
+visible = false
 material = ExtResource( 2 )
 
 [node name="Explosion" type="Particles2D" parent="."]

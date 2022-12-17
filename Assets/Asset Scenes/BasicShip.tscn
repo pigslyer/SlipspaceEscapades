@@ -1,34 +1,141 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Sprites/BasicShip.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Asset Scenes/BasicShip.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Asset Scenes/TronTrail.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Asset Scenes/Explosion.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Asset Scenes/SpeedyTrail.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Asset Scenes/ExplodableModel.tscn" type="PackedScene" id=6]
 
-[sub_resource type="AtlasTexture" id=1]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 24, 24 )
 
-[node name="BasicShip" type="Sprite"]
-texture = SubResource( 1 )
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform float CurrentTime;
+uniform float CatchUpTime;
+uniform float Path;
+
+void vertex()
+{
+	if (VERTEX.x != 0.5)
+	{
+		VERTEX.x -= CurrentTime * Path;
+	}
+	else
+	{
+		VERTEX.x -= CatchUpTime * Path;
+	}
+}
+
+void fragment()
+{
+	if (distance(UV, vec2(0.5)) > 0.5)
+	{
+		discard;
+	}
+	
+	COLOR = mix(texture(TEXTURE, UV), vec4(1.0, 0.0, 0.0, 1.0), max(UV.x - 0.8, 0.0) / 0.2);
+	COLOR.a -= abs(UV.y - 0.5) * abs(UV.y - 0.5);
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
+shader = SubResource( 2 )
+shader_param/CurrentTime = 0.0
+shader_param/CatchUpTime = null
+shader_param/Path = 500.0
+
+[node name="BasicShip" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="TronTrail" parent="." instance=ExtResource( 3 )]
+[node name="ExplodableModel" parent="." instance=ExtResource( 6 )]
+iframeFlashLength = 0.2
+iframeLength = 0.6
+model = SubResource( 4 )
+
+[node name="FiringPos" type="Position2D" parent="."]
+position = Vector2( 12, 0 )
+
+[node name="FastTrails" type="Node2D" parent="."]
+show_behind_parent = true
+
+[node name="SpeedyTrail" parent="FastTrails" instance=ExtResource( 5 )]
+modulate = Color( 0.556863, 0.466667, 1, 1 )
+show_behind_parent = true
+material = SubResource( 3 )
+position = Vector2( -10, 0 )
+scale = Vector2( 2, 4 )
+Speed = 0.23
+Stay = 0.58
+CatchUp = 0.31
+
+[node name="SpeedyTrail2" parent="FastTrails" instance=ExtResource( 5 )]
+modulate = Color( 0.556863, 0.466667, 1, 1 )
+show_behind_parent = true
+material = SubResource( 3 )
+position = Vector2( 0.5, 10 )
+scale = Vector2( 2, 1.5 )
+Speed = 0.23
+Stay = 0.58
+CatchUp = 0.31
+
+[node name="SpeedyTrail3" parent="FastTrails" instance=ExtResource( 5 )]
+modulate = Color( 0.556863, 0.466667, 1, 1 )
+show_behind_parent = true
+material = SubResource( 3 )
+position = Vector2( 0.5, -10 )
+scale = Vector2( 2, 1.5 )
+Speed = 0.23
+Stay = 0.58
+CatchUp = 0.31
+
+[node name="SlowTrails" type="Node2D" parent="."]
+show_behind_parent = true
+
+[node name="SpeedyTrail" parent="SlowTrails" instance=ExtResource( 5 )]
+modulate = Color( 0.556863, 0.466667, 1, 1 )
+show_behind_parent = true
+material = SubResource( 3 )
+position = Vector2( -10, 0 )
+scale = Vector2( 2, 4 )
+Speed = 0.6
+Stay = 0.8
+CatchUp = 0.3
+
+[node name="SpeedyTrail2" parent="SlowTrails" instance=ExtResource( 5 )]
+modulate = Color( 0.556863, 0.466667, 1, 1 )
+show_behind_parent = true
+material = SubResource( 3 )
+position = Vector2( 0.5, 10 )
+scale = Vector2( 2, 1.5 )
+Speed = 0.6
+Stay = 0.8
+CatchUp = 0.3
+
+[node name="SpeedyTrail3" parent="SlowTrails" instance=ExtResource( 5 )]
+modulate = Color( 0.556863, 0.466667, 1, 1 )
+show_behind_parent = true
+material = SubResource( 3 )
+position = Vector2( 0.5, -10 )
+scale = Vector2( 2, 1.5 )
+Speed = 0.6
+Stay = 0.8
+CatchUp = 0.3
+
+[node name="TronTrails" type="Node2D" parent="."]
+
+[node name="TronTrail" parent="TronTrails" instance=ExtResource( 3 )]
 position = Vector2( -12, -10.5 )
 trailColor = Color( 0.556863, 0.466667, 1, 1 )
 
-[node name="TronTrail2" parent="." instance=ExtResource( 3 )]
+[node name="TronTrail2" parent="TronTrails" instance=ExtResource( 3 )]
 position = Vector2( -12, 10.5 )
 trailColor = Color( 0.556863, 0.466667, 1, 1 )
 
-[node name="TronTrail3" parent="." instance=ExtResource( 3 )]
+[node name="TronTrail3" parent="TronTrails" instance=ExtResource( 3 )]
 show_behind_parent = true
 position = Vector2( -11, 0 )
 size = 2.0
 trailColor = Color( 0.556863, 0.466667, 1, 1 )
-
-[node name="Explosion" parent="." instance=ExtResource( 4 )]
-position = Vector2( 5, -3 )
-
-[node name="Explosion2" parent="." instance=ExtResource( 4 )]
-position = Vector2( -8, 6 )

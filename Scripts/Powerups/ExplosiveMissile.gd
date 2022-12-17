@@ -19,7 +19,7 @@ func _physics_process(delta):
 	if(!visibility_notifier.is_on_screen()):
 		queue_free();
 
-func explode(area = null) -> void:
+func explode(_area = null) -> void:
 	missile_model.Explode(null);
 	set_physics_process(false);
 	set_deferred("collision_layer", 0);

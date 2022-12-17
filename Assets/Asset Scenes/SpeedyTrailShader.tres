@@ -1,0 +1,38 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform float CurrentTime;
+uniform float CatchUpTime;
+uniform float Path;
+
+void vertex()
+{
+	if (VERTEX.x != 0.5)
+	{
+		VERTEX.x -= CurrentTime * Path;
+	}
+	else
+	{
+		VERTEX.x -= CatchUpTime * Path;
+	}
+}
+
+void fragment()
+{
+	if (distance(UV, vec2(0.5)) > 0.5)
+	{
+		discard;
+	}
+	
+	COLOR = mix(texture(TEXTURE, UV), vec4(1.0, 0.0, 0.0, 1.0), max(UV.x - 0.8, 0.0) / 0.2);
+	COLOR.a -= abs(UV.y - 0.5) * abs(UV.y - 0.5);
+}"
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 2 )
+shader_param/CurrentTime = 0.0
+shader_param/CatchUpTime = 0.0
+shader_param/Path = 4000.0

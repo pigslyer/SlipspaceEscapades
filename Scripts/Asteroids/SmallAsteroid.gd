@@ -1,3 +1,4 @@
+class_name SmallAsteroid
 extends Area2D
 
 const MAX_ROTATION_SPEED := 2;

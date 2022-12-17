@@ -13,22 +13,12 @@ func StartGameplay(time: float):
 	$Enemies.gameplay_stopped = false;
 	$Asteroids.gameplay_stopped = false;
 
-class Obj:
-	var strength: int = 99999999;
-
 func StopGameplay():
 	$GameplayCountdown.stop();
 	$Enemies.stop_gameplay();
 	$Asteroids.gameplay_stopped = true;
 	
-	var obj = Obj.new();
-	
 	for enemy in $Enemies.get_children():
-		if enemy.has_method("body_entered"):
-			enemy.body_entered(obj);
-		elif enemy.has_method("on_body_entered"):
-			enemy.on_body_entered(obj);
-		
 		enemy.set_physics_process(false);
 
 func _on_GameplayCountdown_timeout():

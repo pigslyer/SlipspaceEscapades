@@ -6,6 +6,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 
 [node name="PowerupIconBase" type="Area2D" groups=["Powerups"]]
+scale = Vector2( 1.5, 1.5 )
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 2 )

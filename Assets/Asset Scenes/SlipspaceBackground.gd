@@ -34,7 +34,7 @@ func SetSlipspace(state: bool) -> void:
 #			$StarryNight.RemoveStars();
 			$StarryNightMesh.HideStars();
 			
-			yield(get_tree().create_timer(0.5),"timeout");
+			yield(get_tree().create_timer(0.9),"timeout");
 			emit_signal("FinishedTransition");
 		else:
 			# result of eyeballing, starts them just as the "exiting" effect is strongest

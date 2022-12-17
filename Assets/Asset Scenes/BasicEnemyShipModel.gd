@@ -7,6 +7,12 @@ export (AtlasTexture) var texture = null;
 func _ready():
 	$ExplodableModel.SetModel(texture);
 
+onready var _prevPos: Vector2 = global_position;
+
+func _process(_delta):
+	SetGlobalDirection(global_position - _prevPos);
+	_prevPos = global_position;
+
 func SetGlobalDirection(dir: Vector2):
 	var val = dir.cross(Vector2.RIGHT.rotated(global_rotation));
 	

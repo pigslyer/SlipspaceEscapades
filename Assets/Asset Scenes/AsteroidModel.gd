@@ -13,6 +13,7 @@ export var fadeOutLength = 0.2;
 export var fadeOutTime = 0.2;
 
 onready var onHitMaterial: ShaderMaterial = $OnHit.material as ShaderMaterial;
+onready var onHitPairMaterial: ShaderMaterial = $OnHitPair.material as ShaderMaterial;
 
 var _isExploding := false;
 
@@ -62,8 +63,8 @@ func AsteroidDestroyedDropsPowerup() -> void:
 	tween.tween_callback($ExplosionImplosion,"set_emitting", [true]).set_delay(destructionParticleStart);
 	tween.parallel().tween_method(self, "_setShaderValue", 0.3, 0.01, destructionShaderLength);
 	
-	tween.parallel().tween_property($OnHit,"modulate:a", 0.0, fadeOutLength).set_delay(fadeOutTime).set_trans(Tween.TRANS_CUBIC);
-	tween.parallel().tween_property($OnHitPair,"modulate:a", 0.0, fadeOutLength).set_delay(fadeOutTime).set_trans(Tween.TRANS_CUBIC);
+	tween.parallel().tween_property($OnHit,"modulate:a", 0.0, fadeOutLength).set_delay(fadeOutTime);
+	tween.parallel().tween_property($OnHitPair,"modulate:a", 0.0, fadeOutLength).set_delay(fadeOutTime);
 	
 	tween.tween_callback(self,"emit_signal",["OnDestroyed"]);
 	
@@ -76,3 +77,4 @@ func AsteroidDestroyedDropsPowerup() -> void:
 
 func _setShaderValue(amount: float):
 	onHitMaterial.set_shader_param("flashAmount", amount);
+	onHitPairMaterial.set_shader_param("flashAmount", amount);

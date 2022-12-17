@@ -19,4 +19,4 @@ func SetHealth(health: int, armor: int):
 		
 		$Armor.visible = armor > 0;
 		$ArmorCount.visible = armor > 1;
-		$ArmorCount.text = str(armor);
+		$ArmorCount.text = "%dx" % armor;

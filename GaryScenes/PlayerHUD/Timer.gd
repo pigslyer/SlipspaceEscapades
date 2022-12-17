@@ -24,10 +24,14 @@ func _process(delta):
 	
 	if (_curTime < ENGINE_WARMUP && !_hasPlayedSound):
 		_hasPlayedSound = true;
-		Sounds.PlaySound(LEAVING_SLIPSPACE_SOUND);
+		$LeavingSlipspace.play();
 
 func _updateText():
 	text = "Time: %6.3f" % _curTime;
 
 func GetTime():
 	return _curTime;
+
+func SetTime(time):
+	_curTime = time;
+	_updateText();

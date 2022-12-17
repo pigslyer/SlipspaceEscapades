@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://GaryScenes/MainMenu/MainMenu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Asset Scenes/SlipspaceBackground.tscn" type="PackedScene" id=2]
@@ -9,17 +9,22 @@
 [ext_resource path="res://GaryScenes/PlayerHUD/TextDisplay.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Assets/pixel.png" type="Texture" id=8]
 [ext_resource path="res://GaryScenes/BiggerWorld/MouseCursor.tscn" type="PackedScene" id=9]
+[ext_resource path="res://GaryScenes/BiggerWorld/Paused.gd" type="Script" id=10]
+[ext_resource path="res://Assets/UI/BIGFont.tres" type="DynamicFont" id=11]
 
 [node name="BiggerWorld" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
-gameplayTime = 60.0
-wonText = "\"We've done it!\" your space first mate shouts. His joyous roar is joined by the rest of your space crew.
+WonText = "\"We've done it!\" your space first mate shouts. His joyous roar is joined by the rest of your space crew.
 \"Y'know what lads!\", you shout out \"It's time for us to get knackered! TO THE SPACE BAR!\"
 
 +1000 Score for surviving"
-lostText = "And so your space crew's journey ends. You had a good run, until you failed to slip away.
+NewGamePlusText = "\"Um, sir?\" your space first mate pipes up again. 
+\"Yes, space first mate, what is it?\"
+\"Sensors are picking up inbound space police ships. They're still hot on our space tail and there's even more of them!\"
+The space ship comes to life again as your space crew prepares for the jump to slipspace."
+LostText = "And so your space crew's journey ends. You had a good run, until you failed to slip away.
 
 You survived the onslaught for %s seconds."
 
@@ -27,7 +32,7 @@ You survived the onslaught for %s seconds."
 _acceptsInput = false
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 93, 198 )
+position = Vector2( 230, 264 )
 
 [node name="World" parent="." instance=ExtResource( 4 )]
 
@@ -35,6 +40,7 @@ position = Vector2( 93, 198 )
 visible = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+pause_mode = 2
 
 [node name="BlackScreen" type="TextureRect" parent="CanvasLayer"]
 modulate = Color( 0, 0, 0, 0 )
@@ -53,8 +59,27 @@ hiddenVector = Vector2( 1, -1 )
 
 [node name="MouseCursor" parent="CanvasLayer" instance=ExtResource( 9 )]
 
+[node name="Paused" type="Label" parent="CanvasLayer"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.0
+margin_top = -18.5
+margin_right = 66.0
+margin_bottom = 18.5
+custom_fonts/font = ExtResource( 11 )
+text = "PAUSED"
+align = 1
+valign = 1
+script = ExtResource( 10 )
+
+[node name="OnOffTimer" type="Timer" parent="CanvasLayer/Paused"]
+
 [connection signal="OnPlayedDied" from="Player" to="." method="_on_Player_OnPlayedDied"]
 [connection signal="OnPlayerHealthArmorChanged" from="Player" to="HUD" method="OnPlayerHealthChanged"]
 [connection signal="OnScoreGained" from="World" to="HUD" method="OnScoreGained"]
 [connection signal="OnTimerEnded" from="World" to="." method="_on_World_OnTimerEnded"]
 [connection signal="OnStartGame" from="CanvasLayer/MainMenu" to="." method="_on_MainMenu_OnStartGame"]
+[connection signal="timeout" from="CanvasLayer/Paused/OnOffTimer" to="CanvasLayer/Paused" method="OnTimerTimeout"]

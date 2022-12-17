@@ -46,7 +46,7 @@ func attack(delta):
 	if(abs(go_to.y - global_position.y) > 25):
 		var diff = go_to - global_position;
 		velocity = diff.normalized() * SPEED;
-		rotation = 0 if velocity.y < 0 else PI;
+		rotation = 0.0 if velocity.y < 0 else PI;
 		global_position += velocity * delta;
 		set_new_x = false;
 		

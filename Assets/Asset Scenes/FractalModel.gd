@@ -2,7 +2,7 @@ extends Node2D
 
 signal OnExplosionFinished;
 
-func Explode(target: Node2D):
+func Explode(_target: Node2D):
 	$Sprite.hide();
 	$Explosion.Explode(false);
 	

@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://Scripts/Enemies/BasicVariantShip.gd"
 }, {
 "base": "Area2D",
+"class": "BigAsteroid",
+"language": "GDScript",
+"path": "res://Scripts/Asteroids/BigAsteroid.gd"
+}, {
+"base": "Area2D",
 "class": "BigBoy",
 "language": "GDScript",
 "path": "res://Scripts/Enemies/BigBoy.gd"
@@ -68,11 +73,17 @@ _global_script_classes=[ {
 "class": "ShieldPooperShip",
 "language": "GDScript",
 "path": "res://Scripts/Enemies/ShieldPooperShip.gd"
+}, {
+"base": "Area2D",
+"class": "SmallAsteroid",
+"language": "GDScript",
+"path": "res://Scripts/Asteroids/SmallAsteroid.gd"
 } ]
 _global_script_class_icons={
 "BFL": "",
 "BasicShip": "",
 "BasicVariantShip": "",
+"BigAsteroid": "",
 "BigBoy": "",
 "Bullet": "",
 "Enemies": "",
@@ -81,7 +92,8 @@ _global_script_class_icons={
 "PlasmaShip": "",
 "Player": "",
 "Shield": "",
-"ShieldPooperShip": ""
+"ShieldPooperShip": "",
+"SmallAsteroid": ""
 }
 
 [application]
@@ -96,6 +108,13 @@ Global="*res://Scripts/Global.gd"
 MissilePowerupVariables="*res://Scripts/Powerups/MissilePowerupVariables.gd"
 Save="*res://GaryScenes/Autoloads/SaveHelper.gd"
 Sounds="*res://GaryScenes/Autoloads/Sounds.gd"
+
+[debug]
+
+gdscript/warnings/narrowing_conversion=false
+gdscript/warnings/unused_signal=false
+gdscript/warnings/return_value_discarded=false
+gdscript/warnings/integer_division=false
 
 [display]
 
@@ -156,7 +175,7 @@ move_right={
 }
 shoot={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":32,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 test_powerup={

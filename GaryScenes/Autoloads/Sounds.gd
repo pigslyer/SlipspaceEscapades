@@ -1,6 +1,7 @@
 extends Node
 
-const SILENT_VOLUME = -60.0;
+const SILENT_VOLUME = -70.0;
+const MAX_VOLUME = 10.0;
 const FADE_TIME = 0.4;
 
 enum MUSIC{
@@ -15,6 +16,14 @@ const TRACKS = {
 };
 
 var _music: AudioStreamPlayer = null;
+
+func _ready():
+	pause_mode = Node.PAUSE_MODE_STOP;
+
+func StopAllSFX():
+	for i in get_children():
+		if i != _music:
+			i.queue_free();
 
 func PlayMusic(m):
 	

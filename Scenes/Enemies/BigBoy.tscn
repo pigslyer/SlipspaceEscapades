@@ -9,7 +9,7 @@ extents = Vector2( 72.5, 319.5 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 19, 31 )
 
-[node name="BigBoy" type="Area2D" groups=["Entity"]]
+[node name="BigBoy" type="Area2D" groups=["Entity", "GARBAGE"]]
 collision_layer = 4
 collision_mask = 72
 script = ExtResource( 2 )

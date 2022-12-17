@@ -22,7 +22,7 @@ float Time()
 void fragment(){
 	
 	float dist = distance(vec2(0.5),UV);
-	if (dist >= R || (dist < fade_away_perc-0.6 + texture(fade_away_curve,vec2(fract(TIME*0.1+UV.x+UV.y))).r*0.2)){
+	if (dist >= R || (dist < fade_away_perc-0.6 + texture(fade_away_curve,vec2(fract(Time()*0.1+UV.x+UV.y))).r*0.2)){
 		discard;
 	}
 	

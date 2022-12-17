@@ -1,3 +1,4 @@
+class_name BigAsteroid
 extends Area2D
 
 const MAX_ROTATION_SPEED := 0.5;

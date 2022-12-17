@@ -1,5 +1,3 @@
-
-
 class_name Player
 extends KinematicBody2D
 
@@ -71,9 +69,14 @@ var _controlsLocked = false;
 
 func SetControlsLocked(state: bool):
 	_controlsLocked = state;
+#	if (_controlsLocked):
+#		$BasicShip.SetMovingDirection(Vector2.ZERO);
 
 func RotateRight(state: bool):
 	set_process(state);
+
+func ThrustersOn(slow: bool):
+	$BasicShip.FireThrusters(slow);
 
 func _process(delta):
 	rotation = lerp_angle(rotation, 0, ROTATION_SPEED * delta);
@@ -93,8 +96,8 @@ func _physics_process(delta):
 	velocity += input * ACCELERATION * delta;
 	velocity *= 1 - FRICTION;
 	
-	if (!_controlsLocked):
-		$BasicShip.SetMovingDirection(input);
+#	if (!_controlsLocked):
+#		$BasicShip.SetMovingDirection(input);
 	
 	velocity = move_and_slide(velocity, Vector2.UP);
 	
@@ -119,7 +122,8 @@ func fire_bullet(bullet_type) -> void:
 	var parent = get_parent();
 	
 	var new_bullet = bullet_type_scene.instance();
-	new_bullet.global_position = firing_position.global_position;
+	#new_bullet.global_position = firing_position.global_position;
+	new_bullet.global_position = $BasicShip.GetFiringPos();
 	new_bullet.collision_layer = 64;
 	new_bullet.rotation = rotation;
 	parent.add_child(new_bullet);
@@ -138,13 +142,15 @@ func fire_bullet(bullet_type) -> void:
 		
 		var new_bullet1 = bullet_type_scene.instance();
 		new_bullet1.rotation = rotation + angle;
-		new_bullet1.global_position = firing_position.global_position;
+		new_bullet1.global_position = $BasicShip.GetFiringPos();
+		#new_bullet1.global_position = firing_position.global_position;
 		new_bullet1.collision_layer = 64;
 		parent.add_child(new_bullet1);
 		
 		var new_bullet2 = bullet_type_scene.instance();
 		new_bullet2.rotation = rotation - angle;
-		new_bullet2.global_position = firing_position.global_position;
+		new_bullet2.global_position = $BasicShip.GetFiringPos();
+		#new_bullet2.global_position = firing_position.global_position;
 		new_bullet2.collision_layer = 64;
 		parent.add_child(new_bullet2);
 
@@ -152,11 +158,12 @@ func add_powerup(powerup) -> void:
 	match(powerup):
 		Global.POWERUPS.HEALTH:
 			hp = max_hp;
-			pussy_timer.start();
-			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
+			StartPussyTimer();
+			UpdateHealthArmorHUD();
 		Global.POWERUPS.ARMOR:
 			armor += 1;
-			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
+			StartPussyTimer();
+			UpdateHealthArmorHUD();
 		Global.POWERUPS.BFL:
 			call_deferred("fire_BFL");
 		Global.POWERUPS.BARRAGE:
@@ -200,7 +207,8 @@ func fire_BFL() -> void:
 	var pitchMult = powerups["fire_rate"];
 	
 	var new_bfl = bfl_scene.instance();
-	new_bfl.position = firing_position.position;
+	#new_bfl.position = firing_position.position;
+	new_bfl.position = to_local($BasicShip.GetFiringPos());
 	bfls.add_child(new_bfl);
 	new_bfl.SetSoundSettings(1 + pitchMult * 0.1, 0);
 	
@@ -209,13 +217,15 @@ func fire_BFL() -> void:
 		
 		var new_bfl1 = bfl_scene.instance();
 		new_bfl1.rotation = angle;
-		new_bfl1.position = firing_position.position;
+		new_bfl1.position = to_local($BasicShip.GetFiringPos());
+		#new_bfl1.position = firing_position.position;
 		bfls.add_child(new_bfl1);
 		new_bfl1.SetSoundSettings(1 + (i + pitchMult) * 0.1, i * 0.1);
 		
 		var new_bfl2 = bfl_scene.instance();
 		new_bfl2.rotation = -angle;
-		new_bfl2.position = firing_position.position;
+		new_bfl2.position = to_local($BasicShip.GetFiringPos());
+		#new_bfl2.position = firing_position.position;
 		bfls.add_child(new_bfl2);
 		new_bfl2.SetSoundSettings(1 + (i + pitchMult) * 0.1, i * 0.1);
 		
@@ -224,6 +234,9 @@ func fire_BFL() -> void:
 func clear_bfls() -> void:
 	for child in bfls.get_children():
 		child.Disable();
+
+func StopPoopingShields():
+	remaining_poop_shields = 0;
 
 func poop_shields() -> void:
 	if(remaining_poop_shields > 0):
@@ -248,13 +261,19 @@ func body_entered(entity):
 			armor -= 1;
 		else:
 			hp -= 1;
-		pussy_timer.start();
 		
 		if hp > 0:
-			$BasicShip.InvulnFlash();
-			Sounds.PlaySound(PLAYER_HURT_EFFECT, null, 0, rand_range(0.9, 1.1));
-			emit_signal("OnPlayerHealthArmorChanged", hp, armor);
+			StartPussyTimer();
+			UpdateHealthArmorHUD();
+			Sounds.PlaySound(PLAYER_HURT_EFFECT, null, 10, rand_range(0.9, 1.1));
 		else:
 			$BasicShip.Explode();
 			Sounds.PlaySound(PLAYER_DIED);
 			emit_signal("OnPlayedDied");
+
+func StartPussyTimer():
+	pussy_timer.start();
+	$BasicShip.InvulnFlash();
+
+func UpdateHealthArmorHUD():
+	emit_signal("OnPlayerHealthArmorChanged", hp, armor);
